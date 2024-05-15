@@ -60,7 +60,7 @@
     "href": "docs/display_data_test.html",
     "title": "Notebook",
     "section": "",
-    "text": "Code\nimport pandas as pd\nfrom IPython.display import Markdown\ntest_csv = pd.read_csv(\"test_csv.csv\")\ntest_csv = test_csv.tail()\nMarkdown(test_csv.to_markdown(index=False))\n\n\n\n\n\n\n\n\n\n\nDate\nOpen\nHigh\nLow\nClose\nVolume\nDividends\nStock Splits\n\n\n\n\n95\n2024-05-09 00:00:00+02:00\n11112.700195\n11121.900391\n11004.900391\n11050.099609\n212325300\n0.0\n0.0\n\n\n96\n2024-05-10 00:00:00+02:00\n11045.900391\n11137.700195\n11045.099609\n11105.500000\n155650400\n0.0\n0.0\n\n\n97\n2024-05-13 00:00:00+02:00\n11104.200195\n11152.000000\n11073.900391\n11152.000000\n106337500\n0.0\n0.0\n\n\n98\n2024-05-14 00:00:00+02:00\n11180.500000\n11246.299805\n11138.400391\n11239.299805\n137103300\n0.0\n0.0\n\n\n99\n2024-05-15 00:00:00+02:00\n11260.900391\n11377.000000\n11260.299805\n11362.799805\n159465788\n0.0\n0.0"
+    "text": "Code\nimport pandas as pd\nfrom IPython.display import Markdown\ntest_csv = pd.read_csv(\"test_csv.csv\")\ntest_csv = test_csv.tail()\nMarkdown(test_csv.to_markdown(index=False))\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDate\nOpen\nHigh\nLow\nClose\nVolume\nDividends\nStock Splits\n\n\n\n\n2024-05-09 00:00:00+02:00\n11112.7\n11121.9\n11004.9\n11050.1\n212325300\n0\n0\n\n\n2024-05-10 00:00:00+02:00\n11045.9\n11137.7\n11045.1\n11105.5\n155650400\n0\n0\n\n\n2024-05-13 00:00:00+02:00\n11104.2\n11152\n11073.9\n11152\n106337500\n0\n0\n\n\n2024-05-14 00:00:00+02:00\n11180.5\n11246.3\n11138.4\n11239.3\n137103300\n0\n0\n\n\n2024-05-15 00:00:00+02:00\n11260.9\n11377\n11260.3\n11362.8\n159465788\n0\n0"
   },
   {
     "objectID": "docs/display_data_test.html#polar-axis",
