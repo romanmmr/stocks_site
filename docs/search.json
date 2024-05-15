@@ -19,5 +19,54 @@
     "title": "About Me",
     "section": "",
     "text": "Thanks for checking out my web site!"
+  },
+  {
+    "objectID": "tables.html#project-2",
+    "href": "tables.html#project-2",
+    "title": "Projects",
+    "section": "Project 2",
+    "text": "Project 2"
+  },
+  {
+    "objectID": "tables.html#project-3",
+    "href": "tables.html#project-3",
+    "title": "Projects",
+    "section": "Project 3",
+    "text": "Project 3"
+  },
+  {
+    "objectID": "tables.html",
+    "href": "tables.html",
+    "title": "About Me",
+    "section": "",
+    "text": "Thanks for checking out my web site!"
+  },
+  {
+    "objectID": "docs/hello.html",
+    "href": "docs/hello.html",
+    "title": "Notebook",
+    "section": "",
+    "text": "import pandas as pd\nfrom IPython.display import Markdown\ntest_csv = pd.read_csv(\"test_csv.csv\")\nMarkdown(test_csv.to_markdown(index=False))"
+  },
+  {
+    "objectID": "docs/hello.html#polar-axis",
+    "href": "docs/hello.html#polar-axis",
+    "title": "Notebook",
+    "section": "Polar Axis",
+    "text": "Polar Axis\nFor a demonstration of a line plot on a polar axis, see Figure 1.\n\n\nCode\nimport numpy as np\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\nr = np.arange(0, 2, 0.01)\ntheta = 2 * np.pi * r\nfig, ax = plt.subplots(\n  subplot_kw = {'projection': 'polar'} \n)\nax.plot(theta, r)\nax.set_rticks([0.5, 1, 1.5, 2])\nax.grid(True)\nplt.show()\n\n\n\n\n\n\n\n\nFigure 1: A line plot on a polar axis\n\n\n\n\n\n\n\nCode\ndf=pd.DataFrame([[1,2,3],[4,5,6],[7,8,9]], columns=['a', 'b', 'c'])\ndf\n\n\n\n\n\n\n\n\n\n\na\nb\nc\n\n\n\n\n0\n1\n2\n3\n\n\n1\n4\n5\n6\n\n\n2\n7\n8\n9"
+  },
+  {
+    "objectID": "docs/display_data_test.html",
+    "href": "docs/display_data_test.html",
+    "title": "Notebook",
+    "section": "",
+    "text": "Code\nimport pandas as pd\nfrom IPython.display import Markdown\ntest_csv = pd.read_csv(\"test_csv.csv\")\ntest_csv = test_csv.tail()\nMarkdown(test_csv.to_markdown(index=False))\n\n\n\n\n\n\n\n\n\n\nDate\nOpen\nHigh\nLow\nClose\nVolume\nDividends\nStock Splits\n\n\n\n\n95\n2024-05-09 00:00:00+02:00\n11112.700195\n11121.900391\n11004.900391\n11050.099609\n212325300\n0.0\n0.0\n\n\n96\n2024-05-10 00:00:00+02:00\n11045.900391\n11137.700195\n11045.099609\n11105.500000\n155650400\n0.0\n0.0\n\n\n97\n2024-05-13 00:00:00+02:00\n11104.200195\n11152.000000\n11073.900391\n11152.000000\n106337500\n0.0\n0.0\n\n\n98\n2024-05-14 00:00:00+02:00\n11180.500000\n11246.299805\n11138.400391\n11239.299805\n137103300\n0.0\n0.0\n\n\n99\n2024-05-15 00:00:00+02:00\n11260.900391\n11377.000000\n11260.299805\n11362.799805\n159465788\n0.0\n0.0"
+  },
+  {
+    "objectID": "docs/display_data_test.html#polar-axis",
+    "href": "docs/display_data_test.html#polar-axis",
+    "title": "Notebook",
+    "section": "Polar Axis",
+    "text": "Polar Axis\nFor a demonstration of a line plot on a polar axis, see Figure 1.\n\n\nCode\nimport numpy as np\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\nr = np.arange(0, 2, 0.01)\ntheta = 2 * np.pi * r\nfig, ax = plt.subplots(\n  subplot_kw = {'projection': 'polar'} \n)\nax.plot(theta, r)\nax.set_rticks([0.5, 1, 1.5, 2])\nax.grid(True)\nplt.show()\n\n\n\n\n\n\n\n\nFigure 1: A line plot on a polar axis\n\n\n\n\n\n\n\nCode\ndf=pd.DataFrame([[1,2,3],[4,5,6],[7,8,9]], columns=['a', 'b', 'c'])\ndf\n\n\n\n\n\n\n\n\n\n\na\nb\nc\n\n\n\n\n0\n1\n2\n3\n\n\n1\n4\n5\n6\n\n\n2\n7\n8\n9"
   }
 ]
