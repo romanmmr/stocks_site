@@ -1,0 +1,40 @@
+# Main configuration section
+config:
+  # Option with a string value
+  name: "My Application"
+  # Option with a numeric value
+  version: 1.0
+
+## Main configuration section
+#config:
+#  # Option with a string value
+#  name: "My Application"
+#  # Option with a numeric value
+#  version: 1.0
+#  # Option with a boolean value
+#  debug_mode: false
+#
+## Another configuration section with a list of values
+#database:
+#  # List of hostnames or IP addresses
+#  hosts:
+#    - "localhost"
+#    - "127.0.0.1"
+#  # Port number
+#  port: 3306
+#  # Username for database access
+#  username: "user"
+#  # Password for database access (store securely!)
+#  password: "your_password"  # Don't store actual passwords in version control
+#
+## Yet another section with nested options
+#logging:
+#  # Logging level (e.g., DEBUG, INFO, WARNING, ERROR)
+#  level: "INFO"
+#  # File path for log messages
+#  file: "application.log"
+#
+## List of key-value pairs
+#additional_settings:
+#  key1: value1
+#  key2: value2
