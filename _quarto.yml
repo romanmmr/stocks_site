@@ -24,7 +24,7 @@ website:
 
 format:
   html:
-    theme: cyborg
+    theme: sketchy
     toc: true
 
 editor: source

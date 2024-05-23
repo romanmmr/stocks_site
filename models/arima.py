@@ -13,6 +13,7 @@ class Arima:
             self,
             ticker: str,
             period: int,
+            order: tuple,
             display_weeks: int,
             test_weeks: int,
             freq: str,
@@ -35,6 +36,9 @@ class Arima:
         self.test = pd.DataFrame
         self.train_index = None
         self.test_index = None
+        self.order = order
+        self.arima_model = None
+        self.arima_log_model = None
 
     def load_values(self) -> None:
         values = LoadTickers(
@@ -69,11 +73,20 @@ class Arima:
         self.define_freq()
         self.define_train_test()
 
-    # def define_arima_model(self):
+    def define_models(self) -> None:
+        self.arima_model = ARIMA(self.train[self.column], order=self.order)
+        self.arima_log_model = ARIMA(self.train[self.log_column], order=self.order)
+
+    def fit_models(self) -> None:
+        self.arima_result = self.arima_model.fit()
+        self.arima_log_result = self.arima_log_model.fit()
+
+    def predict_arima_models(self) -> None:
+        print('wait')
+        # TODO: think if we want to show model (ARIMA) and preditions over test set
+        # TODO: Or maybe we just want to train the model and simply get real-life predictions and plot that
 
 
-
-    # TODO: ARIMA - order... fit...
 
 if __name__ == '__main__':
 
@@ -85,10 +98,12 @@ if __name__ == '__main__':
     years = 4
     update_data = False
     freq = 'W-FRI'
+    order = (26, 1, 1)
 
     arima = Arima(
         ticker=ticker,
         period=period,
+        order=order,
         display_weeks=display_weeks,
         test_weeks=test_weeks,
         freq=freq,
@@ -97,6 +112,8 @@ if __name__ == '__main__':
         update_data=update_data
     )
     arima.run_preprocess()
+    arima.define_models()
+    arima.fit_models()
     print(arima.ticker_values.head())
 
     print('done')
