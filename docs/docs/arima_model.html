@@ -197,12 +197,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="latest-stock-values-for-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="latest-stock-values-for-analysis">Latest stock values for analysis</h2>
 <p>These are the lates values we used for our analysis.</p>
-<div id="8d7faf28-a70b-4369-af26-7418593fc163" class="cell" data-execution_count="2">
+<div id="8d7faf28-a70b-4369-af26-7418593fc163" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>plot_sample_data(path<span class="op">=</span><span class="st">'arima_fitted_data.csv'</span>, column<span class="op">=</span><span class="st">'Close'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="3">
 <div>
 <div>
 
@@ -221,23 +221,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2024-04-25</td>
-<td>10890.200195</td>
+<td>10890.2</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">2024-05-02</td>
-<td>11100.799805</td>
+<td>11100.8</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2024-05-09</td>
-<td>10917.500000</td>
+<td>10917.5</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">2024-05-16</td>
-<td>11152.000000</td>
+<td>11152.0</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2024-05-23</td>
-<td>11339.500000</td>
+<td>11339.5</td>
 </tr>
 </tbody>
 </table>
@@ -250,12 +250,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="test-over-last-8-weeks" class="level2">
 <h2 class="anchored" data-anchor-id="test-over-last-8-weeks">Test over last 8 weeks</h2>
 <p>We keep data from last 8 weeks ‘unseen’ by our arima model. <br> This means that the model doesn’t know the last 8 values. The hypothetical present of our model is 8 weeks in the past. <br> In that hypothetical present, if we could see the future we would see the last 8 weeks.</p>
-<div id="866fce07-59b4-4a44-a614-48acdafd8b76" class="cell" data-execution_count="3">
+<div id="866fce07-59b4-4a44-a614-48acdafd8b76" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>table_horizontal(path<span class="op">=</span><span class="st">'arima_fitted_data.csv'</span>, column<span class="op">=</span><span class="st">'Close'</span>, display_weeks<span class="op">=</span><span class="dv">16</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="4">
 <div>
 <div>
 
@@ -285,33 +285,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">if we knew the future</td>
-<td>9941.299805</td>
-<td>9984.700195</td>
-<td>9944.799805</td>
-<td>10138.400391</td>
-<td>10069.799805</td>
-<td>10325.700195</td>
-<td>10596.700195</td>
-<td>10952.200195</td>
-<td>10975.599609</td>
-<td>10911.799805</td>
-<td>10687.200195</td>
-<td>10890.200195</td>
-<td>11100.799805</td>
+<td>9941.3</td>
+<td>9984.7</td>
+<td>9944.8</td>
+<td>10138.4</td>
+<td>10069.8</td>
+<td>10325.7</td>
+<td>10596.7</td>
+<td>10952.2</td>
+<td>10975.6</td>
+<td>10911.8</td>
+<td>10687.2</td>
+<td>10890.2</td>
+<td>11100.8</td>
 <td>10917.5</td>
 <td>11152.0</td>
 <td>11339.5</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">hypothetical present</td>
-<td>9941.2998046875</td>
-<td>9984.7001953125</td>
-<td>9944.7998046875</td>
-<td>10138.400390625</td>
-<td>10069.7998046875</td>
-<td>10325.7001953125</td>
-<td>10596.7001953125</td>
-<td>10952.2001953125</td>
+<td>9941.3</td>
+<td>9984.7</td>
+<td>9944.8</td>
+<td>10138.4</td>
+<td>10069.8</td>
+<td>10325.7</td>
+<td>10596.7</td>
+<td>10952.2</td>
 <td>?</td>
 <td>?</td>
 <td>?</td>
@@ -332,7 +332,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="plot-real-vales-vs-model-output-and-confidence-intervals" class="level2">
 <h2 class="anchored" data-anchor-id="plot-real-vales-vs-model-output-and-confidence-intervals">Plot real vales vs model output and confidence intervals</h2>
 <p>This is a plot of the real values (in blue) and the model output (in green) and the confident intervals (in red)</p>
-<div id="2d680db0-67dd-43b9-b1c1-6e9df46f342e" class="cell" data-execution_count="4">
+<div id="2d680db0-67dd-43b9-b1c1-6e9df46f342e" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>plot_fit_and_forecast(path<span class="op">=</span><span class="st">'arima_fitted_data.csv'</span>, column<span class="op">=</span><span class="st">'Close'</span>, display_weeks<span class="op">=</span><span class="dv">16</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

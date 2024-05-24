@@ -88,14 +88,14 @@
     "href": "docs/arima_model.html#latest-stock-values-for-analysis",
     "title": "Notebook",
     "section": "Latest stock values for analysis",
-    "text": "Latest stock values for analysis\nThese are the lates values we used for our analysis.\n\n\nCode\nplot_sample_data(path='arima_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-04-25\n10890.200195\n\n\n2024-05-02\n11100.799805\n\n\n2024-05-09\n10917.500000\n\n\n2024-05-16\n11152.000000\n\n\n2024-05-23\n11339.500000"
+    "text": "Latest stock values for analysis\nThese are the lates values we used for our analysis.\n\n\nCode\nplot_sample_data(path='arima_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-04-25\n10890.2\n\n\n2024-05-02\n11100.8\n\n\n2024-05-09\n10917.5\n\n\n2024-05-16\n11152.0\n\n\n2024-05-23\n11339.5"
   },
   {
     "objectID": "docs/arima_model.html#test-over-last-8-weeks",
     "href": "docs/arima_model.html#test-over-last-8-weeks",
     "title": "Notebook",
     "section": "Test over last 8 weeks",
-    "text": "Test over last 8 weeks\nWe keep data from last 8 weeks ‘unseen’ by our arima model.  This means that the model doesn’t know the last 8 values. The hypothetical present of our model is 8 weeks in the past.  In that hypothetical present, if we could see the future we would see the last 8 weeks.\n\n\nCode\ntable_horizontal(path='arima_fitted_data.csv', column='Close', display_weeks=16)\n\n\n\n\n\n\n\n\n\nDate\n2024-02-08\n2024-02-15\n2024-02-22\n2024-02-29\n2024-03-07\n2024-03-14\n2024-03-21\n2024-03-28\n2024-04-04\n2024-04-11\n2024-04-18\n2024-04-25\n2024-05-02\n2024-05-09\n2024-05-16\n2024-05-23\n\n\n\n\nif we knew the future\n9941.299805\n9984.700195\n9944.799805\n10138.400391\n10069.799805\n10325.700195\n10596.700195\n10952.200195\n10975.599609\n10911.799805\n10687.200195\n10890.200195\n11100.799805\n10917.5\n11152.0\n11339.5\n\n\nhypothetical present\n9941.2998046875\n9984.7001953125\n9944.7998046875\n10138.400390625\n10069.7998046875\n10325.7001953125\n10596.7001953125\n10952.2001953125\n?\n?\n?\n?\n?\n?\n?\n?"
+    "text": "Test over last 8 weeks\nWe keep data from last 8 weeks ‘unseen’ by our arima model.  This means that the model doesn’t know the last 8 values. The hypothetical present of our model is 8 weeks in the past.  In that hypothetical present, if we could see the future we would see the last 8 weeks.\n\n\nCode\ntable_horizontal(path='arima_fitted_data.csv', column='Close', display_weeks=16)\n\n\n\n\n\n\n\n\n\nDate\n2024-02-08\n2024-02-15\n2024-02-22\n2024-02-29\n2024-03-07\n2024-03-14\n2024-03-21\n2024-03-28\n2024-04-04\n2024-04-11\n2024-04-18\n2024-04-25\n2024-05-02\n2024-05-09\n2024-05-16\n2024-05-23\n\n\n\n\nif we knew the future\n9941.3\n9984.7\n9944.8\n10138.4\n10069.8\n10325.7\n10596.7\n10952.2\n10975.6\n10911.8\n10687.2\n10890.2\n11100.8\n10917.5\n11152.0\n11339.5\n\n\nhypothetical present\n9941.3\n9984.7\n9944.8\n10138.4\n10069.8\n10325.7\n10596.7\n10952.2\n?\n?\n?\n?\n?\n?\n?\n?"
   },
   {
     "objectID": "docs/arima_model.html#plot-real-vales-vs-model-output-and-confidence-intervals",
