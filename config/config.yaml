@@ -1,9 +1,14 @@
 # Main configuration section
 config:
-  # Option with a string value
-  name: "My Application"
-  # Option with a numeric value
-  version: 1.0
+  ticker: "^IBEX"
+  period: "max"
+  display_weeks: 12
+  test_weeks: 8
+  column: "Close"
+  years: 4
+  update_data: False
+  freq: "W-FRI"
+  order: [26, 1, 1]
 
 ## Main configuration section
 #config:

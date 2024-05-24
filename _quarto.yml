@@ -9,8 +9,8 @@ website:
       - href: index.qmd
         text: Home
       - projects.qmd
-      - href: docs/display_data_test.ipynb
-        text: Notebook
+      - href: docs/arima_model.ipynb
+        text: Arima model
       - href: docs/testing_notebook.ipynb
         text: Notebook - test
     tools:
