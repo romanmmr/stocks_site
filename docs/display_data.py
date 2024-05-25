@@ -33,7 +33,7 @@ def plot_fit_and_forecast(path: str, column: str, display_weeks: int) -> None:
     modelling_data.index = pd.to_datetime(modelling_data.index, utc=True)
     modelling_data.index = modelling_data.index.astype(str).map(lambda x: x[:10])
 
-    fig, ax = plt.subplots(figsize=(15, 5))
+    fig, ax = plt.subplots(figsize=(10, 5))
     ax.plot(
         modelling_data[column].tail(display_weeks),
         label='real data'
