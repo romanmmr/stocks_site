@@ -7,11 +7,9 @@ def plot_sample_data(path: str, column: str) -> None:
     # modelling_data.index = pd.to_datetime(modelling_data.index).strftime('%Y-%m-%d')
     modelling_data.index = pd.to_datetime(modelling_data.index, utc=True)
     modelling_data.index = modelling_data.index.astype(str).map(lambda x: x[:10])
-    # modelling_data[column] = modelling_data[column]
-    data = round(modelling_data[column], 1).tail().to_frame()
-    # data[column] = data[column].apply(lambda x: str(x))
+    # data = round(modelling_data[column], 1).tail().to_frame()
 
-    return data
+    return round(modelling_data[column], 1).tail().to_frame()
 
 
 def table_horizontal(path: str, column: str, display_weeks: int) -> None:
@@ -23,9 +21,9 @@ def table_horizontal(path: str, column: str, display_weeks: int) -> None:
     modelling_data['hypothetical present'] = modelling_data[column].apply(lambda x: str(round(x, 1)))
     index_to_change = modelling_data['hypothetical present'].tail(int(display_weeks/2)).index
     modelling_data.loc[index_to_change, 'hypothetical present'] = '?'
-    data = round(modelling_data[['if we knew the future', 'hypothetical present']], 1).tail(display_weeks).T
+    # data = round(modelling_data[['if we knew the future', 'hypothetical present']], 1).tail(display_weeks).T
 
-    return data
+    return round(modelling_data[['if we knew the future', 'hypothetical present']], 1).tail(display_weeks).T
 
 
 
