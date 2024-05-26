@@ -107,21 +107,21 @@
   {
     "objectID": "docs/arima_predictive_notebook.html",
     "href": "docs/arima_predictive_notebook.html",
-    "title": "Notebook - test",
+    "title": "Arima Predictions",
     "section": "",
     "text": "Code\nimport pandas as pd\nimport matplotlib.pyplot as plt\nfrom display_data import plot_fit_and_forecast, table_horizontal, plot_sample_data, plot_predictions"
   },
   {
     "objectID": "docs/arima_predictive_notebook.html#latest-stock-values-for-analysis",
     "href": "docs/arima_predictive_notebook.html#latest-stock-values-for-analysis",
-    "title": "Notebook - test",
+    "title": "Arima Predictions",
     "section": "Latest stock values for analysis",
     "text": "Latest stock values for analysis\n\nWe are using values from IBEX ticker values (Spanish stock values) every Friday - Closing\nThese are the lates values we used for our analysis.\n\n\n\nCode\nplot_sample_data(path='arima_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-04-26\n10890.2\n\n\n2024-05-03\n11100.8\n\n\n2024-05-10\n10917.5\n\n\n2024-05-17\n11152.0\n\n\n2024-05-24\n11339.5"
   },
   {
     "objectID": "docs/arima_predictive_notebook.html#predictions-over-future-8-weeks",
     "href": "docs/arima_predictive_notebook.html#predictions-over-future-8-weeks",
-    "title": "Notebook - test",
+    "title": "Arima Predictions",
     "section": "Predictions over future 8 weeks",
     "text": "Predictions over future 8 weeks\n\nWe will use our model to make ACTUAL PREDICTIONS for 8 weeks in the future.\n\n\n\nCode\nplot_predictions(path='arima_predictive_data.csv', column='Close', display_weeks=16)"
   }
