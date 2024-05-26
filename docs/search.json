@@ -88,14 +88,14 @@
     "href": "docs/arima_model.html#latest-stock-values-for-analysis",
     "title": "Notebook",
     "section": "Latest stock values for analysis",
-    "text": "Latest stock values for analysis\nThese are the lates values we used for our analysis.\n\n\nCode\nplot_sample_data(path='arima_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-04-25\n10890.2\n\n\n2024-05-02\n11100.8\n\n\n2024-05-09\n10917.5\n\n\n2024-05-16\n11152.0\n\n\n2024-05-23\n11339.5"
+    "text": "Latest stock values for analysis\n\nWe are using values from IBEX ticker values (Spanish stock values) every Friday - Closing\nThese are the lates values we used for our analysis.\n\n\n\nCode\nplot_sample_data(path='arima_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-04-25\n10890.2\n\n\n2024-05-02\n11100.8\n\n\n2024-05-09\n10917.5\n\n\n2024-05-16\n11152.0\n\n\n2024-05-23\n11339.5"
   },
   {
     "objectID": "docs/arima_model.html#test-over-last-8-weeks",
     "href": "docs/arima_model.html#test-over-last-8-weeks",
     "title": "Notebook",
     "section": "Test over last 8 weeks",
-    "text": "Test over last 8 weeks\nWe keep data from last 8 weeks ‘unseen’ by our arima model.  This means that the model doesn’t know the last 8 values. The hypothetical present of our model is 8 weeks in the past.  In that hypothetical present, if we could see the future we would see the last 8 weeks.\n\n\nCode\ntable_horizontal(path='arima_fitted_data.csv', column='Close', display_weeks=16)\n\n\n\n\n\n\n\n\n\nDate\n2024-02-08\n2024-02-15\n2024-02-22\n2024-02-29\n2024-03-07\n2024-03-14\n2024-03-21\n2024-03-28\n2024-04-04\n2024-04-11\n2024-04-18\n2024-04-25\n2024-05-02\n2024-05-09\n2024-05-16\n2024-05-23\n\n\n\n\nif we knew the future\n9941.3\n9984.7\n9944.8\n10138.4\n10069.8\n10325.7\n10596.7\n10952.2\n10975.6\n10911.8\n10687.2\n10890.2\n11100.8\n10917.5\n11152.0\n11339.5\n\n\nhypothetical present\n9941.3\n9984.7\n9944.8\n10138.4\n10069.8\n10325.7\n10596.7\n10952.2\n?\n?\n?\n?\n?\n?\n?\n?"
+    "text": "Test over last 8 weeks\n\nWe keep data from last 8 weeks ‘unseen’ by our arima model. \nThis means that the model doesn’t know the last 8 values. The hypothetical present of our model is 8 weeks in the past. \nIn that hypothetical present, if we could see the future we would see the last 8 weeks.\n\n\n\nCode\ntable_horizontal(path='arima_fitted_data.csv', column='Close', display_weeks=16)\n\n\n\n\n\n\n\n\n\nDate\n2024-02-08\n2024-02-15\n2024-02-22\n2024-02-29\n2024-03-07\n2024-03-14\n2024-03-21\n2024-03-28\n2024-04-04\n2024-04-11\n2024-04-18\n2024-04-25\n2024-05-02\n2024-05-09\n2024-05-16\n2024-05-23\n\n\n\n\nif we knew the future\n9941.3\n9984.7\n9944.8\n10138.4\n10069.8\n10325.7\n10596.7\n10952.2\n10975.6\n10911.8\n10687.2\n10890.2\n11100.8\n10917.5\n11152.0\n11339.5\n\n\nhypothetical present\n9941.3\n9984.7\n9944.8\n10138.4\n10069.8\n10325.7\n10596.7\n10952.2\n?\n?\n?\n?\n?\n?\n?\n?"
   },
   {
     "objectID": "docs/arima_model.html#plot-real-vales-vs-model-output-and-confidence-intervals",
@@ -103,5 +103,26 @@
     "title": "Notebook",
     "section": "Plot real vales vs model output and confidence intervals",
     "text": "Plot real vales vs model output and confidence intervals\nThis is a plot of the real values (in blue) and the model output (in green) and the confident intervals (in red)\n\n\nCode\nplot_fit_and_forecast(path='arima_fitted_data.csv', column='Close', display_weeks=16)"
+  },
+  {
+    "objectID": "docs/arima_predictive_notebook.html",
+    "href": "docs/arima_predictive_notebook.html",
+    "title": "Notebook - test",
+    "section": "",
+    "text": "Code\nimport pandas as pd\nimport matplotlib.pyplot as plt\nfrom display_data import plot_fit_and_forecast, table_horizontal, plot_sample_data, plot_predictions"
+  },
+  {
+    "objectID": "docs/arima_predictive_notebook.html#latest-stock-values-for-analysis",
+    "href": "docs/arima_predictive_notebook.html#latest-stock-values-for-analysis",
+    "title": "Notebook - test",
+    "section": "Latest stock values for analysis",
+    "text": "Latest stock values for analysis\n\nWe are using values from IBEX ticker values (Spanish stock values) every Friday - Closing\nThese are the lates values we used for our analysis.\n\n\n\nCode\nplot_sample_data(path='arima_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-04-26\n10890.2\n\n\n2024-05-03\n11100.8\n\n\n2024-05-10\n10917.5\n\n\n2024-05-17\n11152.0\n\n\n2024-05-24\n11339.5"
+  },
+  {
+    "objectID": "docs/arima_predictive_notebook.html#predictions-over-future-8-weeks",
+    "href": "docs/arima_predictive_notebook.html#predictions-over-future-8-weeks",
+    "title": "Notebook - test",
+    "section": "Predictions over future 8 weeks",
+    "text": "Predictions over future 8 weeks\n\nWe will use our model to make ACTUAL PREDICTIONS for 8 weeks in the future.\n\n\n\nCode\nplot_predictions(path='arima_predictive_data.csv', column='Close', display_weeks=16)"
   }
 ]

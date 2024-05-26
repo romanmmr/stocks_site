@@ -137,8 +137,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Arima model</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../docs/testing_notebook.html"> 
-<span class="menu-text">Notebook - test</span></a>
+    <a class="nav-link" href="../docs/arima_predictive_notebook.html"> 
+<span class="menu-text">Arima Predictions</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -196,7 +196,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="latest-stock-values-for-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="latest-stock-values-for-analysis">Latest stock values for analysis</h2>
-<p>These are the lates values we used for our analysis.</p>
+<ul>
+<li>We are using values from IBEX ticker values (Spanish stock values) every Friday - Closing</li>
+<li>These are the lates values we used for our analysis.</li>
+</ul>
 <div id="8d7faf28-a70b-4369-af26-7418593fc163" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
@@ -249,7 +252,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="test-over-last-8-weeks" class="level2">
 <h2 class="anchored" data-anchor-id="test-over-last-8-weeks">Test over last 8 weeks</h2>
-<p>We keep data from last 8 weeks ‘unseen’ by our arima model. <br> This means that the model doesn’t know the last 8 values. The hypothetical present of our model is 8 weeks in the past. <br> In that hypothetical present, if we could see the future we would see the last 8 weeks.</p>
+<ol type="1">
+<li>We keep data from last 8 weeks ‘unseen’ by our arima model. <br><br></li>
+<li>This means that the model doesn’t know the last 8 values. The hypothetical present of our model is 8 weeks in the past. <br><br></li>
+<li>In that hypothetical present, if we could see the future we would see the last 8 weeks.</li>
+</ol>
 <div id="866fce07-59b4-4a44-a614-48acdafd8b76" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>

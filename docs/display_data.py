@@ -59,6 +59,32 @@ def plot_fit_and_forecast(path: str, column: str, display_weeks: int) -> None:
     plt.tight_layout()
     plt.legend()
 
+def plot_predictions(path: str, column: str, display_weeks: int) -> None:
+    predicted_data = pd.read_csv(path, index_col='Date')
+    # modelling_data.index = pd.to_datetime(modelling_data.index).strftime('%Y-%m-%d')
+    predicted_data.index = pd.to_datetime(predicted_data.index, utc=True)
+    predicted_data.index = predicted_data.index.astype(str).map(lambda x: x[:10])
+
+    fig, ax = plt.subplots(figsize=(10, 5))
+    ax.plot(
+        predicted_data[column].tail(display_weeks),
+        label='real data + predictions'
+    )
+
+    ax.fill_between(
+        predicted_data.tail(display_weeks).index,
+        # modelling_data['arima_conf_int_lower'].tail(display_weeks),
+        # modelling_data['arima_conf_int_upper'].tail(display_weeks),
+        predicted_data['arima_log_conf_int_lower'].tail(display_weeks),
+        predicted_data['arima_log_conf_int_upper'].tail(display_weeks),
+        color='red',
+        alpha=0.3,
+        label='confidence interval'
+    )
+    plt.grid()
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.legend()
 
 # if __name__ == '__main__':
 #     print('start')
