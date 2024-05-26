@@ -10,7 +10,7 @@ website:
         text: Home
       - projects.qmd
       - href: docs/arima_model.ipynb
-        text: Arima model
+        text: Arima Model
       - href: docs/arima_predictive_notebook.ipynb
         text: Arima Predictions
     tools:
