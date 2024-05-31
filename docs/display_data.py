@@ -87,7 +87,7 @@ def plot_predictions(path: str, column: str, display_weeks: int) -> None:
     plt.legend()
 
 # if __name__ == '__main__':
-#     print('start')
+
 #     plot_sample_data(path='arima_fitted_data.csv', column='Close')
 #     table_horizontal(path='arima_fitted_data.csv', column='Close', display_weeks=16)
 #     plot_fit_and_forecast(path='arima_fitted_data.csv', column='Close', display_weeks=16)
