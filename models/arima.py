@@ -1,6 +1,7 @@
 # Third-party library imports
 import numpy as np
 import pandas as pd
+from itertools import product
 from statsmodels.tsa.arima.model import ARIMA
 
 # Local application imports
@@ -27,6 +28,7 @@ class Arima:
             column: str,
             years: float,
             update_data: bool,
+            train_models: bool,
     ):
         """
         Initializes the Arima object with configuration parameters.
@@ -52,6 +54,7 @@ class Arima:
         self.log_column = f"log_{column}"
         self.years = years
         self.update_data = update_data
+        self.train_flag = train_models
         self.ticker_values = pd.DataFrame
         self.modelling_data = pd.DataFrame
         self.future_weeks = pd.DataFrame
@@ -179,6 +182,56 @@ class Arima:
 
         self.arima_training_model = ARIMA(self.train[self.column], order=self.order)
         self.arima_training_log_model = ARIMA(self.train[self.log_column], order=self.order)
+
+    def rmse(self, y_true, y_pred):
+        """
+        Calculates the Root Mean Squared Error (RMSE) between two NumPy arrays.
+
+        Args:
+            y_true (np.ndarray): The ground truth values.
+            y_pred (np.ndarray): The predicted values.
+
+        Returns:
+            float: The RMSE value.
+        """
+
+        # Calculate squared errors
+        squared_errors = np.square(y_true - y_pred)
+
+        # Mean of squared errors
+        mean_squared_error = np.mean(squared_errors)
+
+        # Take the square root
+        rmse = np.sqrt(mean_squared_error)
+
+        return rmse
+
+    def train_best_order(self) -> None:
+        """
+        Defines ARIMA models for both the original data and the log-transformed data.
+
+        Initializes `arima_model` and `arima_log_model` attributes using the specified ARIMA order.
+        """
+
+        best_loss = None
+
+        for order in product(range(27), range(3), range(3)):
+            print(order)
+            arima_training_log_model = ARIMA(self.train[self.log_column], order=order)
+            arima_training_log_result = arima_training_log_model.fit()
+            prediction_result = arima_training_log_result.get_forecast(self.test_weeks)
+            forecast = prediction_result.predicted_mean
+            loss = self.rmse(self.test['log_Close'], forecast)
+            best_loss = None
+            best_order = None
+            if not best_loss:
+                best_order = order
+                best_loss = loss
+            if loss < best_loss:
+                best_order = order
+                best_loss = loss
+
+        self.order = best_order
 
     def define_predictive_models(self) -> None:
         """
@@ -384,6 +437,8 @@ class Arima:
         """
 
         self.run_preprocess()
+        if self.train_flag:
+            self.train_best_order()
         self.run_modelling()
         self.save_data()
 
@@ -401,6 +456,7 @@ if __name__ == '__main__':
     update_data = config['config']['update_data']
     freq = config['config']['freq']
     order = tuple(config['config']['order'])
+    train_models = config['config']['train_models']
 
     arima = Arima(
         ticker=ticker,
@@ -411,7 +467,8 @@ if __name__ == '__main__':
         freq=freq,
         column=column,
         years=years,
-        update_data=update_data
+        update_data=update_data,
+        train_models=train_models,
     )
 
     arima.run_pipeline()

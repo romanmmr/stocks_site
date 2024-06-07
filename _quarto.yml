@@ -8,16 +8,31 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - projects.qmd
+      - href: projects.qmd
+        text: Models & Predictions
       - href: docs/arima_model.ipynb
         text: Arima Model
       - href: docs/arima_predictive_notebook.ipynb
         text: Arima Predictions
+    right:
+      - text: "Models"
+        menu:
+          - docs/arima_model.ipynb
+          - docs/arima_predictive_notebook.ipynb
     tools:
-      - icon: twitter
-        href: https://twitter.com/
+#      - icon: twitter
+#        href: https://twitter.com/
       - icon: github
         href: https://github.com/romanmmr/stocks_site
+  # Comment following section to render index ALWAYS FIRST! - Uncomment following section to render rest
+  sidebar:
+    style: "docked"
+    search: True
+    contents:
+      - section: "Arima"
+        contents:
+          - docs/arima_model.ipynb
+          - docs/arima_predictive_notebook.ipynb
   page-footer:
     right: "Built with [Quarto](https://quarto.org/)"
     left: "&copy; Copyright 2023, Rodrigo Roman"

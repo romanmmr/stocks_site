@@ -1,8 +1,8 @@
 ---
-title: "Projects"
+title: "Models & Predictions"
 ---
 
-## Project 1
+## Arima
 
 ## Project 2
 

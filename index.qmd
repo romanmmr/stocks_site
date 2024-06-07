@@ -1,19 +1,29 @@
 ---
-title: "About Me"
+title: "TIME SERIES"
 about:
   id: me
   template: broadside
-  image: img/profile.png
+  image: img/stock_1.jpg
 ---
 
 :::{#me}
 
-## Goals
+## Mission
 
-## Education
+The purpose of this site is to offer an analysis on different time series techniques.
 
-## Experience
+Some techniques are more advance than other, and more will be added to the site in the future, so **stay tuned!**
+
+## IMPORTANT!
+
+This site is not meant fulfill any type of financial advice.
+
+Please be cautious regarding the conclusions extracted, again:
+
+PLEASE DON'T TAKE THIS AS FINANCIAL ADVICE!!
+
+Image generated with DALL-E 3
 
 :::
 
-Thanks for checking out my web site!
+WELCOME **TIME SERIES** ENTHUSIASTS!
