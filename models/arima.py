@@ -180,7 +180,7 @@ class Arima:
         Initializes `arima_model` and `arima_log_model` attributes using the specified ARIMA order.
         """
 
-        self.arima_training_model = ARIMA(self.train[self.column], order=self.order)
+        # self.arima_training_model = ARIMA(self.train[self.column], order=self.order)
         self.arima_training_log_model = ARIMA(self.train[self.log_column], order=self.order)
 
     def rmse(self, y_true, y_pred):
@@ -206,7 +206,7 @@ class Arima:
 
         return rmse
 
-    def train_best_order(self) -> None:
+    def train_arima_best_order(self) -> None:
         """
         Defines ARIMA models for both the original data and the log-transformed data.
 
@@ -215,13 +215,13 @@ class Arima:
 
         best_loss = None
 
-        for order in product(range(27), range(3), range(3)):
+        for order in product(range(27), range(3), range(11)):
             print(order)
             arima_training_log_model = ARIMA(self.train[self.log_column], order=order)
             arima_training_log_result = arima_training_log_model.fit()
             prediction_result = arima_training_log_result.get_forecast(self.test_weeks)
             forecast = prediction_result.predicted_mean
-            loss = self.rmse(self.test['log_Close'], forecast)
+            loss = self.rmse(self.test[self.log_column], forecast)
             best_loss = None
             best_order = None
             if not best_loss:
@@ -233,17 +233,17 @@ class Arima:
 
         self.order = best_order
 
-    def define_predictive_models(self) -> None:
+    def define_arima_predictive_models(self) -> None:
         """
         Defines ARIMA models for both the original data and the log-transformed data.
 
         Initializes `arima_model` and `arima_log_model` attributes using the specified ARIMA order.
         """
 
-        self.arima_predictive_model = ARIMA(self.modelling_data[self.column], order=self.order)
+        # self.arima_predictive_model = ARIMA(self.modelling_data[self.column], order=self.order)
         self.arima_predictive_log_model = ARIMA(self.modelling_data[self.log_column], order=self.order)
 
-    def fit_training_models(self) -> None:
+    def fit_arima_training_models(self) -> None:
         """
         Fits the ARIMA models to the training data.
 
@@ -251,10 +251,10 @@ class Arima:
         Stores the fitted models in `arima_result` and `arima_log_result` attributes.
         """
 
-        self.arima_training_result = self.arima_training_model.fit()
+        # self.arima_training_result = self.arima_training_model.fit()
         self.arima_training_log_result = self.arima_training_log_model.fit()
 
-    def fit_predictive_models(self) -> None:
+    def fit_arima_predictive_models(self) -> None:
         """
         Fits the ARIMA models to the training data.
 
@@ -262,7 +262,7 @@ class Arima:
         Stores the fitted models in `arima_result` and `arima_log_result` attributes.
         """
 
-        self.arima_predictive_result = self.arima_predictive_model.fit()
+        # self.arima_predictive_result = self.arima_predictive_model.fit()
         self.arima_predictive_log_result = self.arima_predictive_log_model.fit()
 
     def test_arima_models(self) -> None:
@@ -275,20 +275,20 @@ class Arima:
             - Calculates confidence intervals for the forecasts on the test data and populates the 'arima_conf_int_lower' and 'arima_conf_int_upper' columns.
         """
 
-        # Get predictions for training data for arima model and populate modelling_data dataframe
-        self.modelling_data.loc[self.train_index, 'arima_output'] = self.arima_training_result.predict(
-            start=self.train.index[0],
-            end=self.train.index[-1]
-        )
-        # Get predictions for testing data for arima model and populate modelling_data dataframe
-        prediction_result = self.arima_training_result.get_forecast(self.test_weeks)
-        forecast = prediction_result.predicted_mean
-        self.modelling_data.loc[self.test_index, 'arima_output'] = forecast
-        # Get confident intervals for arima model and populate modelling_data dataframe
-        conf_int = prediction_result.conf_int()
-        lower, upper = conf_int[f"lower {self.column}"], conf_int[f"upper {self.column}"]
-        self.modelling_data.loc[self.test_index, 'arima_conf_int_lower'] = lower
-        self.modelling_data.loc[self.test_index, 'arima_conf_int_upper'] = upper
+        # # Get predictions for training data for arima model and populate modelling_data dataframe
+        # self.modelling_data.loc[self.train_index, 'arima_output'] = self.arima_training_result.predict(
+        #     start=self.train.index[0],
+        #     end=self.train.index[-1]
+        # )
+        # # Get predictions for testing data for arima model and populate modelling_data dataframe
+        # prediction_result = self.arima_training_result.get_forecast(self.test_weeks)
+        # forecast = prediction_result.predicted_mean
+        # self.modelling_data.loc[self.test_index, 'arima_output'] = forecast
+        # # Get confident intervals for arima model and populate modelling_data dataframe
+        # conf_int = prediction_result.conf_int()
+        # lower, upper = conf_int[f"lower {self.column}"], conf_int[f"upper {self.column}"]
+        # self.modelling_data.loc[self.test_index, 'arima_conf_int_lower'] = lower
+        # self.modelling_data.loc[self.test_index, 'arima_conf_int_upper'] = upper
 
 
         # Get predictions for training data for arima log model and populate modelling_data dataframe
@@ -306,7 +306,7 @@ class Arima:
         self.modelling_data.loc[self.test_index, 'arima_log_conf_int_lower'] = log_lower
         self.modelling_data.loc[self.test_index, 'arima_log_conf_int_upper'] = log_upper
 
-    def get_real_predictions(self) -> None:
+    def get_arima_real_predictions(self) -> None:
         """
         Tests the fitted ARIMA models on the hold-out test data.
 
@@ -316,20 +316,20 @@ class Arima:
             - Calculates confidence intervals for the forecasts on the test data and populates the 'arima_conf_int_lower' and 'arima_conf_int_upper' columns.
         """
 
-        # Get predictions for training data for arima model and populate modelling_data dataframe
-        self.future_weeks.loc[self.existing_dates, 'arima_output'] = self.arima_predictive_result.predict(
-            start=self.modelling_data.index[0],
-            end=self.modelling_data.index[-1]
-        )
-        # Get predictions for testing data for arima model and populate modelling_data dataframe
-        prediction_result = self.arima_predictive_result.get_forecast(self.test_weeks)
-        forecast = prediction_result.predicted_mean
-        self.future_weeks.loc[self.future_weeks.index[-self.test_weeks:], 'arima_output'] = forecast
-        # Get confident intervals for arima model and populate modelling_data dataframe
-        conf_int = prediction_result.conf_int()
-        lower, upper = conf_int[f"lower {self.column}"], conf_int[f"upper {self.column}"]
-        self.future_weeks.loc[self.future_weeks.index[-self.test_weeks:], 'arima_conf_int_lower'] = lower
-        self.future_weeks.loc[self.future_weeks.index[-self.test_weeks:], 'arima_conf_int_upper'] = upper
+        # # Get predictions for training data for arima model and populate modelling_data dataframe
+        # self.future_weeks.loc[self.existing_dates, 'arima_output'] = self.arima_predictive_result.predict(
+        #     start=self.modelling_data.index[0],
+        #     end=self.modelling_data.index[-1]
+        # )
+        # # Get predictions for testing data for arima model and populate modelling_data dataframe
+        # prediction_result = self.arima_predictive_result.get_forecast(self.test_weeks)
+        # forecast = prediction_result.predicted_mean
+        # self.future_weeks.loc[self.future_weeks.index[-self.test_weeks:], 'arima_output'] = forecast
+        # # Get confident intervals for arima model and populate modelling_data dataframe
+        # conf_int = prediction_result.conf_int()
+        # lower, upper = conf_int[f"lower {self.column}"], conf_int[f"upper {self.column}"]
+        # self.future_weeks.loc[self.future_weeks.index[-self.test_weeks:], 'arima_conf_int_lower'] = lower
+        # self.future_weeks.loc[self.future_weeks.index[-self.test_weeks:], 'arima_conf_int_upper'] = upper
 
 
         # Get predictions for training data for arima log model and populate modelling_data dataframe
@@ -416,11 +416,11 @@ class Arima:
         """
 
         self.define_training_models()
-        self.define_predictive_models()
-        self.fit_training_models()
-        self.fit_predictive_models()
+        self.define_arima_predictive_models()
+        self.fit_arima_training_models()
+        self.fit_arima_predictive_models()
         self.test_arima_models()
-        self.get_real_predictions()
+        self.get_arima_real_predictions()
         self.get_training_log_cols()
         self.get_predictive_log_cols()
         self.reverse_training_logs()
@@ -438,7 +438,7 @@ class Arima:
 
         self.run_preprocess()
         if self.train_flag:
-            self.train_best_order()
+            self.train_arima_best_order()
         self.run_modelling()
         self.save_data()
 
