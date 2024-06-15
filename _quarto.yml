@@ -14,17 +14,24 @@ website:
         text: Arima Model
       - href: docs/arima_predictive_notebook.ipynb
         text: Arima Predictions
+      - href: docs/nn_model.ipynb
+        text: Deep Neural Network Model
+      - href: docs/nn_model_predictive_notebook.ipynb
+        text: Deep Neural Network Predictions
     right:
       - text: "Models"
         menu:
           - docs/arima_model.ipynb
           - docs/arima_predictive_notebook.ipynb
+          - docs/nn_model.ipynb
+          - docs/nn_model_predictive_notebook.ipynb
     tools:
 #      - icon: twitter
 #        href: https://twitter.com/
       - icon: github
         href: https://github.com/romanmmr/stocks_site
-  # Comment following section to render index ALWAYS FIRST! - Uncomment following section to render rest
+  # Comment following section (sidebar) to render index (quarto render index.qmd) ALWAYS FIRST! -
+  # Uncomment following section to render rest (quarto render projects.qmd, quarto render docs/arima_model.ipynb, ...)
   sidebar:
     style: "docked"
     search: True
@@ -33,6 +40,10 @@ website:
         contents:
           - docs/arima_model.ipynb
           - docs/arima_predictive_notebook.ipynb
+      - section: "Neural Network"
+        contents:
+          - docs/nn_model.ipynb
+          - docs/nn_model_predictive_notebook.ipynb
   page-footer:
     right: "Built with [Quarto](https://quarto.org/)"
     left: "&copy; Copyright 2023, Rodrigo Roman"

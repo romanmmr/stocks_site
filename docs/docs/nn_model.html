@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>STOCKS WEBSITE - Arima Model</title>
+<title>STOCKS WEBSITE - Neural Network Model</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -185,7 +185,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/arima_model.html">Arima</a></li><li class="breadcrumb-item"><a href="../docs/arima_model.html">Arima Model</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/nn_model.html">Neural Network</a></li><li class="breadcrumb-item"><a href="../docs/nn_model.html">Neural Network Model</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -216,7 +216,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../docs/arima_model.html" class="sidebar-item-text sidebar-link active">
+  <a href="../docs/arima_model.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Arima Model</span></a>
   </div>
 </li>
@@ -239,7 +239,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../docs/nn_model.html" class="sidebar-item-text sidebar-link">
+  <a href="../docs/nn_model.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Neural Network Model</span></a>
   </div>
 </li>
@@ -264,15 +264,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#latest-stock-values-for-analysis" id="toc-latest-stock-values-for-analysis" class="nav-link active" data-scroll-target="#latest-stock-values-for-analysis">Latest stock values for analysis</a></li>
   <li><a href="#test-over-last-8-weeks" id="toc-test-over-last-8-weeks" class="nav-link" data-scroll-target="#test-over-last-8-weeks">Test over last 8 weeks</a></li>
   <li><a href="#plot-real-vales-vs-model-output-and-confidence-intervals" id="toc-plot-real-vales-vs-model-output-and-confidence-intervals" class="nav-link" data-scroll-target="#plot-real-vales-vs-model-output-and-confidence-intervals">Plot real vales vs model output and confidence intervals</a></li>
+  <li><a href="#further-details-on-the-model" id="toc-further-details-on-the-model" class="nav-link" data-scroll-target="#further-details-on-the-model">Further details on the model</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/arima_model.html">Arima</a></li><li class="breadcrumb-item"><a href="../docs/arima_model.html">Arima Model</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../docs/nn_model.html">Neural Network</a></li><li class="breadcrumb-item"><a href="../docs/nn_model.html">Neural Network Model</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Arima Model</h1>
+<h1 class="title">Neural Network Model</h1>
 </div>
 
 
@@ -294,7 +295,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> display_data <span class="im">import</span> plot_fit_and_forecast, table_horizontal, plot_sample_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> display_data <span class="im">import</span> plot_fit_and_forecast, table_horizontal, plot_sample_data, plot_nn_loss</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <section id="latest-stock-values-for-analysis" class="level2">
@@ -442,15 +443,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="plot-real-vales-vs-model-output-and-confidence-intervals" class="level2">
 <h2 class="anchored" data-anchor-id="plot-real-vales-vs-model-output-and-confidence-intervals">Plot real vales vs model output and confidence intervals</h2>
 <p>This is a plot of the real values (in blue) and the model output (in green) and the confident intervals (in red)</p>
-<div id="2d680db0-67dd-43b9-b1c1-6e9df46f342e" class="cell" data-execution_count="4">
+<div id="e677853f-f29c-4637-b726-c71f1d9feda1" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>plot_fit_and_forecast(path<span class="op">=</span><span class="st">'modelled_fitted_data.csv'</span>, column<span class="op">=</span><span class="st">'Close'</span>, model<span class="op">=</span><span class="st">'arima'</span>,  display_weeks<span class="op">=</span><span class="dv">16</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>plot_fit_and_forecast(path<span class="op">=</span><span class="st">'modelled_fitted_data.csv'</span>, column<span class="op">=</span><span class="st">'Close'</span>, model<span class="op">=</span><span class="st">'nn_model'</span>,  display_weeks<span class="op">=</span><span class="dv">16</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="arima_model_files/figure-html/cell-5-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="nn_model_files/figure-html/cell-5-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="further-details-on-the-model" class="level2">
+<h2 class="anchored" data-anchor-id="further-details-on-the-model">Further details on the model</h2>
+<p>This is a plot of training loss - mae (in blue) and validation loss - mae (in red) with epochs</p>
+<div id="806c839f-40a7-43a1-90f2-7d18f631c4de" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>plot_nn_loss(path<span class="op">=</span><span class="st">'nn_checkpoint/history.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="nn_model_files/figure-html/cell-6-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
