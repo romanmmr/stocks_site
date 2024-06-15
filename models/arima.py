@@ -1,8 +1,13 @@
 # Third-party library imports
+import os
+import random
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 from itertools import product
 from statsmodels.tsa.arima.model import ARIMA
+from sklearn.preprocessing import StandardScaler
+import tensorflow as tf
 
 # Local application imports
 from settings.settings import load_config
@@ -28,7 +33,13 @@ class Arima:
             column: str,
             years: float,
             update_data: bool,
-            train_models: bool,
+            train_arima: bool,
+            train_nn: bool,
+            weeks_nn: int,
+            alfa_ci: float,
+            order_gridsearch: list,
+            neurons_nn: list,
+            regularization_nn: float,
     ):
         """
         Initializes the Arima object with configuration parameters.
@@ -51,10 +62,15 @@ class Arima:
         self.test_weeks = test_weeks
         self.freq = freq
         self.column = column
-        self.log_column = f"log_{column}"
         self.years = years
         self.update_data = update_data
-        self.train_flag = train_models
+        self.train_arima = train_arima
+        self.train_nn = train_nn
+        self.weeks_nn = weeks_nn
+        self.alfa_ci = alfa_ci
+        self.order_gridsearch = order_gridsearch
+        self.neurons_nn = neurons_nn
+        self.regularization_nn = regularization_nn
         self.ticker_values = pd.DataFrame
         self.modelling_data = pd.DataFrame
         self.future_weeks = pd.DataFrame
@@ -77,6 +93,24 @@ class Arima:
         self.not_log_training_cols = None
         self.log_predictive_cols = None
         self.not_log_predictive_cols = None
+        self.X_train_nn = None
+        self.Y_train_nn = None
+        self.X_test_nn = None
+        self.Y_test_nn = None
+        self.nn_model = None
+        self.scaler = None
+        self.nn_model_ci = None
+        self.history_nn_model = None
+        self.model_checkpoint_path = 'nn_checkpoint/best_model.weights.h5'
+        self.model_history_path = 'nn_checkpoint/history.csv'
+        self.nn_model_name = 'nn_model'
+        self.arima_model_name = 'arima'
+        self.model_names = [self.arima_model_name, self.nn_model_name]
+        self.log_column = f"log_{column}_{self.arima_model_name}"
+        self.diff_log_column = f"diff_log_{column}_{self.nn_model_name}"
+        self.scaled_diff_log_column = f"scaled_diff_log_{column}_{self.nn_model_name}"
+        self.relative_path_to_modelling_data = 'docs/modelled_fitted_data.csv'
+        self.relative_path_to_predictive_data = 'docs/predictive_data.csv'
 
     def load_values(self) -> None:
         """
@@ -102,7 +136,11 @@ class Arima:
         and assigns it to the `modelling_data` attribute.
         """
 
-        self.modelling_data = self.ticker_values[self.column][-52*self.years:].copy(deep=True).to_frame()
+        self.modelling_data = self.ticker_values[self.column][int(-52*self.years):].copy(deep=True).to_frame()
+
+    def copy_target_columns_for_modelling(self) -> None:
+        for model in self.model_names:
+            self.modelling_data[f"{self.column}_{model}"] = self.modelling_data[self.column].copy()
 
     def get_log_column(self) -> None:
         """
@@ -111,7 +149,21 @@ class Arima:
         Adds the log-transformed column to the `modelling_data` DataFrame.
         """
 
-        self.modelling_data[self.log_column] = np.log(self.modelling_data[self.column])
+        self.modelling_data[self.log_column] = np.log(self.modelling_data[f"{self.column}_{self.arima_model_name}"])
+
+    def get_diff_log_column(self) -> None:
+        """
+        Creates a new column named 'diff_{log_column}' containing the differenced natural log of the data.
+
+        Adds the diff-log-transformed column to the `modelling_data` DataFrame.
+        """
+        self.modelling_data[self.diff_log_column] = self.modelling_data[self.log_column].diff()
+
+    def get_scaled_diff_log_column(self) -> None:
+        self.scaler = StandardScaler()
+        self.modelling_data[self.scaled_diff_log_column] = self.scaler.fit_transform(
+            self.modelling_data[[self.diff_log_column]]
+        ).flatten()
 
     def define_freq(self) -> None:
         """
@@ -135,6 +187,27 @@ class Arima:
 
         self.train_index = self.modelling_data.index <= self.train.index[-1]
         self.test_index = self.modelling_data.index > self.train.index[-1]
+
+    def create_nn_dataset(self):
+        series = self.modelling_data[self.scaled_diff_log_column].dropna().to_numpy()
+
+        T = self.weeks_nn
+        X = []
+        Y = []
+        for t in range(len(series) - T):
+            x = series[t:t + T]
+            X.append(x)
+            y = series[t + T]
+            Y.append(y)
+
+        X = np.array(X).reshape(-1, T)
+        Y = np.array(Y)
+
+        self.X_train_nn, self.Y_train_nn = X[:-self.test_weeks], Y[:-self.test_weeks]
+        self.X_test_nn, self.Y_test_nn = X[-self.test_weeks:], Y[-self.test_weeks:]
+
+        # print(f"X_train_nn shape: {self.X_train_nn.shape} --- Y_train_nn shape: {self.Y_train_nn.shape}")
+        # print(f"X_test_nn shape: {self.X_test_nn.shape} --- Y_test_nn shape: {self.Y_test_nn.shape}")
 
     def get_future_weeks(self):
         self.future_weeks = self.modelling_data.copy(deep=True)
@@ -168,19 +241,60 @@ class Arima:
 
         self.load_values()
         self.get_modelling_data()
+        self.copy_target_columns_for_modelling()
         self.get_log_column()
+        self.get_diff_log_column()
+        self.get_scaled_diff_log_column()
         self.define_freq()
         self.define_train_test()
+        self.create_nn_dataset()
         self.get_future_weeks()
 
-    def define_training_models(self) -> None:
+    def train_arima_best_order(self) -> None:
         """
         Defines ARIMA models for both the original data and the log-transformed data.
 
         Initializes `arima_model` and `arima_log_model` attributes using the specified ARIMA order.
         """
 
-        self.arima_training_model = ARIMA(self.train[self.column], order=self.order)
+        best_loss = None
+        best_order = None
+
+        for index, order in enumerate(product(
+                range(self.order_gridsearch[0][0], self.order_gridsearch[0][1]),
+                range(self.order_gridsearch[1][0], self.order_gridsearch[1][1]),
+                range(self.order_gridsearch[2][0], self.order_gridsearch[2][1])
+        )):
+        # for order in product(
+        #         range(self.order_gridsearch[0]), range(self.order_gridsearch[1]), range(self.order_gridsearch[2])
+        # ):
+        # for order in product(range(27), range(3), range(11)):
+            print(order)
+            arima_training_log_model = ARIMA(self.train[self.log_column], order=order)
+            arima_training_log_result = arima_training_log_model.fit()
+            prediction_result = arima_training_log_result.get_forecast(self.test_weeks)
+            forecast = prediction_result.predicted_mean
+            loss = self.rmse(self.test[self.log_column], forecast)
+            # best_loss = None
+            # best_order = None
+            if index == 0:
+                best_order = order
+                best_loss = loss
+            if loss < best_loss:
+                best_order = order
+                best_loss = loss
+
+        print(f"Best order: {best_order}")
+        self.order = best_order
+
+    def define_arima_training_models(self) -> None:
+        """
+        Defines ARIMA models for both the original data and the log-transformed data.
+
+        Initializes `arima_model` and `arima_log_model` attributes using the specified ARIMA order.
+        """
+
+        # self.arima_training_model = ARIMA(self.train[self.column], order=self.order)
         self.arima_training_log_model = ARIMA(self.train[self.log_column], order=self.order)
 
     def rmse(self, y_true, y_pred):
@@ -206,44 +320,17 @@ class Arima:
 
         return rmse
 
-    def train_best_order(self) -> None:
+    def define_arima_predictive_models(self) -> None:
         """
         Defines ARIMA models for both the original data and the log-transformed data.
 
         Initializes `arima_model` and `arima_log_model` attributes using the specified ARIMA order.
         """
 
-        best_loss = None
-
-        for order in product(range(27), range(3), range(3)):
-            print(order)
-            arima_training_log_model = ARIMA(self.train[self.log_column], order=order)
-            arima_training_log_result = arima_training_log_model.fit()
-            prediction_result = arima_training_log_result.get_forecast(self.test_weeks)
-            forecast = prediction_result.predicted_mean
-            loss = self.rmse(self.test['log_Close'], forecast)
-            best_loss = None
-            best_order = None
-            if not best_loss:
-                best_order = order
-                best_loss = loss
-            if loss < best_loss:
-                best_order = order
-                best_loss = loss
-
-        self.order = best_order
-
-    def define_predictive_models(self) -> None:
-        """
-        Defines ARIMA models for both the original data and the log-transformed data.
-
-        Initializes `arima_model` and `arima_log_model` attributes using the specified ARIMA order.
-        """
-
-        self.arima_predictive_model = ARIMA(self.modelling_data[self.column], order=self.order)
+        # self.arima_predictive_model = ARIMA(self.modelling_data[self.column], order=self.order)
         self.arima_predictive_log_model = ARIMA(self.modelling_data[self.log_column], order=self.order)
 
-    def fit_training_models(self) -> None:
+    def fit_arima_training_models(self) -> None:
         """
         Fits the ARIMA models to the training data.
 
@@ -251,10 +338,10 @@ class Arima:
         Stores the fitted models in `arima_result` and `arima_log_result` attributes.
         """
 
-        self.arima_training_result = self.arima_training_model.fit()
+        # self.arima_training_result = self.arima_training_model.fit()
         self.arima_training_log_result = self.arima_training_log_model.fit()
 
-    def fit_predictive_models(self) -> None:
+    def fit_arima_predictive_models(self) -> None:
         """
         Fits the ARIMA models to the training data.
 
@@ -262,7 +349,7 @@ class Arima:
         Stores the fitted models in `arima_result` and `arima_log_result` attributes.
         """
 
-        self.arima_predictive_result = self.arima_predictive_model.fit()
+        # self.arima_predictive_result = self.arima_predictive_model.fit()
         self.arima_predictive_log_result = self.arima_predictive_log_model.fit()
 
     def test_arima_models(self) -> None:
@@ -275,38 +362,38 @@ class Arima:
             - Calculates confidence intervals for the forecasts on the test data and populates the 'arima_conf_int_lower' and 'arima_conf_int_upper' columns.
         """
 
-        # Get predictions for training data for arima model and populate modelling_data dataframe
-        self.modelling_data.loc[self.train_index, 'arima_output'] = self.arima_training_result.predict(
-            start=self.train.index[0],
-            end=self.train.index[-1]
-        )
-        # Get predictions for testing data for arima model and populate modelling_data dataframe
-        prediction_result = self.arima_training_result.get_forecast(self.test_weeks)
-        forecast = prediction_result.predicted_mean
-        self.modelling_data.loc[self.test_index, 'arima_output'] = forecast
-        # Get confident intervals for arima model and populate modelling_data dataframe
-        conf_int = prediction_result.conf_int()
-        lower, upper = conf_int[f"lower {self.column}"], conf_int[f"upper {self.column}"]
-        self.modelling_data.loc[self.test_index, 'arima_conf_int_lower'] = lower
-        self.modelling_data.loc[self.test_index, 'arima_conf_int_upper'] = upper
+        # # Get predictions for training data for arima model and populate modelling_data dataframe
+        # self.modelling_data.loc[self.train_index, 'arima_output'] = self.arima_training_result.predict(
+        #     start=self.train.index[0],
+        #     end=self.train.index[-1]
+        # )
+        # # Get predictions for testing data for arima model and populate modelling_data dataframe
+        # prediction_result = self.arima_training_result.get_forecast(self.test_weeks)
+        # forecast = prediction_result.predicted_mean
+        # self.modelling_data.loc[self.test_index, 'arima_output'] = forecast
+        # # Get confident intervals for arima model and populate modelling_data dataframe
+        # conf_int = prediction_result.conf_int()
+        # lower, upper = conf_int[f"lower {self.column}"], conf_int[f"upper {self.column}"]
+        # self.modelling_data.loc[self.test_index, 'arima_conf_int_lower'] = lower
+        # self.modelling_data.loc[self.test_index, 'arima_conf_int_upper'] = upper
 
 
         # Get predictions for training data for arima log model and populate modelling_data dataframe
-        self.modelling_data.loc[self.train_index, 'arima_log_output'] = self.arima_training_log_result.predict(
-            start=self.train.index[0],
-            end=self.train.index[-1]
-        )
+        self.modelling_data.loc[
+            self.train_index, f"{self.arima_model_name}_output"
+        ] = np.exp(self.arima_training_log_result.predict(start=self.train.index[0], end=self.train.index[-1]))
         # Get predictions for testing data for arima log model and populate modelling_data dataframe
         log_prediction_result = self.arima_training_log_result.get_forecast(self.test_weeks)
         log_forecast = log_prediction_result.predicted_mean
-        self.modelling_data.loc[self.test_index, 'arima_log_output'] = log_forecast
+        self.modelling_data.loc[self.test_index, f"{self.arima_model_name}_output"] = np.exp(log_forecast)
         # Get confident intervals for arima log model and populate modelling_data dataframe
         log_conf_int = log_prediction_result.conf_int()
-        log_lower, log_upper = log_conf_int[f"lower {self.log_column}"], log_conf_int[f"upper {self.log_column}"]
-        self.modelling_data.loc[self.test_index, 'arima_log_conf_int_lower'] = log_lower
-        self.modelling_data.loc[self.test_index, 'arima_log_conf_int_upper'] = log_upper
+        lower = np.exp(log_conf_int[f"lower {self.log_column}"])
+        upper = np.exp(log_conf_int[f"upper {self.log_column}"])
+        self.modelling_data.loc[self.test_index, f"{self.arima_model_name}_conf_int_lower"] = lower
+        self.modelling_data.loc[self.test_index, f"{self.arima_model_name}_conf_int_upper"] = upper
 
-    def get_real_predictions(self) -> None:
+    def get_arima_real_predictions(self) -> None:
         """
         Tests the fitted ARIMA models on the hold-out test data.
 
@@ -316,43 +403,311 @@ class Arima:
             - Calculates confidence intervals for the forecasts on the test data and populates the 'arima_conf_int_lower' and 'arima_conf_int_upper' columns.
         """
 
-        # Get predictions for training data for arima model and populate modelling_data dataframe
-        self.future_weeks.loc[self.existing_dates, 'arima_output'] = self.arima_predictive_result.predict(
-            start=self.modelling_data.index[0],
-            end=self.modelling_data.index[-1]
-        )
-        # Get predictions for testing data for arima model and populate modelling_data dataframe
-        prediction_result = self.arima_predictive_result.get_forecast(self.test_weeks)
-        forecast = prediction_result.predicted_mean
-        self.future_weeks.loc[self.future_weeks.index[-self.test_weeks:], 'arima_output'] = forecast
-        # Get confident intervals for arima model and populate modelling_data dataframe
-        conf_int = prediction_result.conf_int()
-        lower, upper = conf_int[f"lower {self.column}"], conf_int[f"upper {self.column}"]
-        self.future_weeks.loc[self.future_weeks.index[-self.test_weeks:], 'arima_conf_int_lower'] = lower
-        self.future_weeks.loc[self.future_weeks.index[-self.test_weeks:], 'arima_conf_int_upper'] = upper
+        # # Get predictions for training data for arima model and populate modelling_data dataframe
+        # self.future_weeks.loc[self.existing_dates, 'arima_output'] = self.arima_predictive_result.predict(
+        #     start=self.modelling_data.index[0],
+        #     end=self.modelling_data.index[-1]
+        # )
+        # # Get predictions for testing data for arima model and populate modelling_data dataframe
+        # prediction_result = self.arima_predictive_result.get_forecast(self.test_weeks)
+        # forecast = prediction_result.predicted_mean
+        # self.future_weeks.loc[self.future_weeks.index[-self.test_weeks:], 'arima_output'] = forecast
+        # # Get confident intervals for arima model and populate modelling_data dataframe
+        # conf_int = prediction_result.conf_int()
+        # lower, upper = conf_int[f"lower {self.column}"], conf_int[f"upper {self.column}"]
+        # self.future_weeks.loc[self.future_weeks.index[-self.test_weeks:], 'arima_conf_int_lower'] = lower
+        # self.future_weeks.loc[self.future_weeks.index[-self.test_weeks:], 'arima_conf_int_upper'] = upper
 
 
         # Get predictions for training data for arima log model and populate modelling_data dataframe
-        self.future_weeks.loc[self.modelling_data.index, 'arima_log_output'] = self.arima_predictive_log_result.predict(
-            start=self.modelling_data.index[0],
-            end=self.modelling_data.index[-1]
+        self.future_weeks.loc[
+            self.modelling_data.index, f"{self.arima_model_name}_output"
+        ] = np.exp(
+            self.arima_predictive_log_result.predict(
+                start=self.modelling_data.index[0], end=self.modelling_data.index[-1]
+            )
         )
+
         # Get predictions for testing data for arima log model and populate modelling_data dataframe
         log_prediction_result = self.arima_predictive_log_result.get_forecast(self.test_weeks)
         log_forecast = log_prediction_result.predicted_mean
-        self.future_weeks.loc[self.future_weeks.index[-self.test_weeks:], 'arima_log_output'] = log_forecast
-        self.future_weeks.loc[self.future_weeks.index[-self.test_weeks:], 'Close'] = np.exp(log_forecast)
+        self.future_weeks.loc[
+            self.future_weeks.index[-self.test_weeks:], f"{self.arima_model_name}_output"
+        ] = np.exp(log_forecast)
+        self.future_weeks.loc[
+            self.future_weeks.index[-self.test_weeks:], f"{self.column}_{self.arima_model_name}"
+        ] = np.exp(log_forecast)
         # Get confident intervals for arima log model and populate modelling_data dataframe
         log_conf_int = log_prediction_result.conf_int()
-        log_lower, log_upper = log_conf_int[f"lower {self.log_column}"], log_conf_int[f"upper {self.log_column}"]
-        self.future_weeks.loc[self.future_weeks.index[-self.test_weeks:], 'arima_log_conf_int_lower'] = log_lower
-        self.future_weeks.loc[self.future_weeks.index[-self.test_weeks:], 'arima_log_conf_int_upper'] = log_upper
+        lower = np.exp(log_conf_int[f"lower {self.log_column}"])
+        upper = np.exp(log_conf_int[f"upper {self.log_column}"])
+
+        self.future_weeks.loc[
+            self.future_weeks.index[-self.test_weeks:], f"{self.arima_model_name}_conf_int_lower"
+        ] = lower
+        self.future_weeks.loc[
+            self.future_weeks.index[-self.test_weeks:], f"{self.arima_model_name}_conf_int_upper"
+        ] = upper
+
+    def reset_random_seeds(self) -> None:
+        os.environ['PYTHONHASHSEED'] = str(0)
+        tf.random.set_seed(0)
+        np.random.seed(0)
+        random.seed(0)
+
+    def define_nn_training_models(self) -> None:
+        seed = 0
+        # neurons_1 = 50
+        # neurons_2 = 30
+        # neurons_3 = 15
+        # neurons_4 = 20
+        # regularization = 0.03
+
+        neurons_1 = self.neurons_nn[0]
+        neurons_2 = self.neurons_nn[1]
+        neurons_3 = self.neurons_nn[2]
+        neurons_4 = self.neurons_nn[3]
+        regularization = self.regularization_nn
+
+        # Define the input layer
+        inputs = tf.keras.Input(shape=(self.X_train_nn.shape[1],))
+
+        # Add the first hidden layer with L2 regularization
+        x = tf.keras.layers.Dense(
+            neurons_1, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(regularization)
+        )(inputs)
+
+        # Add Batch Normalization
+        x = tf.keras.layers.BatchNormalization()(x)
+
+        # Repeat for remaining hidden layers with L2 regularization
+        x = tf.keras.layers.Dense(
+            neurons_2, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(regularization)
+        )(x)
+        x = tf.keras.layers.BatchNormalization()(x)
+
+        x = tf.keras.layers.Dense(
+            neurons_3, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(regularization)
+        )(x)
+        x = tf.keras.layers.BatchNormalization()(x)
+
+        x = tf.keras.layers.Dense(
+            neurons_4, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(regularization)
+        )(x)
+        x = tf.keras.layers.BatchNormalization()(x)
+
+        # Output layer
+        outputs = tf.keras.layers.Dense(1)(x)
+
+        # Create the model
+        self.nn_model = tf.keras.Model(inputs=inputs, outputs=outputs)
+
+    def compile_and_fit_nn_models(self) -> None:
+        self.reset_random_seeds()
+        batch_size = 64
+        # epochs = 400
+        epochs = 1000
+        self.nn_model.compile(
+            #   loss='mse',
+            loss='mae',
+            #   loss = [tf.keras.metrics.RootMeanSquaredError()],
+            optimizer='adam',
+        )
+
+        checkpoint_filepath = os.path.join(os.getcwd(), self.model_checkpoint_path)
+        model_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
+            filepath=checkpoint_filepath,
+            save_weights_only=True,
+            # monitor='val_root_mean_squared_error',
+            monitor='val_loss',
+            mode='min',
+            save_best_only=True
+        )
+
+        self.history_nn_model = self.nn_model.fit(
+            self.X_train_nn,
+            self.Y_train_nn,
+            batch_size=batch_size,
+            epochs=epochs,
+            validation_data=(self.X_test_nn, self.Y_test_nn),
+            callbacks=[model_checkpoint_callback],
+            verbose=2
+        )
+
+        pd.DataFrame(self.history_nn_model.history).to_csv(self.model_history_path)
+
+        print(self.nn_model.evaluate(self.X_test_nn, self.Y_test_nn))
+
+        # plot_loss = self.history_nn_model.history['loss']
+        # plot_val_loss = self.history_nn_model.history['val_loss']
+        # plot_epochs = range(len(plot_loss))
+        #
+        # fig_mae = plt.figure(figsize=(10, 5))
+        # plt.plot(plot_epochs, plot_loss, 'b', label='Training loss (mae)')
+        # plt.plot(plot_epochs, plot_val_loss, 'r', label='Validation loss (mae)')
+        # plt.title('Training and Validation loss (mae)')
+        # plt.grid()
+        # plt.legend()
+
+    def load_nn_model_weights(self) -> None:
+        checkpoint_filepath = os.path.join(os.getcwd(), self.model_checkpoint_path)
+        self.nn_model.load_weights(checkpoint_filepath)
+
+        print(f"MAE: {self.nn_model.evaluate(self.X_test_nn, self.Y_test_nn)}")
+
+    def test_nn_models(self) -> None:
+
+        # first T+1 values are not predictable
+        train_idx_nn = self.train_index.copy()
+        train_idx_nn[:self.weeks_nn + 1] = False
+
+        Ptrain = self.scaler.inverse_transform(self.nn_model.predict(self.X_train_nn)).flatten()
+        # Ptest = self.scaler.inverse_transform(self.nn_model.predict(self.X_test_nn)).flatten()
+
+        prev = self.modelling_data[self.log_column].shift(1)
+
+        # Last-known train value
+        last_train = self.train.iloc[-1][self.log_column]
+
+        # multi-step forecast
+        multistep_predictions = []
+
+        # first test input
+        last_x = self.X_test_nn[0]
+
+        while len(multistep_predictions) < self.test_weeks:
+            p = self.nn_model.predict(last_x.reshape(1, -1))[0]
+
+            # update the predictions list
+            multistep_predictions.append(p)
+
+            # make the new input
+            last_x = np.roll(last_x, -1)
+            last_x[-1] = p
+
+        # unscale
+        multistep_predictions = np.array(multistep_predictions)
+        multistep_predictions = self.scaler.inverse_transform(multistep_predictions.reshape(-1, 1)).flatten()
+
+        # save multi-step forecast to dataframe
+        self.modelling_data.loc[train_idx_nn, f"{self.nn_model_name}_output"] = np.exp(prev[train_idx_nn] + Ptrain)
+        self.modelling_data.loc[
+            self.test_index, f"{self.nn_model_name}_output"
+        ] = np.exp(last_train + np.cumsum(multistep_predictions))
+
+        residuals = (self.modelling_data.loc[train_idx_nn, f"{self.column}_{self.nn_model_name}"] -
+                     self.modelling_data.loc[train_idx_nn, f"{self.nn_model_name}_output"])
+
+        self.nn_model_ci = np.quantile(residuals, 1 - self.alfa_ci)
+
+        ci_test_weeks = []
+
+        for index, interval in enumerate(self.modelling_data.loc[self.test_index, f"{self.nn_model_name}_output"]):
+            ci_test_weeks.append(self.nn_model_ci * (index + 1))
+
+        self.modelling_data.loc[
+            self.test_index, f"{self.nn_model_name}_conf_int_lower"
+        ] = self.modelling_data.loc[self.test_index, f"{self.nn_model_name}_output"] - ci_test_weeks
+
+        self.modelling_data.loc[
+            self.test_index, f"{self.nn_model_name}_conf_int_upper"
+        ] = self.modelling_data.loc[self.test_index, f"{self.nn_model_name}_output"] + ci_test_weeks
+
+        print('models done')
+
+        # plot 1-step and multi-step forecast
+        # self.modelling_data.iloc[-16:][['log_Close', 'multistep', '1step_test']].plot(figsize=(15, 5))
+
+    def get_nn_real_predictions(self) -> None:
+        # first T+1 values are not predictable
+        train_idx_nn = self.train_index.copy()
+        train_idx_nn[:self.weeks_nn + 1] = False
+
+        # Last-known train value
+        last_test = self.test.iloc[-1][self.log_column]
+
+        # multi-step forecast
+        multistep_predictions = []
+
+        # first test input
+        last_x = self.X_test_nn[-1]
+
+        while len(multistep_predictions) < self.test_weeks:
+            p = self.nn_model.predict(last_x.reshape(1, -1))[0]
+
+            # update the predictions list
+            multistep_predictions.append(p)
+
+            # make the new input
+            last_x = np.roll(last_x, -1)
+            last_x[-1] = p
+
+        # unscale
+        multistep_predictions = np.array(multistep_predictions)
+        multistep_predictions = self.scaler.inverse_transform(multistep_predictions.reshape(-1, 1)).flatten()
+
+        # save multi-step forecast to modelling dataframe
+        # self.modelling_data.loc[train_idx_nn, f"{self.nn_model_name}_output"] = np.exp(prev[train_idx_nn] + Ptrain)
+        # self.modelling_data.loc[
+        #     self.test_index, f"{self.nn_model_name}_output"
+        # ] = np.exp(last_train + np.cumsum(multistep_predictions))
+
+        # save multi-step forecast to future weeks dataframe
+        self.future_weeks.loc[
+            self.future_weeks.index[-self.test_weeks:], f"{self.column}_{self.nn_model_name}"
+        ] = np.exp(last_test + np.cumsum(multistep_predictions))
+
+        ci_test_weeks = []
+
+        for index, interval in enumerate(
+                self.future_weeks.loc[
+                    self.future_weeks.index[-self.test_weeks:], f"{self.column}_{self.nn_model_name}"
+                ]
+        ):
+            ci_test_weeks.append(self.nn_model_ci * (index + 1))
+
+
+        self.future_weeks.loc[
+            self.future_weeks.index[-self.test_weeks:], f"{self.nn_model_name}_conf_int_lower"
+        ] = self.future_weeks.loc[
+            self.future_weeks.index[-self.test_weeks:], f"{self.column}_{self.nn_model_name}"
+        ] - ci_test_weeks
+
+        self.future_weeks.loc[
+            self.future_weeks.index[-self.test_weeks:], f"{self.nn_model_name}_conf_int_upper"
+        ] = self.future_weeks.loc[
+            self.future_weeks.index[-self.test_weeks:], f"{self.column}_{self.nn_model_name}"
+        ] + ci_test_weeks
+
+        print('preds done')
+
+    def run_nn_model(self) -> None:
+        self.reset_random_seeds()
+        self.define_nn_training_models()
+        if self.train_nn:
+            self.compile_and_fit_nn_models()
+        # self.compile_and_fit_nn_models()
+        self.load_nn_model_weights()
+        self.test_nn_models()
+        self.get_nn_real_predictions()
+
+    def run_arima_model(self) -> None:
+
+        if self.train_arima:
+            self.train_arima_best_order()
+        self.define_arima_training_models()
+        self.define_arima_predictive_models()
+        self.fit_arima_training_models()
+        self.fit_arima_predictive_models()
+        self.test_arima_models()
+        self.get_arima_real_predictions()
 
     def get_training_log_cols(self) -> None:
         """
         Identifies columns containing log-transformed data in the modelling_data DataFrame.
 
-        - Creates a list named `log_cols` containing all column names with 'log' in them (indicating log-transformed data).
+        - Creates a list named `log_cols` containing all column names
+            with 'log' in them (indicating log-transformed data).
         - Creates a list named `not_log_cols` containing all remaining columns (original data).
         """
 
@@ -363,7 +718,8 @@ class Arima:
         """
         Identifies columns containing log-transformed data in the modelling_data DataFrame.
 
-        - Creates a list named `log_cols` containing all column names with 'log' in them (indicating log-transformed data).
+        - Creates a list named `log_cols` containing all column names
+            with 'log' in them (indicating log-transformed data).
         - Creates a list named `not_log_cols` containing all remaining columns (original data).
         """
 
@@ -392,16 +748,22 @@ class Arima:
         for column in self.log_predictive_cols:
             self.future_weeks[column] = np.exp(self.future_weeks[column])
 
+    def reverse_logs(self) -> None:
+        self.get_training_log_cols()
+        self.get_predictive_log_cols()
+        self.reverse_training_logs()
+        self.reverse_predictive_logs()
+
     def save_data(self) -> None:
         """
         Saves the modelling_data DataFrame to a CSV file for further analysis or visualization.
 
         Saves the `modelling_data` DataFrame containing the original data, log-transformed data,
-        predictions, and confidence intervals to a CSV file named 'docs/arima_fitted_data.csv' by default.
+        predictions, and confidence intervals to a CSV file named 'docs/modelled_fitted_data.csv' by default.
         """
 
-        self.modelling_data.to_csv('docs/arima_fitted_data.csv')
-        self.future_weeks.to_csv('docs/arima_predictive_data.csv')
+        self.modelling_data.to_csv(self.relative_path_to_modelling_data)
+        self.future_weeks.to_csv(self.relative_path_to_predictive_data)
 
     def run_modelling(self) -> None:
         """
@@ -415,16 +777,10 @@ class Arima:
             - `reverse_logs` to convert log-transformed predictions back to the original scale.
         """
 
-        self.define_training_models()
-        self.define_predictive_models()
-        self.fit_training_models()
-        self.fit_predictive_models()
-        self.test_arima_models()
-        self.get_real_predictions()
-        self.get_training_log_cols()
-        self.get_predictive_log_cols()
-        self.reverse_training_logs()
-        self.reverse_predictive_logs()
+        self.run_arima_model()
+        self.run_nn_model()
+
+        # self.reverse_logs()
 
     def run_pipeline(self) -> None:
         """
@@ -437,9 +793,9 @@ class Arima:
         """
 
         self.run_preprocess()
-        if self.train_flag:
-            self.train_best_order()
+
         self.run_modelling()
+
         self.save_data()
 
 
@@ -456,7 +812,13 @@ if __name__ == '__main__':
     update_data = config['config']['update_data']
     freq = config['config']['freq']
     order = tuple(config['config']['order'])
-    train_models = config['config']['train_models']
+    train_arima = config['config']['train_arima']
+    train_nn = config['config']['train_nn']
+    weeks_nn = config['config']['weeks_nn']
+    alfa_ci = config['config']['alfa_ci']
+    order_gridsearch = config['config']['order_gridsearch']
+    neurons_nn = config['config']['neurons_nn']
+    regularization_nn = config['config']['regularization_nn']
 
     arima = Arima(
         ticker=ticker,
@@ -468,7 +830,13 @@ if __name__ == '__main__':
         column=column,
         years=years,
         update_data=update_data,
-        train_models=train_models,
+        train_arima=train_arima,
+        train_nn=train_nn,
+        weeks_nn=weeks_nn,
+        alfa_ci=alfa_ci,
+        order_gridsearch=order_gridsearch,
+        neurons_nn=neurons_nn,
+        regularization_nn=regularization_nn,
     )
 
     arima.run_pipeline()

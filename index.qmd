@@ -10,13 +10,13 @@ about:
 
 ## Mission
 
-The purpose of this site is to offer an analysis on different time series techniques.
+The purpose of this site is to offer an analysis on different time series forecasting techniques.
 
 Some techniques are more advance than other, and more will be added to the site in the future, so **stay tuned!**
 
 ## IMPORTANT!
 
-This site is not meant fulfill any type of financial advice.
+This site is not meant to fulfill any type of financial advice.
 
 Please be cautious regarding the conclusions extracted, again:
 

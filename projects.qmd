@@ -4,6 +4,6 @@ title: "Models & Predictions"
 
 ## Arima
 
-## Project 2
+## Deep Neural Network
 
-## Project 3
+## Project 3: Coming soon!
