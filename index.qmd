@@ -12,7 +12,7 @@ about:
 
 The purpose of this site is to offer an analysis on different time series forecasting techniques.
 
-Some techniques are more advance than other, and more will be added to the site in the future, so **stay tuned!**
+Some techniques are more advanced than other, and more will be added to the site in the future, so **stay tuned!**
 
 ## IMPORTANT!
 
