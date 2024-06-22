@@ -22,12 +22,47 @@ class LoadTickers:
         else:
             self.ticker_values = pd.read_csv('loading_module/ticker_values.csv')
             self.ticker_values.set_index('Date', inplace=True)
-            self.ticker_values.index = pd.to_datetime(self.ticker_values.index, utc=True)
+            # self.ticker_values.index = pd.to_datetime(self.ticker_values.index, utc=True)
+            self.ticker_values.index = pd.to_datetime(self.ticker_values.index)
 
-        self.ticker_values = self.ticker_values.resample('W-FRI').first().sort_values(by=['Date'])
+        # Desired frequency
+        freq = 'D'  # Daily frequency
 
-    def get_display_table(self):
+        # Resample with missing value strategy ('ffill' for forward fill)
+        self.ticker_values = self.ticker_values.resample(freq).fillna(method='ffill')
+
+        # self.ticker_values['weekday'] = list(pd.Series(self.ticker_values.index).apply(lambda x: x.weekday()))
+        # self.ticker_values = self.ticker_values[self.ticker_values['weekday'] == 4]
+        # self.ticker_values = self.ticker_values[(self.ticker_values['weekday'] == 4) | (self.ticker_values['weekday'] == 3)]
+        # self.ticker_values.drop(columns='weekday', inplace=True)
+
+        # date_list = pd.Series(self.ticker_values.index).apply(lambda x: x.date())
+        # date_list.diff()
+        # date_list.diff().value_counts()
+
+        self.ticker_values = self.ticker_values.resample('W-FRI').last().sort_values(by=['Date']).dropna()
+
+        # self.modelling_data.freq = self.freq
+
+        # print('done_loading')
+
+    def get_display_table(self) -> None:
         self.display_table = self.ticker_values.tail(self.display_weeks)['Close'].to_frame().T
+
+    def get_all_dates(self, df: pd.DataFrame, freq: str) -> None:
+
+        # Define start and end dates
+        start_date = df.index.min().date()
+        end_date = df.index.max().date()
+
+        # Create a list of days from start to end dates
+        date_list = pd.date_range(start_date, end_date, inclusive='both')
+
+        # Desired frequency
+        freq = 'D'  # Daily frequency
+
+        # Resample with missing value strategy ('ffill' for forward fill)
+        df_resampled = df.resample(freq).fillna(method='ffill')
 
     def run_pipline(self):
         self.load_tickers()
