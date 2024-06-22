@@ -44,8 +44,6 @@ class LoadTickers:
 
         # self.modelling_data.freq = self.freq
 
-        # print('done_loading')
-
     def get_display_table(self) -> None:
         self.display_table = self.ticker_values.tail(self.display_weeks)['Close'].to_frame().T
 
