@@ -6,9 +6,10 @@ import os
 def plot_sample_data(path: str, column: str) -> None:
     modelling_data = pd.read_csv(path, index_col='Date')
     # modelling_data.index = pd.to_datetime(modelling_data.index).strftime('%Y-%m-%d')
-    modelling_data.index = pd.to_datetime(modelling_data.index, utc=True)
+    # modelling_data.index = pd.to_datetime(modelling_data.index, utc=True)
+    modelling_data.index = pd.Series(modelling_data.index).apply(lambda x: pd.to_datetime(x).strftime('%Y-%m-%d'))
     modelling_data.index = modelling_data.index.astype(str).map(lambda x: x[:10])
-    # data = round(modelling_data[column], 1).tail().to_frame()
+    # data = round(modelling_data[column], 1).tail().to_frame().reset_index()
 
     return round(modelling_data[column], 1).tail().to_frame()
 
@@ -16,7 +17,8 @@ def plot_sample_data(path: str, column: str) -> None:
 def table_horizontal(path: str, column: str, display_weeks: int) -> None:
     modelling_data = pd.read_csv(path, index_col='Date')
     # modelling_data.index = pd.to_datetime(modelling_data.index).strftime('%Y-%m-%d')
-    modelling_data.index = pd.to_datetime(modelling_data.index, utc=True)
+    # modelling_data.index = pd.to_datetime(modelling_data.index, utc=True)
+    modelling_data.index = pd.Series(modelling_data.index).apply(lambda x: pd.to_datetime(x).strftime('%Y-%m-%d'))
     modelling_data.index = modelling_data.index.astype(str).map(lambda x: x[:10])
     modelling_data['if we knew the future'] = modelling_data[column]
     modelling_data['hypothetical present'] = modelling_data[column].apply(lambda x: str(round(x, 1)))
@@ -31,7 +33,8 @@ def table_horizontal(path: str, column: str, display_weeks: int) -> None:
 def plot_fit_and_forecast(path: str, column: str, model: str, display_weeks: int) -> None:
     modelling_data = pd.read_csv(path, index_col='Date')
     # modelling_data.index = pd.to_datetime(modelling_data.index).strftime('%Y-%m-%d')
-    modelling_data.index = pd.to_datetime(modelling_data.index, utc=True)
+    # modelling_data.index = pd.to_datetime(modelling_data.index, utc=True)
+    modelling_data.index = pd.Series(modelling_data.index).apply(lambda x: pd.to_datetime(x).strftime('%Y-%m-%d'))
     modelling_data.index = modelling_data.index.astype(str).map(lambda x: x[:10])
 
     fig, ax = plt.subplots(figsize=(10, 5))
@@ -63,7 +66,8 @@ def plot_fit_and_forecast(path: str, column: str, model: str, display_weeks: int
 def plot_predictions(path: str, column: str, model: str, display_weeks: int) -> None:
     predicted_data = pd.read_csv(path, index_col='Date')
     # modelling_data.index = pd.to_datetime(modelling_data.index).strftime('%Y-%m-%d')
-    predicted_data.index = pd.to_datetime(predicted_data.index, utc=True)
+    # predicted_data.index = pd.to_datetime(predicted_data.index, utc=True)
+    predicted_data.index = pd.Series(predicted_data.index).apply(lambda x: pd.to_datetime(x).strftime('%Y-%m-%d'))
     predicted_data.index = predicted_data.index.astype(str).map(lambda x: x[:10])
 
     fig, ax = plt.subplots(figsize=(10, 5))
