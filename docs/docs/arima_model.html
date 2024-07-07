@@ -326,24 +326,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2024-05-31</td>
-<td>11322.0</td>
-</tr>
-<tr class="even">
 <td data-quarto-table-cell-role="th">2024-06-07</td>
 <td>11404.9</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td data-quarto-table-cell-role="th">2024-06-14</td>
 <td>10992.3</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td data-quarto-table-cell-role="th">2024-06-21</td>
 <td>11032.3</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td data-quarto-table-cell-role="th">2024-06-28</td>
 <td>10943.7</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2024-07-05</td>
+<td>11023.5</td>
 </tr>
 </tbody>
 </table>
@@ -374,7 +374,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">Date</th>
-<th data-quarto-table-cell-role="th">2024-03-15</th>
 <th data-quarto-table-cell-role="th">2024-03-22</th>
 <th data-quarto-table-cell-role="th">2024-03-29</th>
 <th data-quarto-table-cell-role="th">2024-04-05</th>
@@ -390,12 +389,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <th data-quarto-table-cell-role="th">2024-06-14</th>
 <th data-quarto-table-cell-role="th">2024-06-21</th>
 <th data-quarto-table-cell-role="th">2024-06-28</th>
+<th data-quarto-table-cell-role="th">2024-07-05</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">if we knew the future</td>
-<td>10597.9</td>
 <td>10943.2</td>
 <td>11074.6</td>
 <td>10916.0</td>
@@ -411,10 +410,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>10992.3</td>
 <td>11032.3</td>
 <td>10943.7</td>
+<td>11023.5</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">hypothetical present</td>
-<td>10597.9</td>
 <td>10943.2</td>
 <td>11074.6</td>
 <td>10916.0</td>
@@ -422,6 +421,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>10729.5</td>
 <td>11154.6</td>
 <td>10854.7</td>
+<td>11105.5</td>
 <td>?</td>
 <td>?</td>
 <td>?</td>
@@ -442,7 +442,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="plot-real-vales-vs-model-output-and-confidence-intervals" class="level2">
 <h2 class="anchored" data-anchor-id="plot-real-vales-vs-model-output-and-confidence-intervals">Plot real vales vs model output and confidence intervals</h2>
 <p>This is a plot of the real values (in blue) and the model output (in green) and the confident intervals (in red)</p>
-<div id="349c441d-d869-452e-9027-5103c40306d7" class="cell" data-execution_count="4">
+<div id="fd1b0022-55b5-4f30-a9fa-c52323a20a6e" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>plot_fit_and_forecast(path<span class="op">=</span><span class="st">'modelled_fitted_data.csv'</span>, column<span class="op">=</span><span class="st">'Close'</span>, model<span class="op">=</span><span class="st">'arima'</span>,  display_weeks<span class="op">=</span><span class="dv">16</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
