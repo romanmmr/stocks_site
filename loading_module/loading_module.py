@@ -1,5 +1,6 @@
 import pandas as pd
 import yfinance as yf
+from datetime import date
 
 
 class LoadTickers:
@@ -29,18 +30,19 @@ class LoadTickers:
         freq = 'D'  # Daily frequency
 
         # Resample with missing value strategy ('ffill' for forward fill)
-        self.ticker_values = self.ticker_values.resample(freq).fillna(method='ffill')
+        self.ticker_values = self.ticker_values.resample(freq).ffill()
 
-        # self.ticker_values['weekday'] = list(pd.Series(self.ticker_values.index).apply(lambda x: x.weekday()))
-        # self.ticker_values = self.ticker_values[self.ticker_values['weekday'] == 4]
-        # self.ticker_values = self.ticker_values[(self.ticker_values['weekday'] == 4) | (self.ticker_values['weekday'] == 3)]
-        # self.ticker_values.drop(columns='weekday', inplace=True)
 
         # date_list = pd.Series(self.ticker_values.index).apply(lambda x: x.date())
         # date_list.diff()
         # date_list.diff().value_counts()
 
         self.ticker_values = self.ticker_values.resample('W-FRI').last().sort_values(by=['Date']).dropna()
+
+        # Check if last date is in the future. If so, simply drop it.
+        today = date.today()
+        if self.ticker_values.index[-1] > pd.Timestamp(today, tz=self.ticker_values.index.tz):
+            self.ticker_values = self.ticker_values[:-1].copy(deep=True)
 
         # self.modelling_data.freq = self.freq
 
