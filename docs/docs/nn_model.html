@@ -290,7 +290,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div id="931c85e1-bd18-45aa-b81c-a432a0a680d1" class="cell" data-execution_count="1">
+<div id="931c85e1-bd18-45aa-b81c-a432a0a680d1" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -304,12 +304,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>We are using values from IBEX ticker values (Spanish stock values) every Friday - Closing</li>
 <li>These are the lates values we used for our analysis.</li>
 </ul>
-<div id="8d7faf28-a70b-4369-af26-7418593fc163" class="cell" data-execution_count="2">
+<div id="8d7faf28-a70b-4369-af26-7418593fc163" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>plot_sample_data(path<span class="op">=</span><span class="st">'modelled_fitted_data.csv'</span>, column<span class="op">=</span><span class="st">'Close'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="9">
 <div>
 <div>
 
@@ -327,24 +327,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2024-05-16</td>
-<td>11152.0</td>
+<td data-quarto-table-cell-role="th">2024-06-14</td>
+<td>10992.3</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">2024-05-23</td>
-<td>11339.5</td>
+<td data-quarto-table-cell-role="th">2024-06-21</td>
+<td>11032.3</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2024-05-30</td>
-<td>11325.5</td>
+<td data-quarto-table-cell-role="th">2024-06-28</td>
+<td>10943.7</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">2024-06-06</td>
-<td>11397.2</td>
+<td data-quarto-table-cell-role="th">2024-07-05</td>
+<td>11023.5</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2024-06-13</td>
-<td>11357.2</td>
+<td data-quarto-table-cell-role="th">2024-07-12</td>
+<td>11250.6</td>
 </tr>
 </tbody>
 </table>
@@ -361,12 +361,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>This means that the model doesn’t know the last 8 values. The hypothetical present of our model is 8 weeks in the past. <br><br></li>
 <li>In that hypothetical present, if we could see the future we would see the last 8 weeks.</li>
 </ol>
-<div id="866fce07-59b4-4a44-a614-48acdafd8b76" class="cell" data-execution_count="3">
+<div id="866fce07-59b4-4a44-a614-48acdafd8b76" class="cell" data-execution_count="10">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>table_horizontal(path<span class="op">=</span><span class="st">'modelled_fitted_data.csv'</span>, column<span class="op">=</span><span class="st">'Close'</span>, display_weeks<span class="op">=</span><span class="dv">16</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="10">
 <div>
 <div>
 
@@ -375,54 +375,54 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">Date</th>
-<th data-quarto-table-cell-role="th">2024-02-29</th>
-<th data-quarto-table-cell-role="th">2024-03-07</th>
-<th data-quarto-table-cell-role="th">2024-03-14</th>
-<th data-quarto-table-cell-role="th">2024-03-21</th>
-<th data-quarto-table-cell-role="th">2024-03-28</th>
-<th data-quarto-table-cell-role="th">2024-04-04</th>
-<th data-quarto-table-cell-role="th">2024-04-11</th>
-<th data-quarto-table-cell-role="th">2024-04-18</th>
-<th data-quarto-table-cell-role="th">2024-04-25</th>
-<th data-quarto-table-cell-role="th">2024-05-02</th>
-<th data-quarto-table-cell-role="th">2024-05-09</th>
-<th data-quarto-table-cell-role="th">2024-05-16</th>
-<th data-quarto-table-cell-role="th">2024-05-23</th>
-<th data-quarto-table-cell-role="th">2024-05-30</th>
-<th data-quarto-table-cell-role="th">2024-06-06</th>
-<th data-quarto-table-cell-role="th">2024-06-13</th>
+<th data-quarto-table-cell-role="th">2024-03-29</th>
+<th data-quarto-table-cell-role="th">2024-04-05</th>
+<th data-quarto-table-cell-role="th">2024-04-12</th>
+<th data-quarto-table-cell-role="th">2024-04-19</th>
+<th data-quarto-table-cell-role="th">2024-04-26</th>
+<th data-quarto-table-cell-role="th">2024-05-03</th>
+<th data-quarto-table-cell-role="th">2024-05-10</th>
+<th data-quarto-table-cell-role="th">2024-05-17</th>
+<th data-quarto-table-cell-role="th">2024-05-24</th>
+<th data-quarto-table-cell-role="th">2024-05-31</th>
+<th data-quarto-table-cell-role="th">2024-06-07</th>
+<th data-quarto-table-cell-role="th">2024-06-14</th>
+<th data-quarto-table-cell-role="th">2024-06-21</th>
+<th data-quarto-table-cell-role="th">2024-06-28</th>
+<th data-quarto-table-cell-role="th">2024-07-05</th>
+<th data-quarto-table-cell-role="th">2024-07-12</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">if we knew the future</td>
-<td>10138.4</td>
-<td>10069.8</td>
-<td>10325.7</td>
-<td>10596.7</td>
-<td>10952.2</td>
-<td>10975.6</td>
-<td>10911.8</td>
-<td>10687.2</td>
-<td>10890.2</td>
-<td>11100.8</td>
-<td>10917.5</td>
-<td>11152.0</td>
-<td>11339.5</td>
-<td>11325.5</td>
-<td>11397.2</td>
-<td>11357.2</td>
+<td>11074.6</td>
+<td>10916.0</td>
+<td>10686.0</td>
+<td>10729.5</td>
+<td>11154.6</td>
+<td>10854.7</td>
+<td>11105.5</td>
+<td>11327.7</td>
+<td>11246.0</td>
+<td>11322.0</td>
+<td>11404.9</td>
+<td>10992.3</td>
+<td>11032.3</td>
+<td>10943.7</td>
+<td>11023.5</td>
+<td>11250.6</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">hypothetical present</td>
-<td>10138.4</td>
-<td>10069.8</td>
-<td>10325.7</td>
-<td>10596.7</td>
-<td>10952.2</td>
-<td>10975.6</td>
-<td>10911.8</td>
-<td>10687.2</td>
+<td>11074.6</td>
+<td>10916.0</td>
+<td>10686.0</td>
+<td>10729.5</td>
+<td>11154.6</td>
+<td>10854.7</td>
+<td>11105.5</td>
+<td>11327.7</td>
 <td>?</td>
 <td>?</td>
 <td>?</td>
@@ -443,7 +443,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="plot-real-vales-vs-model-output-and-confidence-intervals" class="level2">
 <h2 class="anchored" data-anchor-id="plot-real-vales-vs-model-output-and-confidence-intervals">Plot real vales vs model output and confidence intervals</h2>
 <p>This is a plot of the real values (in blue) and the model output (in green) and the confident intervals (in red)</p>
-<div id="e677853f-f29c-4637-b726-c71f1d9feda1" class="cell" data-execution_count="4">
+<div id="9551f8ba-7de0-44ec-a250-dc733ad56215" class="cell" data-execution_count="11">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>plot_fit_and_forecast(path<span class="op">=</span><span class="st">'modelled_fitted_data.csv'</span>, column<span class="op">=</span><span class="st">'Close'</span>, model<span class="op">=</span><span class="st">'nn_model'</span>,  display_weeks<span class="op">=</span><span class="dv">16</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -460,7 +460,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="further-details-on-the-model" class="level2">
 <h2 class="anchored" data-anchor-id="further-details-on-the-model">Further details on the model</h2>
 <p>This is a plot of training loss - mae (in blue) and validation loss - mae (in red) with epochs</p>
-<div id="806c839f-40a7-43a1-90f2-7d18f631c4de" class="cell" data-execution_count="5">
+<div id="806c839f-40a7-43a1-90f2-7d18f631c4de" class="cell" data-execution_count="12">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>plot_nn_loss(path<span class="op">=</span><span class="st">'nn_checkpoint/history.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

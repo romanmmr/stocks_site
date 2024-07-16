@@ -41,7 +41,7 @@ class Arima:
             order_gridsearch: list,
             neurons_nn: list,
             regularization_nn: float,
-            regularization_rcnn: float,
+            regularization_crnn: float,
             train_val_partition: float,
     ):
         """
@@ -75,7 +75,7 @@ class Arima:
         self.order_gridsearch = order_gridsearch
         self.neurons_nn = neurons_nn
         self.regularization_nn = regularization_nn
-        self.regularization_rcnn = regularization_rcnn
+        self.regularization_crnn = regularization_crnn
         self.train_val_partition = train_val_partition
         self.ticker_values = pd.DataFrame
         self.modelling_data = pd.DataFrame
@@ -770,7 +770,7 @@ class Arima:
         # neurons_2 = self.neurons_nn[1]
         # neurons_3 = self.neurons_nn[2]
         # neurons_4 = self.neurons_nn[3]
-        regularization = self.regularization_rcnn
+        regularization = self.regularization_crnn
 
         # Define the input layer
         inputs = tf.keras.Input(shape=(self.X_train_nn.shape[1], 1))
@@ -1200,7 +1200,7 @@ if __name__ == '__main__':
     order_gridsearch = config['config']['order_gridsearch']
     neurons_nn = config['config']['neurons_nn']
     regularization_nn = config['config']['regularization_nn']
-    regularization_rcnn = config['config']['regularization_rcnn']
+    regularization_crnn = config['config']['regularization_crnn']
     train_val_partition = config['config']['train_val_partition']
 
     arima = Arima(
@@ -1221,7 +1221,7 @@ if __name__ == '__main__':
         order_gridsearch=order_gridsearch,
         neurons_nn=neurons_nn,
         regularization_nn=regularization_nn,
-        regularization_rcnn=regularization_rcnn,
+        regularization_crnn=regularization_crnn,
         train_val_partition=train_val_partition,
     )
 
