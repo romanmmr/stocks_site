@@ -31,6 +31,7 @@ class Arima:
             test_weeks: int,
             freq: str,
             column: str,
+            column_list: list,
             years: float,
             update_data: bool,
             train_arima: bool,
@@ -40,6 +41,8 @@ class Arima:
             order_gridsearch: list,
             neurons_nn: list,
             regularization_nn: float,
+            regularization_crnn: float,
+            train_val_partition: float,
     ):
         """
         Initializes the Arima object with configuration parameters.
@@ -62,6 +65,7 @@ class Arima:
         self.test_weeks = test_weeks
         self.freq = freq
         self.column = column
+        self.column_list = column_list
         self.years = years
         self.update_data = update_data
         self.train_arima = train_arima
@@ -71,11 +75,13 @@ class Arima:
         self.order_gridsearch = order_gridsearch
         self.neurons_nn = neurons_nn
         self.regularization_nn = regularization_nn
+        self.regularization_crnn = regularization_crnn
+        self.train_val_partition = train_val_partition
         self.ticker_values = pd.DataFrame
         self.modelling_data = pd.DataFrame
         self.future_weeks = pd.DataFrame
-        self.train = pd.DataFrame
-        self.test = pd.DataFrame
+        self.train_arima_df = pd.DataFrame
+        self.test_arima_df = pd.DataFrame
         self.train_index = None
         self.test_index = None
         self.existing_dates = None
@@ -93,19 +99,28 @@ class Arima:
         self.not_log_training_cols = None
         self.log_predictive_cols = None
         self.not_log_predictive_cols = None
+        self.nn_df = None
         self.X_train_nn = None
         self.Y_train_nn = None
+        self.X_val_nn = None
+        self.Y_val_nn = None
         self.X_test_nn = None
         self.Y_test_nn = None
         self.nn_model = None
+        self.crnn_model = None
         self.scaler = None
         self.nn_model_ci = None
+        self.crnn_model_ci = None
         self.history_nn_model = None
-        self.model_checkpoint_path = 'nn_checkpoint/best_model.weights.h5'
-        self.model_history_path = 'nn_checkpoint/history.csv'
+        self.history_crnn_model = None
+        self.nn_model_checkpoint_path = 'nn_checkpoint/best_model.weights.h5'
+        self.crnn_model_checkpoint_path = 'crnn_checkpoint/best_model.weights.h5'
+        self.nn_model_history_path = 'nn_checkpoint/history.csv'
+        self.crnn_model_history_path = 'crnn_checkpoint/history.csv'
         self.nn_model_name = 'nn_model'
+        self.crnn_model_name = 'crnn_model'
         self.arima_model_name = 'arima'
-        self.model_names = [self.arima_model_name, self.nn_model_name]
+        self.model_names = [self.arima_model_name, self.nn_model_name, self.crnn_model_name]
         self.log_column = f"log_{column}_{self.arima_model_name}"
         self.diff_log_column = f"diff_log_{column}_{self.nn_model_name}"
         self.scaled_diff_log_column = f"scaled_diff_log_{column}_{self.nn_model_name}"
@@ -136,7 +151,8 @@ class Arima:
         and assigns it to the `modelling_data` attribute.
         """
 
-        self.modelling_data = self.ticker_values[self.column][int(-52*self.years):].copy(deep=True).to_frame()
+        # self.modelling_data = self.ticker_values[self.column][int(-52*self.years):].copy(deep=True).to_frame()
+        self.modelling_data = self.ticker_values.iloc[int(-52 * self.years):][self.column_list].copy(deep=True)
 
     def copy_target_columns_for_modelling(self) -> None:
         for model in self.model_names:
@@ -182,11 +198,11 @@ class Arima:
         Also defines indices for training and testing periods.
         """
 
-        self.train = self.modelling_data.iloc[:-self.test_weeks]
-        self.test = self.modelling_data.iloc[-self.test_weeks:]
+        self.train_arima_df = self.modelling_data.iloc[:-self.test_weeks]
+        self.test_arima_df = self.modelling_data.iloc[-self.test_weeks:]
 
-        self.train_index = self.modelling_data.index <= self.train.index[-1]
-        self.test_index = self.modelling_data.index > self.train.index[-1]
+        self.train_index = self.modelling_data.index <= self.train_arima_df.index[-1]
+        self.test_index = self.modelling_data.index > self.train_arima_df.index[-1]
 
     def create_nn_dataset(self):
         series = self.modelling_data[self.scaled_diff_log_column].dropna().to_numpy()
@@ -203,11 +219,56 @@ class Arima:
         X = np.array(X).reshape(-1, T)
         Y = np.array(Y)
 
-        self.X_train_nn, self.Y_train_nn = X[:-self.test_weeks], Y[:-self.test_weeks]
-        self.X_test_nn, self.Y_test_nn = X[-self.test_weeks:], Y[-self.test_weeks:]
+        # Create dataframe with X and Y to later retrieve values
+        self.nn_df = pd.DataFrame(X, columns=[f"feature_{feat}" for feat in range(X.shape[1])])
+        self.nn_df['target'] = Y
 
-        # print(f"X_train_nn shape: {self.X_train_nn.shape} --- Y_train_nn shape: {self.Y_train_nn.shape}")
-        # print(f"X_test_nn shape: {self.X_test_nn.shape} --- Y_test_nn shape: {self.Y_test_nn.shape}")
+        # Define test datasets as numpy objects
+        # self.X_test_nn_1, self.Y_test_nn_1 = X[-self.test_weeks:], Y[-self.test_weeks:]
+
+        # Define test datasets as pandas objects (same as previous but as pandas instead of numpy)
+        self.X_test_nn = self.nn_df.tail(self.test_weeks)[
+            [f"feature_{feat}" for feat in range(X.shape[1])]
+        ].copy(deep=True)
+        self.Y_test_nn = self.nn_df.tail(self.test_weeks)['target'].copy(deep=True)
+
+        # Get randomized indexes for randomization of train and validation sets
+        randomized_index = np.random.RandomState(0).choice(
+            len(X[:-self.test_weeks]),
+            size=len(X[:-self.test_weeks]),
+            replace=False
+        )
+
+        # Get train and validation sizes
+        train_size = int(len(X[:-self.test_weeks]) * self.train_val_partition)
+        validation_size = len(X[:-self.test_weeks]) - train_size
+
+        # Test datasets are created, let's create train and validation randomized datasets
+        # First let's get the randomized train and validation indexes
+        rand_train_index = randomized_index[:train_size]
+        rand_val_index = randomized_index[train_size:]
+
+        # Let's now get the train and validation datasets
+        # self.X_train_nn, self.Y_train_nn = X[[rand_train_index]].reshape(-1, T), Y[[rand_train_index]].reshape(-1)
+        # self.X_val_nn, self.Y_val_nn = X[[rand_val_index]].reshape(-1, T), Y[[rand_val_index]].reshape(-1)
+
+        # Same as previous but as pandas dt instead of numpy object
+        self.X_train_nn = self.nn_df.loc[
+            list(rand_train_index),
+            [f"feature_{feat}" for feat in range(X.shape[1])]
+        ].copy(deep=True)
+        self.Y_train_nn = self.nn_df.loc[list(rand_train_index), 'target'].copy(deep=True)
+        self.X_val_nn = self.nn_df.loc[
+            list(rand_val_index),
+            [f"feature_{feat}" for feat in range(X.shape[1])]
+        ].copy(deep=True)
+        self.Y_val_nn = self.nn_df.loc[list(rand_val_index), 'target']
+
+
+        print(f"X_train_nn shape: {self.X_train_nn.shape} --- Y_train_nn shape: {self.Y_train_nn.shape}")
+        print(f"X_val_nn shape: {self.X_val_nn.shape} --- Y_val_nn shape: {self.Y_val_nn.shape}")
+        print(f"X_test_nn shape: {self.X_test_nn.shape} --- Y_test_nn shape: {self.Y_test_nn.shape}")
+
 
     def get_future_weeks(self):
         self.future_weeks = self.modelling_data.copy(deep=True)
@@ -270,11 +331,11 @@ class Arima:
         # ):
         # for order in product(range(27), range(3), range(11)):
             print(order)
-            arima_training_log_model = ARIMA(self.train[self.log_column], order=order)
+            arima_training_log_model = ARIMA(self.train_arima_df[self.log_column], order=order)
             arima_training_log_result = arima_training_log_model.fit()
             prediction_result = arima_training_log_result.get_forecast(self.test_weeks)
             forecast = prediction_result.predicted_mean
-            loss = self.rmse(self.test[self.log_column], forecast)
+            loss = self.rmse(self.test_arima_df[self.log_column], forecast)
             # best_loss = None
             # best_order = None
             if index == 0:
@@ -295,7 +356,7 @@ class Arima:
         """
 
         # self.arima_training_model = ARIMA(self.train[self.column], order=self.order)
-        self.arima_training_log_model = ARIMA(self.train[self.log_column], order=self.order)
+        self.arima_training_log_model = ARIMA(self.train_arima_df[self.log_column], order=self.order)
 
     def rmse(self, y_true, y_pred):
         """
@@ -381,7 +442,7 @@ class Arima:
         # Get predictions for training data for arima log model and populate modelling_data dataframe
         self.modelling_data.loc[
             self.train_index, f"{self.arima_model_name}_output"
-        ] = np.exp(self.arima_training_log_result.predict(start=self.train.index[0], end=self.train.index[-1]))
+        ] = np.exp(self.arima_training_log_result.predict(start=self.train_arima_df.index[0], end=self.train_arima_df.index[-1]))
         # Get predictions for testing data for arima log model and populate modelling_data dataframe
         log_prediction_result = self.arima_training_log_result.get_forecast(self.test_weeks)
         log_forecast = log_prediction_result.predicted_mean
@@ -480,20 +541,28 @@ class Arima:
         # Add Batch Normalization
         x = tf.keras.layers.BatchNormalization()(x)
 
-        # Repeat for remaining hidden layers with L2 regularization
+        # Add hidden layer with L2 regularization
         x = tf.keras.layers.Dense(
             neurons_2, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(regularization)
         )(x)
+
+        # Add Batch Normalization
         x = tf.keras.layers.BatchNormalization()(x)
 
+        # Add hidden layer with L2 regularization
         x = tf.keras.layers.Dense(
             neurons_3, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(regularization)
         )(x)
+
+        # Add Batch Normalization
         x = tf.keras.layers.BatchNormalization()(x)
 
+        # Add hidden layer with L2 regularization
         x = tf.keras.layers.Dense(
             neurons_4, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(regularization)
         )(x)
+
+        # Add Batch Normalization
         x = tf.keras.layers.BatchNormalization()(x)
 
         # Output layer
@@ -504,6 +573,7 @@ class Arima:
 
     def compile_and_fit_nn_models(self) -> None:
         self.reset_random_seeds()
+        tf.keras.backend.clear_session()
         batch_size = 64
         # epochs = 400
         epochs = 1000
@@ -514,7 +584,7 @@ class Arima:
             optimizer='adam',
         )
 
-        checkpoint_filepath = os.path.join(os.getcwd(), self.model_checkpoint_path)
+        checkpoint_filepath = os.path.join(os.getcwd(), self.nn_model_checkpoint_path)
         model_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
             filepath=checkpoint_filepath,
             save_weights_only=True,
@@ -529,14 +599,14 @@ class Arima:
             self.Y_train_nn,
             batch_size=batch_size,
             epochs=epochs,
-            validation_data=(self.X_test_nn, self.Y_test_nn),
+            validation_data=(self.X_val_nn, self.Y_val_nn),
             callbacks=[model_checkpoint_callback],
             verbose=2
         )
 
-        pd.DataFrame(self.history_nn_model.history).to_csv(self.model_history_path)
+        pd.DataFrame(self.history_nn_model.history).to_csv(self.nn_model_history_path)
 
-        print(self.nn_model.evaluate(self.X_test_nn, self.Y_test_nn))
+        print(f"NN Model at Epoch 1000 - MAE: {self.nn_model.evaluate(self.X_test_nn, self.Y_test_nn)}")
 
         # plot_loss = self.history_nn_model.history['loss']
         # plot_val_loss = self.history_nn_model.history['val_loss']
@@ -550,10 +620,10 @@ class Arima:
         # plt.legend()
 
     def load_nn_model_weights(self) -> None:
-        checkpoint_filepath = os.path.join(os.getcwd(), self.model_checkpoint_path)
+        checkpoint_filepath = os.path.join(os.getcwd(), self.nn_model_checkpoint_path)
         self.nn_model.load_weights(checkpoint_filepath)
 
-        print(f"MAE: {self.nn_model.evaluate(self.X_test_nn, self.Y_test_nn)}")
+        print(f"NN Best model - MAE: {self.nn_model.evaluate(self.X_test_nn, self.Y_test_nn)}")
 
     def test_nn_models(self) -> None:
 
@@ -561,22 +631,32 @@ class Arima:
         train_idx_nn = self.train_index.copy()
         train_idx_nn[:self.weeks_nn + 1] = False
 
-        Ptrain = self.scaler.inverse_transform(self.nn_model.predict(self.X_train_nn)).flatten()
+        # Ptrain = self.scaler.inverse_transform(self.nn_model.predict(self.X_train_nn)).flatten()
         # Ptest = self.scaler.inverse_transform(self.nn_model.predict(self.X_test_nn)).flatten()
+        Ptrain = self.scaler.inverse_transform(self.nn_model.predict(
+            self.nn_df.loc[
+                :len(self.nn_df) - self.test_weeks - 1,
+                [f"feature_{feat}" for feat in range(self.nn_df.shape[1] - 1)]
+            ]
+        )).flatten()
 
         prev = self.modelling_data[self.log_column].shift(1)
 
         # Last-known train value
-        last_train = self.train.iloc[-1][self.log_column]
+        last_train = self.train_arima_df.iloc[-1][self.log_column]
 
         # multi-step forecast
         multistep_predictions = []
 
         # first test input
-        last_x = self.X_test_nn[0]
+        # last_x = self.X_test_nn_1[0]
+        # last_x = self.X_test_nn.iloc[0].to_numpy()
+        last_x = self.X_test_nn.iloc[[0]]
 
         while len(multistep_predictions) < self.test_weeks:
-            p = self.nn_model.predict(last_x.reshape(1, -1))[0]
+            # p = self.nn_model.predict(last_x.reshape(1, -1))[0]
+            # p = self.nn_model.predict(last_x.reshape(1, self.weeks_nn))[0]
+            p = self.nn_model.predict(last_x)[0]
 
             # update the predictions list
             multistep_predictions.append(p)
@@ -613,7 +693,7 @@ class Arima:
             self.test_index, f"{self.nn_model_name}_conf_int_upper"
         ] = self.modelling_data.loc[self.test_index, f"{self.nn_model_name}_output"] + ci_test_weeks
 
-        print('models done')
+        print('nn models done')
 
         # plot 1-step and multi-step forecast
         # self.modelling_data.iloc[-16:][['log_Close', 'multistep', '1step_test']].plot(figsize=(15, 5))
@@ -624,16 +704,18 @@ class Arima:
         train_idx_nn[:self.weeks_nn + 1] = False
 
         # Last-known train value
-        last_test = self.test.iloc[-1][self.log_column]
+        last_test = self.test_arima_df.iloc[-1][self.log_column]
 
         # multi-step forecast
         multistep_predictions = []
 
         # first test input
-        last_x = self.X_test_nn[-1]
+        # last_x = self.X_test_nn[-1]
+        last_x = self.X_test_nn.iloc[[-1]]
 
         while len(multistep_predictions) < self.test_weeks:
-            p = self.nn_model.predict(last_x.reshape(1, -1))[0]
+            # p = self.nn_model.predict(last_x.reshape(1, -1))[0]
+            p = self.nn_model.predict(last_x)[0]
 
             # update the predictions list
             multistep_predictions.append(p)
@@ -679,7 +761,293 @@ class Arima:
             self.future_weeks.index[-self.test_weeks:], f"{self.column}_{self.nn_model_name}"
         ] + ci_test_weeks
 
-        print('preds done')
+        print('nn preds done')
+
+    def define_crnn_training_models(self) -> None:
+        seed = 0
+
+        # neurons_1 = self.neurons_nn[0]
+        # neurons_2 = self.neurons_nn[1]
+        # neurons_3 = self.neurons_nn[2]
+        # neurons_4 = self.neurons_nn[3]
+        regularization = self.regularization_crnn
+
+        # Define the input layer
+        inputs = tf.keras.Input(shape=(self.X_train_nn.shape[1], 1))
+
+        # Add the first hidden convolutional layer with L2 regularization
+        x = tf.keras.layers.Conv1D(
+            filters=128, kernel_size=3, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(regularization)
+        )(inputs)
+
+        # Add LSTM layer
+        # x = tf.keras.layers.LSTM(128, return_sequences=True)(x)
+        x = tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(128, return_sequences=True))(x)
+
+        # Add Batch Normalization
+        x = tf.keras.layers.BatchNormalization()(x)
+
+        # Add hidden convolutional layer with L2 regularization
+        x = tf.keras.layers.Conv1D(
+            filters=64, kernel_size=3, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(regularization)
+        )(x)
+
+        # Add LSTM layer
+        # x = tf.keras.layers.LSTM(64, return_sequences=True)(x)
+        x = tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(64, return_sequences=True))(x)
+
+        # Add Batch Normalization
+        x = tf.keras.layers.BatchNormalization()(x)
+
+        # Add hidden convolutional layer with L2 regularization
+        x = tf.keras.layers.Conv1D(
+            filters=32, kernel_size=3, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(regularization)
+        )(x)
+
+        # Add LSTM layer
+        # x = tf.keras.layers.LSTM(32, return_sequences=True)(x)
+        x = tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(32, return_sequences=True))(x)
+
+        # Add Batch Normalization
+        x = tf.keras.layers.BatchNormalization()(x)
+
+        # # Add LSTM layer
+        # x = tf.keras.layers.LSTM(32)(x)
+        x = tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(32))(x)
+
+        # x = tf.keras.layers.GlobalMaxPooling1D()(x)
+
+        # Add hidden layer with L2 regularization
+        x = tf.keras.layers.Dense(
+            60, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(regularization)
+        )(x)
+
+        # Add Batch Normalization
+        x = tf.keras.layers.BatchNormalization()(x)
+
+        # Add hidden layer with L2 regularization
+        x = tf.keras.layers.Dense(
+            50, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(regularization)
+        )(x)
+
+        # Add Batch Normalization
+        x = tf.keras.layers.BatchNormalization()(x)
+
+        # Add hidden layer with L2 regularization
+        x = tf.keras.layers.Dense(
+            40, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(regularization)
+        )(x)
+
+        # Add Batch Normalization
+        x = tf.keras.layers.BatchNormalization()(x)
+
+        # Add hidden layer with L2 regularization
+        x = tf.keras.layers.Dense(
+            30, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(regularization)
+        )(x)
+
+        # Add Batch Normalization
+        x = tf.keras.layers.BatchNormalization()(x)
+
+        # Output layer
+        outputs = tf.keras.layers.Dense(1)(x)
+
+        # Create the model
+        self.crnn_model = tf.keras.Model(inputs=inputs, outputs=outputs)
+        self.crnn_model.summary()
+
+    def compile_and_fit_crnn_models(self) -> None:
+        self.reset_random_seeds()
+        tf.keras.backend.clear_session()
+        batch_size = 64
+        # epochs = 400
+        epochs = 1000
+        self.crnn_model.compile(
+            #   loss='mse',
+            # loss='mae',
+            loss=tf.keras.losses.Huber(),
+            #   loss = [tf.keras.metrics.RootMeanSquaredError()],
+            optimizer='adam',
+        )
+
+        checkpoint_filepath = os.path.join(os.getcwd(), self.crnn_model_checkpoint_path)
+        model_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
+            filepath=checkpoint_filepath,
+            save_weights_only=True,
+            # monitor='val_root_mean_squared_error',
+            monitor='val_loss',
+            mode='min',
+            save_best_only=True
+        )
+
+        self.history_crnn_model = self.crnn_model.fit(
+            self.X_train_nn,
+            self.Y_train_nn,
+            batch_size=batch_size,
+            epochs=epochs,
+            validation_data=(self.X_val_nn, self.Y_val_nn),
+            callbacks=[model_checkpoint_callback],
+            verbose=2
+        )
+
+        pd.DataFrame(self.history_crnn_model.history).to_csv(self.crnn_model_history_path)
+
+        print(f"CRNN Model at Epoch 1000 - MAE: {self.crnn_model.evaluate(self.X_test_nn, self.Y_test_nn)}")
+
+        plot_loss = self.history_crnn_model.history['loss']
+        plot_val_loss = self.history_crnn_model.history['val_loss']
+        plot_epochs = range(len(plot_loss))
+
+        fig_mae = plt.figure(figsize=(10, 5))
+        plt.plot(plot_epochs, plot_loss, 'b', label='Training loss (mae)')
+        plt.plot(plot_epochs, plot_val_loss, 'r', label='Validation loss (mae)')
+        plt.title('Training and Validation loss (mae)')
+        plt.grid()
+        plt.legend()
+
+    def load_crnn_model_weights(self) -> None:
+        checkpoint_filepath = os.path.join(os.getcwd(), self.crnn_model_checkpoint_path)
+        self.crnn_model.load_weights(checkpoint_filepath)
+
+        print(f"CRNN Best model - MAE: {self.crnn_model.evaluate(self.X_test_nn, self.Y_test_nn)}")
+
+    def test_crnn_models(self) -> None:
+
+        # first T+1 values are not predictable
+        train_idx_nn = self.train_index.copy()
+        train_idx_nn[:self.weeks_nn + 1] = False
+
+        # Ptrain = self.scaler.inverse_transform(self.nn_model.predict(self.X_train_nn)).flatten()
+        # Ptest = self.scaler.inverse_transform(self.nn_model.predict(self.X_test_nn)).flatten()
+        Ptrain = self.scaler.inverse_transform(self.crnn_model.predict(
+            self.nn_df.loc[
+                :len(self.nn_df) - self.test_weeks - 1,
+                [f"feature_{feat}" for feat in range(self.nn_df.shape[1] - 1)]
+            ]
+        )).flatten()
+
+        prev = self.modelling_data[self.log_column].shift(1)
+
+        # Last-known train value
+        last_train = self.train_arima_df.iloc[-1][self.log_column]
+
+        # multi-step forecast
+        multistep_predictions = []
+
+        # first test input
+        # last_x = self.X_test_nn_1[0]
+        # last_x = self.X_test_nn.iloc[0].to_numpy()
+        last_x = self.X_test_nn.iloc[[0]]
+
+        while len(multistep_predictions) < self.test_weeks:
+            # p = self.nn_model.predict(last_x.reshape(1, -1))[0]
+            # p = self.nn_model.predict(last_x.reshape(1, self.weeks_nn))[0]
+            p = self.crnn_model.predict(last_x)[0]
+
+            # update the predictions list
+            multistep_predictions.append(p)
+
+            # make the new input
+            last_x = np.roll(last_x, -1)
+            last_x[-1] = p
+
+        # unscale
+        multistep_predictions = np.array(multistep_predictions)
+        multistep_predictions = self.scaler.inverse_transform(multistep_predictions.reshape(-1, 1)).flatten()
+
+        # save multi-step forecast to dataframe
+        self.modelling_data.loc[train_idx_nn, f"{self.crnn_model_name}_output"] = np.exp(prev[train_idx_nn] + Ptrain)
+        self.modelling_data.loc[
+            self.test_index, f"{self.crnn_model_name}_output"
+        ] = np.exp(last_train + np.cumsum(multistep_predictions))
+
+        residuals = (self.modelling_data.loc[train_idx_nn, f"{self.column}_{self.crnn_model_name}"] -
+                     self.modelling_data.loc[train_idx_nn, f"{self.crnn_model_name}_output"])
+
+        self.crnn_model_ci = np.quantile(residuals, 1 - self.alfa_ci)
+
+        ci_test_weeks = []
+
+        for index, interval in enumerate(self.modelling_data.loc[self.test_index, f"{self.crnn_model_name}_output"]):
+            ci_test_weeks.append(self.crnn_model_ci * (index + 1))
+
+        self.modelling_data.loc[
+            self.test_index, f"{self.crnn_model_name}_conf_int_lower"
+        ] = self.modelling_data.loc[self.test_index, f"{self.crnn_model_name}_output"] - ci_test_weeks
+
+        self.modelling_data.loc[
+            self.test_index, f"{self.crnn_model_name}_conf_int_upper"
+        ] = self.modelling_data.loc[self.test_index, f"{self.crnn_model_name}_output"] + ci_test_weeks
+
+        print('crnn models done')
+
+        # plot 1-step and multi-step forecast
+        # self.modelling_data.iloc[-16:][['log_Close', 'multistep', '1step_test']].plot(figsize=(15, 5))
+
+    def get_crnn_real_predictions(self) -> None:
+        # first T+1 values are not predictable
+        train_idx_nn = self.train_index.copy()
+        train_idx_nn[:self.weeks_nn + 1] = False
+
+        # Last-known train value
+        last_test = self.test_arima_df.iloc[-1][self.log_column]
+
+        # multi-step forecast
+        multistep_predictions = []
+
+        # first test input
+        # last_x = self.X_test_nn[-1]
+        last_x = self.X_test_nn.iloc[[-1]]
+
+        while len(multistep_predictions) < self.test_weeks:
+            # p = self.nn_model.predict(last_x.reshape(1, -1))[0]
+            p = self.crnn_model.predict(last_x)[0]
+
+            # update the predictions list
+            multistep_predictions.append(p)
+
+            # make the new input
+            last_x = np.roll(last_x, -1)
+            last_x[-1] = p
+
+        # unscale
+        multistep_predictions = np.array(multistep_predictions)
+        multistep_predictions = self.scaler.inverse_transform(multistep_predictions.reshape(-1, 1)).flatten()
+
+        # save multi-step forecast to modelling dataframe
+        # self.modelling_data.loc[train_idx_nn, f"{self.nn_model_name}_output"] = np.exp(prev[train_idx_nn] + Ptrain)
+        # self.modelling_data.loc[
+        #     self.test_index, f"{self.nn_model_name}_output"
+        # ] = np.exp(last_train + np.cumsum(multistep_predictions))
+
+        # save multi-step forecast to future weeks dataframe
+        self.future_weeks.loc[
+            self.future_weeks.index[-self.test_weeks:], f"{self.column}_{self.crnn_model_name}"
+        ] = np.exp(last_test + np.cumsum(multistep_predictions))
+
+        ci_test_weeks = []
+
+        for index, interval in enumerate(
+                self.future_weeks.loc[
+                    self.future_weeks.index[-self.test_weeks:], f"{self.column}_{self.crnn_model_name}"
+                ]
+        ):
+            ci_test_weeks.append(self.crnn_model_ci * (index + 1))
+
+
+        self.future_weeks.loc[
+            self.future_weeks.index[-self.test_weeks:], f"{self.crnn_model_name}_conf_int_lower"
+        ] = self.future_weeks.loc[
+            self.future_weeks.index[-self.test_weeks:], f"{self.column}_{self.crnn_model_name}"
+        ] - ci_test_weeks
+
+        self.future_weeks.loc[
+            self.future_weeks.index[-self.test_weeks:], f"{self.crnn_model_name}_conf_int_upper"
+        ] = self.future_weeks.loc[
+            self.future_weeks.index[-self.test_weeks:], f"{self.column}_{self.crnn_model_name}"
+        ] + ci_test_weeks
+
+        print('crnn preds done')
 
     def run_nn_model(self) -> None:
         self.reset_random_seeds()
@@ -690,6 +1058,16 @@ class Arima:
         self.load_nn_model_weights()
         self.test_nn_models()
         self.get_nn_real_predictions()
+
+    def run_crnn_model(self) -> None:
+        self.reset_random_seeds()
+        self.define_crnn_training_models()
+        if self.train_nn:
+            self.compile_and_fit_crnn_models()
+        # self.compile_and_fit_nn_models()
+        self.load_crnn_model_weights()
+        self.test_crnn_models()
+        self.get_crnn_real_predictions()
 
     def run_arima_model(self) -> None:
 
@@ -779,6 +1157,8 @@ class Arima:
 
         self.run_arima_model()
         self.run_nn_model()
+        self.run_crnn_model()
+        print('yeah')
 
         # self.reverse_logs()
 
@@ -808,6 +1188,7 @@ if __name__ == '__main__':
     display_weeks = config['config']['display_weeks']
     test_weeks = config['config']['test_weeks']
     column = config['config']['column']
+    column_list = config['config']['column_list']
     years = config['config']['years']
     update_data = config['config']['update_data']
     freq = config['config']['freq']
@@ -819,6 +1200,8 @@ if __name__ == '__main__':
     order_gridsearch = config['config']['order_gridsearch']
     neurons_nn = config['config']['neurons_nn']
     regularization_nn = config['config']['regularization_nn']
+    regularization_crnn = config['config']['regularization_crnn']
+    train_val_partition = config['config']['train_val_partition']
 
     arima = Arima(
         ticker=ticker,
@@ -828,6 +1211,7 @@ if __name__ == '__main__':
         test_weeks=test_weeks,
         freq=freq,
         column=column,
+        column_list=column_list,
         years=years,
         update_data=update_data,
         train_arima=train_arima,
@@ -837,6 +1221,8 @@ if __name__ == '__main__':
         order_gridsearch=order_gridsearch,
         neurons_nn=neurons_nn,
         regularization_nn=regularization_nn,
+        regularization_crnn=regularization_crnn,
+        train_val_partition=train_val_partition,
     )
 
     arima.run_pipeline()

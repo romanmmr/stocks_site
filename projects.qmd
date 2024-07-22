@@ -6,4 +6,4 @@ title: "Models & Predictions"
 
 ## Deep Neural Network
 
-## Project 3: Coming soon!
+## LSTM Deep Neural Network

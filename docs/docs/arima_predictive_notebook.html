@@ -148,6 +148,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link" href="../docs/nn_model_predictive_notebook.html"> 
 <span class="menu-text">Deep Neural Network Predictions</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../docs/crnn_model.html"> 
+<span class="menu-text">LSTM Deep Neural Network Model</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../docs/crnn_model_predictive_notebook.html"> 
+<span class="menu-text">LSTM Deep Neural Network Predictions</span></a>
+  </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item dropdown ">
@@ -170,6 +178,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li>
     <a class="dropdown-item" href="../docs/nn_model_predictive_notebook.html">
  <span class="dropdown-text">Neural Network Predictions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../docs/crnn_model.html">
+ <span class="dropdown-text">LSTM Neural Network Model</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../docs/crnn_model_predictive_notebook.html">
+ <span class="dropdown-text">LSTM Neural Network Predictions</span></a>
   </li>  
     </ul>
   </li>
@@ -251,6 +267,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">LSTM Neural Network</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/crnn_model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">LSTM Neural Network Model</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/crnn_model_predictive_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">LSTM Neural Network Predictions</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -288,7 +327,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div id="39755b11-7ee6-4be1-afe7-c7ce5658148f" class="cell" data-execution_count="5">
+<div id="39755b11-7ee6-4be1-afe7-c7ce5658148f" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -302,12 +341,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>We are using values from IBEX ticker values (Spanish stock values) every Friday - Closing</li>
 <li>These are the lates values we used for our analysis.</li>
 </ul>
-<div id="395bae17-6c10-4fee-b6bd-aaad9ffe317c" class="cell" data-execution_count="6">
+<div id="395bae17-6c10-4fee-b6bd-aaad9ffe317c" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>plot_sample_data(path<span class="op">=</span><span class="st">'modelled_fitted_data.csv'</span>, column<span class="op">=</span><span class="st">'Close'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="6">
+<div class="cell-output cell-output-display" data-execution_count="5">
 <div>
 <div>
 
@@ -325,24 +364,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2024-06-14</td>
-<td>10992.3</td>
-</tr>
-<tr class="even">
 <td data-quarto-table-cell-role="th">2024-06-21</td>
 <td>11032.3</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td data-quarto-table-cell-role="th">2024-06-28</td>
 <td>10943.7</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td data-quarto-table-cell-role="th">2024-07-05</td>
 <td>11023.5</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td data-quarto-table-cell-role="th">2024-07-12</td>
 <td>11250.6</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2024-07-19</td>
+<td>11087.5</td>
 </tr>
 </tbody>
 </table>
@@ -357,7 +396,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>We will use our model to make <strong>ACTUAL PREDICTIONS</strong> for 8 weeks in the future.</li>
 </ul>
-<div id="0cf9ec9a-d6a3-4bb4-aeac-0c2b8ae4d83c" class="cell" data-execution_count="7">
+<div id="25dbb020-3058-40c4-8ff2-4be24bbe1dd5" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>plot_predictions(path<span class="op">=</span><span class="st">'predictive_data.csv'</span>, column<span class="op">=</span><span class="st">'Close'</span>, model<span class="op">=</span><span class="st">'arima'</span>, display_weeks<span class="op">=</span><span class="dv">16</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

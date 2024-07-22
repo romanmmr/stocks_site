@@ -18,6 +18,10 @@ website:
         text: Deep Neural Network Model
       - href: docs/nn_model_predictive_notebook.ipynb
         text: Deep Neural Network Predictions
+      - href: docs/crnn_model.ipynb
+        text: LSTM Deep Neural Network Model
+      - href: docs/crnn_model_predictive_notebook.ipynb
+        text: LSTM Deep Neural Network Predictions
     right:
       - text: "Models"
         menu:
@@ -25,6 +29,8 @@ website:
           - docs/arima_predictive_notebook.ipynb
           - docs/nn_model.ipynb
           - docs/nn_model_predictive_notebook.ipynb
+          - docs/crnn_model.ipynb
+          - docs/crnn_model_predictive_notebook.ipynb
     tools:
 #      - icon: twitter
 #        href: https://twitter.com/
@@ -44,6 +50,10 @@ website:
         contents:
           - docs/nn_model.ipynb
           - docs/nn_model_predictive_notebook.ipynb
+      - section: "LSTM Neural Network"
+        contents:
+          - docs/crnn_model.ipynb
+          - docs/crnn_model_predictive_notebook.ipynb
   page-footer:
     right: "Built with [Quarto](https://quarto.org/)"
     left: "&copy; Copyright 2023, Rodrigo Roman"

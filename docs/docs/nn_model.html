@@ -148,6 +148,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link" href="../docs/nn_model_predictive_notebook.html"> 
 <span class="menu-text">Deep Neural Network Predictions</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../docs/crnn_model.html"> 
+<span class="menu-text">LSTM Deep Neural Network Model</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../docs/crnn_model_predictive_notebook.html"> 
+<span class="menu-text">LSTM Deep Neural Network Predictions</span></a>
+  </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item dropdown ">
@@ -170,6 +178,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li>
     <a class="dropdown-item" href="../docs/nn_model_predictive_notebook.html">
  <span class="dropdown-text">Neural Network Predictions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../docs/crnn_model.html">
+ <span class="dropdown-text">LSTM Neural Network Model</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../docs/crnn_model_predictive_notebook.html">
+ <span class="dropdown-text">LSTM Neural Network Predictions</span></a>
   </li>  
     </ul>
   </li>
@@ -251,6 +267,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">LSTM Neural Network</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/crnn_model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">LSTM Neural Network Model</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../docs/crnn_model_predictive_notebook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">LSTM Neural Network Predictions</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -290,7 +329,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div id="931c85e1-bd18-45aa-b81c-a432a0a680d1" class="cell" data-execution_count="8">
+<div id="931c85e1-bd18-45aa-b81c-a432a0a680d1" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -304,12 +343,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>We are using values from IBEX ticker values (Spanish stock values) every Friday - Closing</li>
 <li>These are the lates values we used for our analysis.</li>
 </ul>
-<div id="8d7faf28-a70b-4369-af26-7418593fc163" class="cell" data-execution_count="9">
+<div id="8d7faf28-a70b-4369-af26-7418593fc163" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>plot_sample_data(path<span class="op">=</span><span class="st">'modelled_fitted_data.csv'</span>, column<span class="op">=</span><span class="st">'Close'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="9">
+<div class="cell-output cell-output-display" data-execution_count="7">
 <div>
 <div>
 
@@ -327,24 +366,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2024-06-14</td>
-<td>10992.3</td>
-</tr>
-<tr class="even">
 <td data-quarto-table-cell-role="th">2024-06-21</td>
 <td>11032.3</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td data-quarto-table-cell-role="th">2024-06-28</td>
 <td>10943.7</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td data-quarto-table-cell-role="th">2024-07-05</td>
 <td>11023.5</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td data-quarto-table-cell-role="th">2024-07-12</td>
 <td>11250.6</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2024-07-19</td>
+<td>11087.5</td>
 </tr>
 </tbody>
 </table>
@@ -361,12 +400,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>This means that the model doesn’t know the last 8 values. The hypothetical present of our model is 8 weeks in the past. <br><br></li>
 <li>In that hypothetical present, if we could see the future we would see the last 8 weeks.</li>
 </ol>
-<div id="866fce07-59b4-4a44-a614-48acdafd8b76" class="cell" data-execution_count="10">
+<div id="866fce07-59b4-4a44-a614-48acdafd8b76" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>table_horizontal(path<span class="op">=</span><span class="st">'modelled_fitted_data.csv'</span>, column<span class="op">=</span><span class="st">'Close'</span>, display_weeks<span class="op">=</span><span class="dv">16</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="10">
+<div class="cell-output cell-output-display" data-execution_count="8">
 <div>
 <div>
 
@@ -375,7 +414,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">Date</th>
-<th data-quarto-table-cell-role="th">2024-03-29</th>
 <th data-quarto-table-cell-role="th">2024-04-05</th>
 <th data-quarto-table-cell-role="th">2024-04-12</th>
 <th data-quarto-table-cell-role="th">2024-04-19</th>
@@ -391,12 +429,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <th data-quarto-table-cell-role="th">2024-06-28</th>
 <th data-quarto-table-cell-role="th">2024-07-05</th>
 <th data-quarto-table-cell-role="th">2024-07-12</th>
+<th data-quarto-table-cell-role="th">2024-07-19</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">if we knew the future</td>
-<td>11074.6</td>
 <td>10916.0</td>
 <td>10686.0</td>
 <td>10729.5</td>
@@ -412,10 +450,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>10943.7</td>
 <td>11023.5</td>
 <td>11250.6</td>
+<td>11087.5</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">hypothetical present</td>
-<td>11074.6</td>
 <td>10916.0</td>
 <td>10686.0</td>
 <td>10729.5</td>
@@ -423,6 +461,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>10854.7</td>
 <td>11105.5</td>
 <td>11327.7</td>
+<td>11246.0</td>
 <td>?</td>
 <td>?</td>
 <td>?</td>
@@ -443,7 +482,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="plot-real-vales-vs-model-output-and-confidence-intervals" class="level2">
 <h2 class="anchored" data-anchor-id="plot-real-vales-vs-model-output-and-confidence-intervals">Plot real vales vs model output and confidence intervals</h2>
 <p>This is a plot of the real values (in blue) and the model output (in green) and the confident intervals (in red)</p>
-<div id="9551f8ba-7de0-44ec-a250-dc733ad56215" class="cell" data-execution_count="11">
+<div id="bbf10249-7fb5-4d02-8468-09c898ecc6da" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>plot_fit_and_forecast(path<span class="op">=</span><span class="st">'modelled_fitted_data.csv'</span>, column<span class="op">=</span><span class="st">'Close'</span>, model<span class="op">=</span><span class="st">'nn_model'</span>,  display_weeks<span class="op">=</span><span class="dv">16</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -460,7 +499,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="further-details-on-the-model" class="level2">
 <h2 class="anchored" data-anchor-id="further-details-on-the-model">Further details on the model</h2>
 <p>This is a plot of training loss - mae (in blue) and validation loss - mae (in red) with epochs</p>
-<div id="806c839f-40a7-43a1-90f2-7d18f631c4de" class="cell" data-execution_count="12">
+<div id="e3c0e629-8780-448c-87e6-acbe89d068ca" class="cell" data-execution_count="10">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>plot_nn_loss(path<span class="op">=</span><span class="st">'nn_checkpoint/history.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
