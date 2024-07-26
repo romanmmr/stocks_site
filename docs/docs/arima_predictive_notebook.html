@@ -327,7 +327,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div id="39755b11-7ee6-4be1-afe7-c7ce5658148f" class="cell" data-execution_count="4">
+<div id="39755b11-7ee6-4be1-afe7-c7ce5658148f" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -341,12 +341,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>We are using values from IBEX ticker values (Spanish stock values) every Friday - Closing</li>
 <li>These are the lates values we used for our analysis.</li>
 </ul>
-<div id="395bae17-6c10-4fee-b6bd-aaad9ffe317c" class="cell" data-execution_count="5">
+<div id="395bae17-6c10-4fee-b6bd-aaad9ffe317c" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>plot_sample_data(path<span class="op">=</span><span class="st">'modelled_fitted_data.csv'</span>, column<span class="op">=</span><span class="st">'Close'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="2">
 <div>
 <div>
 
@@ -364,24 +364,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2024-06-21</td>
-<td>11032.3</td>
-</tr>
-<tr class="even">
 <td data-quarto-table-cell-role="th">2024-06-28</td>
 <td>10943.7</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td data-quarto-table-cell-role="th">2024-07-05</td>
 <td>11023.5</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td data-quarto-table-cell-role="th">2024-07-12</td>
 <td>11250.6</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td data-quarto-table-cell-role="th">2024-07-19</td>
 <td>11087.5</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2024-07-26</td>
+<td>11165.9</td>
 </tr>
 </tbody>
 </table>
@@ -396,7 +396,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>We will use our model to make <strong>ACTUAL PREDICTIONS</strong> for 8 weeks in the future.</li>
 </ul>
-<div id="25dbb020-3058-40c4-8ff2-4be24bbe1dd5" class="cell" data-execution_count="6">
+<div id="25dbb020-3058-40c4-8ff2-4be24bbe1dd5" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>plot_predictions(path<span class="op">=</span><span class="st">'predictive_data.csv'</span>, column<span class="op">=</span><span class="st">'Close'</span>, model<span class="op">=</span><span class="st">'arima'</span>, display_weeks<span class="op">=</span><span class="dv">16</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
