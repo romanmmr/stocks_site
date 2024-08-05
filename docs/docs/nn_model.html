@@ -366,24 +366,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2024-06-28</td>
-<td>10943.7</td>
-</tr>
-<tr class="even">
 <td data-quarto-table-cell-role="th">2024-07-05</td>
 <td>11023.5</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td data-quarto-table-cell-role="th">2024-07-12</td>
 <td>11250.6</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td data-quarto-table-cell-role="th">2024-07-19</td>
 <td>11087.5</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td data-quarto-table-cell-role="th">2024-07-26</td>
 <td>11165.9</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2024-08-02</td>
+<td>10672.9</td>
 </tr>
 </tbody>
 </table>
@@ -414,7 +414,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">Date</th>
-<th data-quarto-table-cell-role="th">2024-04-12</th>
 <th data-quarto-table-cell-role="th">2024-04-19</th>
 <th data-quarto-table-cell-role="th">2024-04-26</th>
 <th data-quarto-table-cell-role="th">2024-05-03</th>
@@ -430,12 +429,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <th data-quarto-table-cell-role="th">2024-07-12</th>
 <th data-quarto-table-cell-role="th">2024-07-19</th>
 <th data-quarto-table-cell-role="th">2024-07-26</th>
+<th data-quarto-table-cell-role="th">2024-08-02</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">if we knew the future</td>
-<td>10686.0</td>
 <td>10729.5</td>
 <td>11154.6</td>
 <td>10854.7</td>
@@ -451,10 +450,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>11250.6</td>
 <td>11087.5</td>
 <td>11165.9</td>
+<td>10672.9</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">hypothetical present</td>
-<td>10686.0</td>
 <td>10729.5</td>
 <td>11154.6</td>
 <td>10854.7</td>
@@ -462,6 +461,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>11327.7</td>
 <td>11246.0</td>
 <td>11322.0</td>
+<td>11404.9</td>
 <td>?</td>
 <td>?</td>
 <td>?</td>
@@ -482,7 +482,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="plot-real-vales-vs-model-output-and-confidence-intervals" class="level2">
 <h2 class="anchored" data-anchor-id="plot-real-vales-vs-model-output-and-confidence-intervals">Plot real vales vs model output and confidence intervals</h2>
 <p>This is a plot of the real values (in blue) and the model output (in green) and the confident intervals (in red)</p>
-<div id="bbf10249-7fb5-4d02-8468-09c898ecc6da" class="cell" data-execution_count="4">
+<div id="205cff8d-a69e-4595-b2b2-a67a8d57e82a" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>plot_fit_and_forecast(path<span class="op">=</span><span class="st">'modelled_fitted_data.csv'</span>, column<span class="op">=</span><span class="st">'Close'</span>, model<span class="op">=</span><span class="st">'nn_model'</span>,  display_weeks<span class="op">=</span><span class="dv">16</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -499,7 +499,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="further-details-on-the-model" class="level2">
 <h2 class="anchored" data-anchor-id="further-details-on-the-model">Further details on the model</h2>
 <p>This is a plot of training loss - mae (in blue) and validation loss - mae (in red) with epochs</p>
-<div id="e3c0e629-8780-448c-87e6-acbe89d068ca" class="cell" data-execution_count="5">
+<div id="2541e2e0-8737-4478-a7ad-10fa72c237f2" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>plot_nn_loss(path<span class="op">=</span><span class="st">'nn_checkpoint/history.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
