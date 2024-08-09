@@ -37,7 +37,7 @@ class Arima:
             train_arima: bool,
             train_nn: bool,
             weeks_nn: int,
-            alfa_ci: float,
+            alpha_ci: float,
             order_gridsearch: list,
             neurons_nn: list,
             regularization_nn: float,
@@ -71,7 +71,7 @@ class Arima:
         self.train_arima = train_arima
         self.train_nn = train_nn
         self.weeks_nn = weeks_nn
-        self.alfa_ci = alfa_ci
+        self.alpha_ci = alpha_ci
         self.order_gridsearch = order_gridsearch
         self.neurons_nn = neurons_nn
         self.regularization_nn = regularization_nn
@@ -678,7 +678,7 @@ class Arima:
         residuals = (self.modelling_data.loc[train_idx_nn, f"{self.column}_{self.nn_model_name}"] -
                      self.modelling_data.loc[train_idx_nn, f"{self.nn_model_name}_output"])
 
-        self.nn_model_ci = np.quantile(residuals, 1 - self.alfa_ci)
+        self.nn_model_ci = np.quantile(residuals, 1 - self.alpha_ci)
 
         ci_test_weeks = []
 
@@ -964,7 +964,7 @@ class Arima:
         residuals = (self.modelling_data.loc[train_idx_nn, f"{self.column}_{self.crnn_model_name}"] -
                      self.modelling_data.loc[train_idx_nn, f"{self.crnn_model_name}_output"])
 
-        self.crnn_model_ci = np.quantile(residuals, 1 - self.alfa_ci)
+        self.crnn_model_ci = np.quantile(residuals, 1 - self.alpha_ci)
 
         ci_test_weeks = []
 
@@ -1196,7 +1196,7 @@ if __name__ == '__main__':
     train_arima = config['config']['train_arima']
     train_nn = config['config']['train_nn']
     weeks_nn = config['config']['weeks_nn']
-    alfa_ci = config['config']['alfa_ci']
+    alpha_ci = config['config']['alpha_ci']
     order_gridsearch = config['config']['order_gridsearch']
     neurons_nn = config['config']['neurons_nn']
     regularization_nn = config['config']['regularization_nn']
@@ -1217,7 +1217,7 @@ if __name__ == '__main__':
         train_arima=train_arima,
         train_nn=train_nn,
         weeks_nn=weeks_nn,
-        alfa_ci=alfa_ci,
+        alpha_ci=alpha_ci,
         order_gridsearch=order_gridsearch,
         neurons_nn=neurons_nn,
         regularization_nn=regularization_nn,
