@@ -38,22 +38,22 @@ website:
         href: https://github.com/romanmmr/stocks_site
   # Comment following section (sidebar) to render index (quarto render index.qmd) ALWAYS FIRST! -
   # Uncomment following section to render rest (quarto render projects.qmd, quarto render docs/arima_model.ipynb, ...)
-#  sidebar:
-#    style: "docked"
-#    search: True
-#    contents:
-#      - section: "Arima"
-#        contents:
-#          - docs/arima_model.ipynb
-#          - docs/arima_predictive_notebook.ipynb
-#      - section: "Neural Network"
-#        contents:
-#          - docs/nn_model.ipynb
-#          - docs/nn_model_predictive_notebook.ipynb
-#      - section: "LSTM Neural Network"
-#        contents:
-#          - docs/crnn_model.ipynb
-#          - docs/crnn_model_predictive_notebook.ipynb
+  sidebar:
+    style: "docked"
+    search: True
+    contents:
+      - section: "Arima"
+        contents:
+          - docs/arima_model.ipynb
+          - docs/arima_predictive_notebook.ipynb
+      - section: "Neural Network"
+        contents:
+          - docs/nn_model.ipynb
+          - docs/nn_model_predictive_notebook.ipynb
+      - section: "LSTM Neural Network"
+        contents:
+          - docs/crnn_model.ipynb
+          - docs/crnn_model_predictive_notebook.ipynb
   page-footer:
     right: "Built with [Quarto](https://quarto.org/)"
     left: "&copy; Copyright 2023, Rodrigo Roman"
