@@ -81,84 +81,49 @@
     "href": "docs/arima_model.html",
     "title": "Arima Model",
     "section": "",
-    "text": "Code\nimport pandas as pd\nimport matplotlib.pyplot as plt\nfrom display_data import plot_fit_and_forecast, table_horizontal, plot_sample_data",
-    "crumbs": [
-      "Home",
-      "Arima",
-      "Arima Model"
-    ]
+    "text": "Code\nimport pandas as pd\nimport matplotlib.pyplot as plt\nfrom display_data import plot_fit_and_forecast, table_horizontal, plot_sample_data"
   },
   {
     "objectID": "docs/arima_model.html#latest-stock-values-for-analysis",
     "href": "docs/arima_model.html#latest-stock-values-for-analysis",
     "title": "Arima Model",
     "section": "Latest stock values for analysis",
-    "text": "Latest stock values for analysis\n\nWe are using values from IBEX ticker values (Spanish stock values) every Friday - Closing\nThese are the lates values we used for our analysis.\n\n\n\nCode\nplot_sample_data(path='modelled_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-08-30\n11401.9\n\n\n2024-09-06\n11173.0\n\n\n2024-09-13\n11540.2\n\n\n2024-09-20\n11753.3\n\n\n2024-09-27\n11967.9",
-    "crumbs": [
-      "Home",
-      "Arima",
-      "Arima Model"
-    ]
+    "text": "Latest stock values for analysis\n\nWe are using values from IBEX ticker values (Spanish stock values) every Friday - Closing\nThese are the lates values we used for our analysis.\n\n\n\nCode\nplot_sample_data(path='modelled_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-09-06\n11173.0\n\n\n2024-09-13\n11540.2\n\n\n2024-09-20\n11753.3\n\n\n2024-09-27\n11967.9\n\n\n2024-10-04\n11659.2"
   },
   {
     "objectID": "docs/arima_model.html#test-over-last-8-weeks",
     "href": "docs/arima_model.html#test-over-last-8-weeks",
     "title": "Arima Model",
     "section": "Test over last 8 weeks",
-    "text": "Test over last 8 weeks\n\nWe keep data from last 8 weeks ‘unseen’ by our arima model. \nThis means that the model doesn’t know the last 8 values. The hypothetical present of our model is 8 weeks in the past. \nIn that hypothetical present, if we could see the future we would see the last 8 weeks.\n\n\n\nCode\ntable_horizontal(path='modelled_fitted_data.csv', column='Close', display_weeks=16)\n\n\n\n\n\n\n\n\n\nDate\n2024-06-14\n2024-06-21\n2024-06-28\n2024-07-05\n2024-07-12\n2024-07-19\n2024-07-26\n2024-08-02\n2024-08-09\n2024-08-16\n2024-08-23\n2024-08-30\n2024-09-06\n2024-09-13\n2024-09-20\n2024-09-27\n\n\n\n\nif we knew the future\n10992.3\n11032.3\n10943.7\n11023.5\n11250.6\n11087.5\n11165.9\n10672.9\n10638.5\n10949.7\n11278.1\n11401.9\n11173.0\n11540.2\n11753.3\n11967.9\n\n\nhypothetical present\n10992.3\n11032.3\n10943.7\n11023.5\n11250.6\n11087.5\n11165.9\n10672.9\n?\n?\n?\n?\n?\n?\n?\n?",
-    "crumbs": [
-      "Home",
-      "Arima",
-      "Arima Model"
-    ]
+    "text": "Test over last 8 weeks\n\nWe keep data from last 8 weeks ‘unseen’ by our arima model. \nThis means that the model doesn’t know the last 8 values. The hypothetical present of our model is 8 weeks in the past. \nIn that hypothetical present, if we could see the future we would see the last 8 weeks.\n\n\n\nCode\ntable_horizontal(path='modelled_fitted_data.csv', column='Close', display_weeks=16)\n\n\n\n\n\n\n\n\n\nDate\n2024-06-21\n2024-06-28\n2024-07-05\n2024-07-12\n2024-07-19\n2024-07-26\n2024-08-02\n2024-08-09\n2024-08-16\n2024-08-23\n2024-08-30\n2024-09-06\n2024-09-13\n2024-09-20\n2024-09-27\n2024-10-04\n\n\n\n\nif we knew the future\n11032.3\n10943.7\n11023.5\n11250.6\n11087.5\n11165.9\n10672.9\n10638.5\n10949.7\n11278.1\n11401.9\n11173.0\n11540.2\n11753.3\n11967.9\n11659.2\n\n\nhypothetical present\n11032.3\n10943.7\n11023.5\n11250.6\n11087.5\n11165.9\n10672.9\n10638.5\n?\n?\n?\n?\n?\n?\n?\n?"
   },
   {
     "objectID": "docs/arima_model.html#plot-real-vales-vs-model-output-and-confidence-intervals",
     "href": "docs/arima_model.html#plot-real-vales-vs-model-output-and-confidence-intervals",
     "title": "Arima Model",
     "section": "Plot real vales vs model output and confidence intervals",
-    "text": "Plot real vales vs model output and confidence intervals\nThis is a plot of the real values (in blue) and the model output (in green) and the confident intervals (in red)\n\n\nCode\nplot_fit_and_forecast(path='modelled_fitted_data.csv', column='Close', model='arima',  display_weeks=16)",
-    "crumbs": [
-      "Home",
-      "Arima",
-      "Arima Model"
-    ]
+    "text": "Plot real vales vs model output and confidence intervals\nThis is a plot of the real values (in blue) and the model output (in green) and the confident intervals (in red)\n\n\nCode\nplot_fit_and_forecast(path='modelled_fitted_data.csv', column='Close', model='arima',  display_weeks=16)"
   },
   {
     "objectID": "docs/arima_predictive_notebook.html",
     "href": "docs/arima_predictive_notebook.html",
     "title": "Arima Predictions",
     "section": "",
-    "text": "Code\nimport pandas as pd\nimport matplotlib.pyplot as plt\nfrom display_data import plot_fit_and_forecast, table_horizontal, plot_sample_data, plot_predictions",
-    "crumbs": [
-      "Home",
-      "Arima",
-      "Arima Predictions"
-    ]
+    "text": "Code\nimport pandas as pd\nimport matplotlib.pyplot as plt\nfrom display_data import plot_fit_and_forecast, table_horizontal, plot_sample_data, plot_predictions"
   },
   {
     "objectID": "docs/arima_predictive_notebook.html#latest-stock-values-for-analysis",
     "href": "docs/arima_predictive_notebook.html#latest-stock-values-for-analysis",
     "title": "Arima Predictions",
     "section": "Latest stock values for analysis",
-    "text": "Latest stock values for analysis\n\nWe are using values from IBEX ticker values (Spanish stock values) every Friday - Closing\nThese are the lates values we used for our analysis.\n\n\n\nCode\nplot_sample_data(path='modelled_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-08-30\n11401.9\n\n\n2024-09-06\n11173.0\n\n\n2024-09-13\n11540.2\n\n\n2024-09-20\n11753.3\n\n\n2024-09-27\n11967.9",
-    "crumbs": [
-      "Home",
-      "Arima",
-      "Arima Predictions"
-    ]
+    "text": "Latest stock values for analysis\n\nWe are using values from IBEX ticker values (Spanish stock values) every Friday - Closing\nThese are the lates values we used for our analysis.\n\n\n\nCode\nplot_sample_data(path='modelled_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-09-06\n11173.0\n\n\n2024-09-13\n11540.2\n\n\n2024-09-20\n11753.3\n\n\n2024-09-27\n11967.9\n\n\n2024-10-04\n11659.2"
   },
   {
     "objectID": "docs/arima_predictive_notebook.html#predictions-over-future-8-weeks",
     "href": "docs/arima_predictive_notebook.html#predictions-over-future-8-weeks",
     "title": "Arima Predictions",
     "section": "Predictions over future 8 weeks",
-    "text": "Predictions over future 8 weeks\n\nWe will use our model to make ACTUAL PREDICTIONS for 8 weeks in the future.\n\n\n\nCode\nplot_predictions(path='predictive_data.csv', column='Close', model='arima', display_weeks=16)",
-    "crumbs": [
-      "Home",
-      "Arima",
-      "Arima Predictions"
-    ]
+    "text": "Predictions over future 8 weeks\n\nWe will use our model to make ACTUAL PREDICTIONS for 8 weeks in the future.\n\n\n\nCode\nplot_predictions(path='predictive_data.csv', column='Close', model='arima', display_weeks=16)"
   },
   {
     "objectID": "index.html#important",
@@ -179,96 +144,56 @@
     "href": "docs/nn_model.html",
     "title": "Neural Network Model",
     "section": "",
-    "text": "Code\nimport pandas as pd\nimport matplotlib.pyplot as plt\nfrom display_data import plot_fit_and_forecast, table_horizontal, plot_sample_data, plot_nn_loss",
-    "crumbs": [
-      "Home",
-      "Neural Network",
-      "Neural Network Model"
-    ]
+    "text": "Code\nimport pandas as pd\nimport matplotlib.pyplot as plt\nfrom display_data import plot_fit_and_forecast, table_horizontal, plot_sample_data, plot_nn_loss"
   },
   {
     "objectID": "docs/nn_model.html#latest-stock-values-for-analysis",
     "href": "docs/nn_model.html#latest-stock-values-for-analysis",
     "title": "Neural Network Model",
     "section": "Latest stock values for analysis",
-    "text": "Latest stock values for analysis\n\nWe are using values from IBEX ticker values (Spanish stock values) every Friday - Closing\nThese are the lates values we used for our analysis.\n\n\n\nCode\nplot_sample_data(path='modelled_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-08-30\n11401.9\n\n\n2024-09-06\n11173.0\n\n\n2024-09-13\n11540.2\n\n\n2024-09-20\n11753.3\n\n\n2024-09-27\n11967.9",
-    "crumbs": [
-      "Home",
-      "Neural Network",
-      "Neural Network Model"
-    ]
+    "text": "Latest stock values for analysis\n\nWe are using values from IBEX ticker values (Spanish stock values) every Friday - Closing\nThese are the lates values we used for our analysis.\n\n\n\nCode\nplot_sample_data(path='modelled_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-09-06\n11173.0\n\n\n2024-09-13\n11540.2\n\n\n2024-09-20\n11753.3\n\n\n2024-09-27\n11967.9\n\n\n2024-10-04\n11659.2"
   },
   {
     "objectID": "docs/nn_model.html#test-over-last-8-weeks",
     "href": "docs/nn_model.html#test-over-last-8-weeks",
     "title": "Neural Network Model",
     "section": "Test over last 8 weeks",
-    "text": "Test over last 8 weeks\n\nWe keep data from last 8 weeks ‘unseen’ by our arima model. \nThis means that the model doesn’t know the last 8 values. The hypothetical present of our model is 8 weeks in the past. \nIn that hypothetical present, if we could see the future we would see the last 8 weeks.\n\n\n\nCode\ntable_horizontal(path='modelled_fitted_data.csv', column='Close', display_weeks=16)\n\n\n\n\n\n\n\n\n\nDate\n2024-06-14\n2024-06-21\n2024-06-28\n2024-07-05\n2024-07-12\n2024-07-19\n2024-07-26\n2024-08-02\n2024-08-09\n2024-08-16\n2024-08-23\n2024-08-30\n2024-09-06\n2024-09-13\n2024-09-20\n2024-09-27\n\n\n\n\nif we knew the future\n10992.3\n11032.3\n10943.7\n11023.5\n11250.6\n11087.5\n11165.9\n10672.9\n10638.5\n10949.7\n11278.1\n11401.9\n11173.0\n11540.2\n11753.3\n11967.9\n\n\nhypothetical present\n10992.3\n11032.3\n10943.7\n11023.5\n11250.6\n11087.5\n11165.9\n10672.9\n?\n?\n?\n?\n?\n?\n?\n?",
-    "crumbs": [
-      "Home",
-      "Neural Network",
-      "Neural Network Model"
-    ]
+    "text": "Test over last 8 weeks\n\nWe keep data from last 8 weeks ‘unseen’ by our arima model. \nThis means that the model doesn’t know the last 8 values. The hypothetical present of our model is 8 weeks in the past. \nIn that hypothetical present, if we could see the future we would see the last 8 weeks.\n\n\n\nCode\ntable_horizontal(path='modelled_fitted_data.csv', column='Close', display_weeks=16)\n\n\n\n\n\n\n\n\n\nDate\n2024-06-21\n2024-06-28\n2024-07-05\n2024-07-12\n2024-07-19\n2024-07-26\n2024-08-02\n2024-08-09\n2024-08-16\n2024-08-23\n2024-08-30\n2024-09-06\n2024-09-13\n2024-09-20\n2024-09-27\n2024-10-04\n\n\n\n\nif we knew the future\n11032.3\n10943.7\n11023.5\n11250.6\n11087.5\n11165.9\n10672.9\n10638.5\n10949.7\n11278.1\n11401.9\n11173.0\n11540.2\n11753.3\n11967.9\n11659.2\n\n\nhypothetical present\n11032.3\n10943.7\n11023.5\n11250.6\n11087.5\n11165.9\n10672.9\n10638.5\n?\n?\n?\n?\n?\n?\n?\n?"
   },
   {
     "objectID": "docs/nn_model.html#plot-real-vales-vs-model-output-and-confidence-intervals",
     "href": "docs/nn_model.html#plot-real-vales-vs-model-output-and-confidence-intervals",
     "title": "Neural Network Model",
     "section": "Plot real vales vs model output and confidence intervals",
-    "text": "Plot real vales vs model output and confidence intervals\nThis is a plot of the real values (in blue) and the model output (in green) and the confident intervals (in red)\n\n\nCode\nplot_fit_and_forecast(path='modelled_fitted_data.csv', column='Close', model='nn_model',  display_weeks=16)",
-    "crumbs": [
-      "Home",
-      "Neural Network",
-      "Neural Network Model"
-    ]
+    "text": "Plot real vales vs model output and confidence intervals\nThis is a plot of the real values (in blue) and the model output (in green) and the confident intervals (in red)\n\n\nCode\nplot_fit_and_forecast(path='modelled_fitted_data.csv', column='Close', model='nn_model',  display_weeks=16)"
   },
   {
     "objectID": "docs/nn_model.html#further-details-on-the-model",
     "href": "docs/nn_model.html#further-details-on-the-model",
     "title": "Neural Network Model",
     "section": "Further details on the model",
-    "text": "Further details on the model\nThis is a plot of training loss - mae (in blue) and validation loss - mae (in red) with epochs\n\n\nCode\nplot_nn_loss(path='nn_checkpoint/history.csv')",
-    "crumbs": [
-      "Home",
-      "Neural Network",
-      "Neural Network Model"
-    ]
+    "text": "Further details on the model\nThis is a plot of training loss - mae (in blue) and validation loss - mae (in red) with epochs\n\n\nCode\nplot_nn_loss(path='nn_checkpoint/history.csv')"
   },
   {
     "objectID": "docs/nn_model_predictive_notebook.html",
     "href": "docs/nn_model_predictive_notebook.html",
     "title": "Neural Network Predictions",
     "section": "",
-    "text": "Code\nimport pandas as pd\nimport matplotlib.pyplot as plt\nfrom display_data import plot_fit_and_forecast, table_horizontal, plot_sample_data, plot_predictions",
-    "crumbs": [
-      "Home",
-      "Neural Network",
-      "Neural Network Predictions"
-    ]
+    "text": "Code\nimport pandas as pd\nimport matplotlib.pyplot as plt\nfrom display_data import plot_fit_and_forecast, table_horizontal, plot_sample_data, plot_predictions"
   },
   {
     "objectID": "docs/nn_model_predictive_notebook.html#latest-stock-values-for-analysis",
     "href": "docs/nn_model_predictive_notebook.html#latest-stock-values-for-analysis",
     "title": "Neural Network Predictions",
     "section": "Latest stock values for analysis",
-    "text": "Latest stock values for analysis\n\nWe are using values from IBEX ticker values (Spanish stock values) every Friday - Closing\nThese are the lates values we used for our analysis.\n\n\n\nCode\nplot_sample_data(path='modelled_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-08-30\n11401.9\n\n\n2024-09-06\n11173.0\n\n\n2024-09-13\n11540.2\n\n\n2024-09-20\n11753.3\n\n\n2024-09-27\n11967.9",
-    "crumbs": [
-      "Home",
-      "Neural Network",
-      "Neural Network Predictions"
-    ]
+    "text": "Latest stock values for analysis\n\nWe are using values from IBEX ticker values (Spanish stock values) every Friday - Closing\nThese are the lates values we used for our analysis.\n\n\n\nCode\nplot_sample_data(path='modelled_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-09-06\n11173.0\n\n\n2024-09-13\n11540.2\n\n\n2024-09-20\n11753.3\n\n\n2024-09-27\n11967.9\n\n\n2024-10-04\n11659.2"
   },
   {
     "objectID": "docs/nn_model_predictive_notebook.html#predictions-over-future-8-weeks",
     "href": "docs/nn_model_predictive_notebook.html#predictions-over-future-8-weeks",
     "title": "Neural Network Predictions",
     "section": "Predictions over future 8 weeks",
-    "text": "Predictions over future 8 weeks\n\nWe will use our model to make ACTUAL PREDICTIONS for 8 weeks in the future.\n\n\n\nCode\nplot_predictions(path='predictive_data.csv', column='Close', model='nn_model', display_weeks=16)",
-    "crumbs": [
-      "Home",
-      "Neural Network",
-      "Neural Network Predictions"
-    ]
+    "text": "Predictions over future 8 weeks\n\nWe will use our model to make ACTUAL PREDICTIONS for 8 weeks in the future.\n\n\n\nCode\nplot_predictions(path='predictive_data.csv', column='Close', model='nn_model', display_weeks=16)"
   },
   {
     "objectID": "projects.html#deep-neural-network",
@@ -296,96 +221,56 @@
     "href": "docs/crnn_model.html",
     "title": "LSTM Neural Network Model",
     "section": "",
-    "text": "Code\nimport pandas as pd\nimport matplotlib.pyplot as plt\nfrom display_data import plot_fit_and_forecast, table_horizontal, plot_sample_data, plot_nn_loss",
-    "crumbs": [
-      "Home",
-      "LSTM Neural Network",
-      "LSTM Neural Network Model"
-    ]
+    "text": "Code\nimport pandas as pd\nimport matplotlib.pyplot as plt\nfrom display_data import plot_fit_and_forecast, table_horizontal, plot_sample_data, plot_nn_loss"
   },
   {
     "objectID": "docs/crnn_model.html#latest-stock-values-for-analysis",
     "href": "docs/crnn_model.html#latest-stock-values-for-analysis",
     "title": "LSTM Neural Network Model",
     "section": "Latest stock values for analysis",
-    "text": "Latest stock values for analysis\n\nWe are using values from IBEX ticker values (Spanish stock values) every Friday - Closing\nThese are the lates values we used for our analysis.\n\n\n\nCode\nplot_sample_data(path='modelled_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-08-30\n11401.9\n\n\n2024-09-06\n11173.0\n\n\n2024-09-13\n11540.2\n\n\n2024-09-20\n11753.3\n\n\n2024-09-27\n11967.9",
-    "crumbs": [
-      "Home",
-      "LSTM Neural Network",
-      "LSTM Neural Network Model"
-    ]
+    "text": "Latest stock values for analysis\n\nWe are using values from IBEX ticker values (Spanish stock values) every Friday - Closing\nThese are the lates values we used for our analysis.\n\n\n\nCode\nplot_sample_data(path='modelled_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-09-06\n11173.0\n\n\n2024-09-13\n11540.2\n\n\n2024-09-20\n11753.3\n\n\n2024-09-27\n11967.9\n\n\n2024-10-04\n11659.2"
   },
   {
     "objectID": "docs/crnn_model.html#test-over-last-8-weeks",
     "href": "docs/crnn_model.html#test-over-last-8-weeks",
     "title": "LSTM Neural Network Model",
     "section": "Test over last 8 weeks",
-    "text": "Test over last 8 weeks\n\nWe keep data from last 8 weeks ‘unseen’ by our arima model. \nThis means that the model doesn’t know the last 8 values. The hypothetical present of our model is 8 weeks in the past. \nIn that hypothetical present, if we could see the future we would see the last 8 weeks.\n\n\n\nCode\ntable_horizontal(path='modelled_fitted_data.csv', column='Close', display_weeks=16)\n\n\n\n\n\n\n\n\n\nDate\n2024-06-14\n2024-06-21\n2024-06-28\n2024-07-05\n2024-07-12\n2024-07-19\n2024-07-26\n2024-08-02\n2024-08-09\n2024-08-16\n2024-08-23\n2024-08-30\n2024-09-06\n2024-09-13\n2024-09-20\n2024-09-27\n\n\n\n\nif we knew the future\n10992.3\n11032.3\n10943.7\n11023.5\n11250.6\n11087.5\n11165.9\n10672.9\n10638.5\n10949.7\n11278.1\n11401.9\n11173.0\n11540.2\n11753.3\n11967.9\n\n\nhypothetical present\n10992.3\n11032.3\n10943.7\n11023.5\n11250.6\n11087.5\n11165.9\n10672.9\n?\n?\n?\n?\n?\n?\n?\n?",
-    "crumbs": [
-      "Home",
-      "LSTM Neural Network",
-      "LSTM Neural Network Model"
-    ]
+    "text": "Test over last 8 weeks\n\nWe keep data from last 8 weeks ‘unseen’ by our arima model. \nThis means that the model doesn’t know the last 8 values. The hypothetical present of our model is 8 weeks in the past. \nIn that hypothetical present, if we could see the future we would see the last 8 weeks.\n\n\n\nCode\ntable_horizontal(path='modelled_fitted_data.csv', column='Close', display_weeks=16)\n\n\n\n\n\n\n\n\n\nDate\n2024-06-21\n2024-06-28\n2024-07-05\n2024-07-12\n2024-07-19\n2024-07-26\n2024-08-02\n2024-08-09\n2024-08-16\n2024-08-23\n2024-08-30\n2024-09-06\n2024-09-13\n2024-09-20\n2024-09-27\n2024-10-04\n\n\n\n\nif we knew the future\n11032.3\n10943.7\n11023.5\n11250.6\n11087.5\n11165.9\n10672.9\n10638.5\n10949.7\n11278.1\n11401.9\n11173.0\n11540.2\n11753.3\n11967.9\n11659.2\n\n\nhypothetical present\n11032.3\n10943.7\n11023.5\n11250.6\n11087.5\n11165.9\n10672.9\n10638.5\n?\n?\n?\n?\n?\n?\n?\n?"
   },
   {
     "objectID": "docs/crnn_model.html#plot-real-vales-vs-model-output-and-confidence-intervals",
     "href": "docs/crnn_model.html#plot-real-vales-vs-model-output-and-confidence-intervals",
     "title": "LSTM Neural Network Model",
     "section": "Plot real vales vs model output and confidence intervals",
-    "text": "Plot real vales vs model output and confidence intervals\nThis is a plot of the real values (in blue) and the model output (in green) and the confident intervals (in red)\n\n\nCode\nplot_fit_and_forecast(path='modelled_fitted_data.csv', column='Close', model='crnn_model',  display_weeks=16)",
-    "crumbs": [
-      "Home",
-      "LSTM Neural Network",
-      "LSTM Neural Network Model"
-    ]
+    "text": "Plot real vales vs model output and confidence intervals\nThis is a plot of the real values (in blue) and the model output (in green) and the confident intervals (in red)\n\n\nCode\nplot_fit_and_forecast(path='modelled_fitted_data.csv', column='Close', model='crnn_model',  display_weeks=16)"
   },
   {
     "objectID": "docs/crnn_model.html#further-details-on-the-model",
     "href": "docs/crnn_model.html#further-details-on-the-model",
     "title": "LSTM Neural Network Model",
     "section": "Further details on the model",
-    "text": "Further details on the model\nThis is a plot of training loss - mae (in blue) and validation loss - mae (in red) with epochs\n\n\nCode\nplot_nn_loss(path='crnn_checkpoint/history.csv')",
-    "crumbs": [
-      "Home",
-      "LSTM Neural Network",
-      "LSTM Neural Network Model"
-    ]
+    "text": "Further details on the model\nThis is a plot of training loss - mae (in blue) and validation loss - mae (in red) with epochs\n\n\nCode\nplot_nn_loss(path='crnn_checkpoint/history.csv')"
   },
   {
     "objectID": "docs/crnn_model_predictive_notebook.html",
     "href": "docs/crnn_model_predictive_notebook.html",
     "title": "LSTM Neural Network Predictions",
     "section": "",
-    "text": "Code\nimport pandas as pd\nimport matplotlib.pyplot as plt\nfrom display_data import plot_fit_and_forecast, table_horizontal, plot_sample_data, plot_predictions",
-    "crumbs": [
-      "Home",
-      "LSTM Neural Network",
-      "LSTM Neural Network Predictions"
-    ]
+    "text": "Code\nimport pandas as pd\nimport matplotlib.pyplot as plt\nfrom display_data import plot_fit_and_forecast, table_horizontal, plot_sample_data, plot_predictions"
   },
   {
     "objectID": "docs/crnn_model_predictive_notebook.html#latest-stock-values-for-analysis",
     "href": "docs/crnn_model_predictive_notebook.html#latest-stock-values-for-analysis",
     "title": "LSTM Neural Network Predictions",
     "section": "Latest stock values for analysis",
-    "text": "Latest stock values for analysis\n\nWe are using values from IBEX ticker values (Spanish stock values) every Friday - Closing\nThese are the lates values we used for our analysis.\n\n\n\nCode\nplot_sample_data(path='modelled_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-08-30\n11401.9\n\n\n2024-09-06\n11173.0\n\n\n2024-09-13\n11540.2\n\n\n2024-09-20\n11753.3\n\n\n2024-09-27\n11967.9",
-    "crumbs": [
-      "Home",
-      "LSTM Neural Network",
-      "LSTM Neural Network Predictions"
-    ]
+    "text": "Latest stock values for analysis\n\nWe are using values from IBEX ticker values (Spanish stock values) every Friday - Closing\nThese are the lates values we used for our analysis.\n\n\n\nCode\nplot_sample_data(path='modelled_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-09-06\n11173.0\n\n\n2024-09-13\n11540.2\n\n\n2024-09-20\n11753.3\n\n\n2024-09-27\n11967.9\n\n\n2024-10-04\n11659.2"
   },
   {
     "objectID": "docs/crnn_model_predictive_notebook.html#predictions-over-future-8-weeks",
     "href": "docs/crnn_model_predictive_notebook.html#predictions-over-future-8-weeks",
     "title": "LSTM Neural Network Predictions",
     "section": "Predictions over future 8 weeks",
-    "text": "Predictions over future 8 weeks\n\nWe will use our model to make ACTUAL PREDICTIONS for 8 weeks in the future.\n\n\n\nCode\nplot_predictions(path='predictive_data.csv', column='Close', model='crnn_model', display_weeks=16)",
-    "crumbs": [
-      "Home",
-      "LSTM Neural Network",
-      "LSTM Neural Network Predictions"
-    ]
+    "text": "Predictions over future 8 weeks\n\nWe will use our model to make ACTUAL PREDICTIONS for 8 weeks in the future.\n\n\n\nCode\nplot_predictions(path='predictive_data.csv', column='Close', model='crnn_model', display_weeks=16)"
   },
   {
     "objectID": "projects.html#lstm-deep-neural-network",
