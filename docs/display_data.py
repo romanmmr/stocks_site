@@ -22,12 +22,11 @@ def table_horizontal(path: str, column: str, display_weeks: int) -> None:
     modelling_data.index = modelling_data.index.astype(str).map(lambda x: x[:10])
     modelling_data['if we knew the future'] = modelling_data[column]
     modelling_data['hypothetical present'] = modelling_data[column].apply(lambda x: str(round(x, 1)))
-    index_to_change = modelling_data['hypothetical present'].tail(int(display_weeks/2)).index
+    index_to_change = modelling_data['hypothetical present'].tail(int(display_weeks / 2)).index
     modelling_data.loc[index_to_change, 'hypothetical present'] = '?'
     # data = round(modelling_data[['if we knew the future', 'hypothetical present']], 1).tail(display_weeks).T
 
     return round(modelling_data[['if we knew the future', 'hypothetical present']], 1).tail(display_weeks).T
-
 
 
 def plot_fit_and_forecast(path: str, column: str, model: str, display_weeks: int) -> None:
@@ -63,6 +62,7 @@ def plot_fit_and_forecast(path: str, column: str, model: str, display_weeks: int
     plt.tight_layout()
     plt.legend()
 
+
 def plot_predictions(path: str, column: str, model: str, display_weeks: int) -> None:
     predicted_data = pd.read_csv(path, index_col='Date')
     # modelling_data.index = pd.to_datetime(modelling_data.index).strftime('%Y-%m-%d')
@@ -91,15 +91,8 @@ def plot_predictions(path: str, column: str, model: str, display_weeks: int) -> 
     plt.tight_layout()
     plt.legend()
 
-# if __name__ == '__main__':
-#     print('start')
-#     plot_sample_data(path='modelled_fitted_data.csv', column='Close')
-#     table_horizontal(path='modelled_fitted_data.csv', column='Close', display_weeks=16)
-#     plot_fit_and_forecast(path='modelled_fitted_data.csv', column='Close', display_weeks=16)
-#     print('done')
 
-def plot_nn_loss(path:str) -> None:
-
+def plot_nn_loss(path: str, y_min: int = 0, y_max: int = 5) -> None:
     my_path = ''
     for _ in os.getcwd().split('\\')[:-1]:
         my_path += _ + '\\'
@@ -116,3 +109,16 @@ def plot_nn_loss(path:str) -> None:
     plt.title('Training and Validation loss (mae)')
     plt.grid()
     plt.legend()
+
+    # Set fixed limits for the y-axis
+    plt.ylim(y_min, y_max)  # Replace y_min and y_max with your desired values
+
+    # plt.show()
+
+
+# if __name__ == '__main__':
+#     print('start')
+#     plot_sample_data(path='modelled_fitted_data.csv', column='Close')
+#     table_horizontal(path='modelled_fitted_data.csv', column='Close', display_weeks=16)
+#     plot_fit_and_forecast(path='modelled_fitted_data.csv', column='Close', display_weeks=16)
+#     print('done')
