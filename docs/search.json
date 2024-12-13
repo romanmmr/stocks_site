@@ -93,7 +93,7 @@
     "href": "docs/arima_model.html#latest-stock-values-for-analysis",
     "title": "Arima Model",
     "section": "Latest stock values for analysis",
-    "text": "Latest stock values for analysis\n\nWe are using values from IBEX ticker values (Spanish stock values) every Friday - Closing\nThese are the lates values we used for our analysis.\n\n\n\nCode\nplot_sample_data(path='modelled_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-11-08\n11551.6\n\n\n2024-11-15\n11635.9\n\n\n2024-11-22\n11656.6\n\n\n2024-11-29\n11641.3\n\n\n2024-12-06\n12072.0",
+    "text": "Latest stock values for analysis\n\nWe are using values from IBEX ticker values (Spanish stock values) every Friday - Closing\nThese are the lates values we used for our analysis.\n\n\n\nCode\nplot_sample_data(path='modelled_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-11-15\n11635.9\n\n\n2024-11-22\n11656.6\n\n\n2024-11-29\n11641.3\n\n\n2024-12-06\n12072.0\n\n\n2024-12-13\n11752.1",
     "crumbs": [
       "Home",
       "Arima",
@@ -105,7 +105,7 @@
     "href": "docs/arima_model.html#test-over-last-8-weeks",
     "title": "Arima Model",
     "section": "Test over last 8 weeks",
-    "text": "Test over last 8 weeks\n\nWe keep data from last 8 weeks ‘unseen’ by our arima model. \nThis means that the model doesn’t know the last 8 values. The hypothetical present of our model is 8 weeks in the past. \nIn that hypothetical present, if we could see the future we would see the last 8 weeks.\n\n\n\nCode\ntable_horizontal(path='modelled_fitted_data.csv', column='Close', display_weeks=16)\n\n\n\n\n\n\n\n\n\nDate\n2024-08-23\n2024-08-30\n2024-09-06\n2024-09-13\n2024-09-20\n2024-09-27\n2024-10-04\n2024-10-11\n2024-10-18\n2024-10-25\n2024-11-01\n2024-11-08\n2024-11-15\n2024-11-22\n2024-11-29\n2024-12-06\n\n\n\n\nif we knew the future\n11278.1\n11401.9\n11173.0\n11540.2\n11753.3\n11967.9\n11659.2\n11720.0\n11925.2\n11812.5\n11843.0\n11551.6\n11635.9\n11656.6\n11641.3\n12072.0\n\n\nhypothetical present\n11278.1\n11401.9\n11173.0\n11540.2\n11753.3\n11967.9\n11659.2\n11720.0\n?\n?\n?\n?\n?\n?\n?\n?",
+    "text": "Test over last 8 weeks\n\nWe keep data from last 8 weeks ‘unseen’ by our arima model. \nThis means that the model doesn’t know the last 8 values. The hypothetical present of our model is 8 weeks in the past. \nIn that hypothetical present, if we could see the future we would see the last 8 weeks.\n\n\n\nCode\ntable_horizontal(path='modelled_fitted_data.csv', column='Close', display_weeks=16)\n\n\n\n\n\n\n\n\n\nDate\n2024-08-30\n2024-09-06\n2024-09-13\n2024-09-20\n2024-09-27\n2024-10-04\n2024-10-11\n2024-10-18\n2024-10-25\n2024-11-01\n2024-11-08\n2024-11-15\n2024-11-22\n2024-11-29\n2024-12-06\n2024-12-13\n\n\n\n\nif we knew the future\n11401.9\n11173.0\n11540.2\n11753.3\n11967.9\n11659.2\n11720.0\n11925.2\n11812.5\n11843.0\n11551.6\n11635.9\n11656.6\n11641.3\n12072.0\n11752.1\n\n\nhypothetical present\n11401.9\n11173.0\n11540.2\n11753.3\n11967.9\n11659.2\n11720.0\n11925.2\n?\n?\n?\n?\n?\n?\n?\n?",
     "crumbs": [
       "Home",
       "Arima",
@@ -141,7 +141,7 @@
     "href": "docs/arima_predictive_notebook.html#latest-stock-values-for-analysis",
     "title": "Arima Predictions",
     "section": "Latest stock values for analysis",
-    "text": "Latest stock values for analysis\n\nWe are using values from IBEX ticker values (Spanish stock values) every Friday - Closing\nThese are the lates values we used for our analysis.\n\n\n\nCode\nplot_sample_data(path='modelled_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-11-08\n11551.6\n\n\n2024-11-15\n11635.9\n\n\n2024-11-22\n11656.6\n\n\n2024-11-29\n11641.3\n\n\n2024-12-06\n12072.0",
+    "text": "Latest stock values for analysis\n\nWe are using values from IBEX ticker values (Spanish stock values) every Friday - Closing\nThese are the lates values we used for our analysis.\n\n\n\nCode\nplot_sample_data(path='modelled_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-11-15\n11635.9\n\n\n2024-11-22\n11656.6\n\n\n2024-11-29\n11641.3\n\n\n2024-12-06\n12072.0\n\n\n2024-12-13\n11752.1",
     "crumbs": [
       "Home",
       "Arima",
@@ -191,7 +191,7 @@
     "href": "docs/nn_model.html#latest-stock-values-for-analysis",
     "title": "Neural Network Model",
     "section": "Latest stock values for analysis",
-    "text": "Latest stock values for analysis\n\nWe are using values from IBEX ticker values (Spanish stock values) every Friday - Closing\nThese are the lates values we used for our analysis.\n\n\n\nCode\nplot_sample_data(path='modelled_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-11-08\n11551.6\n\n\n2024-11-15\n11635.9\n\n\n2024-11-22\n11656.6\n\n\n2024-11-29\n11641.3\n\n\n2024-12-06\n12072.0",
+    "text": "Latest stock values for analysis\n\nWe are using values from IBEX ticker values (Spanish stock values) every Friday - Closing\nThese are the lates values we used for our analysis.\n\n\n\nCode\nplot_sample_data(path='modelled_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-11-15\n11635.9\n\n\n2024-11-22\n11656.6\n\n\n2024-11-29\n11641.3\n\n\n2024-12-06\n12072.0\n\n\n2024-12-13\n11752.1",
     "crumbs": [
       "Home",
       "Neural Network",
@@ -203,7 +203,7 @@
     "href": "docs/nn_model.html#test-over-last-8-weeks",
     "title": "Neural Network Model",
     "section": "Test over last 8 weeks",
-    "text": "Test over last 8 weeks\n\nWe keep data from last 8 weeks ‘unseen’ by our arima model. \nThis means that the model doesn’t know the last 8 values. The hypothetical present of our model is 8 weeks in the past. \nIn that hypothetical present, if we could see the future we would see the last 8 weeks.\n\n\n\nCode\ntable_horizontal(path='modelled_fitted_data.csv', column='Close', display_weeks=16)\n\n\n\n\n\n\n\n\n\nDate\n2024-08-23\n2024-08-30\n2024-09-06\n2024-09-13\n2024-09-20\n2024-09-27\n2024-10-04\n2024-10-11\n2024-10-18\n2024-10-25\n2024-11-01\n2024-11-08\n2024-11-15\n2024-11-22\n2024-11-29\n2024-12-06\n\n\n\n\nif we knew the future\n11278.1\n11401.9\n11173.0\n11540.2\n11753.3\n11967.9\n11659.2\n11720.0\n11925.2\n11812.5\n11843.0\n11551.6\n11635.9\n11656.6\n11641.3\n12072.0\n\n\nhypothetical present\n11278.1\n11401.9\n11173.0\n11540.2\n11753.3\n11967.9\n11659.2\n11720.0\n?\n?\n?\n?\n?\n?\n?\n?",
+    "text": "Test over last 8 weeks\n\nWe keep data from last 8 weeks ‘unseen’ by our arima model. \nThis means that the model doesn’t know the last 8 values. The hypothetical present of our model is 8 weeks in the past. \nIn that hypothetical present, if we could see the future we would see the last 8 weeks.\n\n\n\nCode\ntable_horizontal(path='modelled_fitted_data.csv', column='Close', display_weeks=16)\n\n\n\n\n\n\n\n\n\nDate\n2024-08-30\n2024-09-06\n2024-09-13\n2024-09-20\n2024-09-27\n2024-10-04\n2024-10-11\n2024-10-18\n2024-10-25\n2024-11-01\n2024-11-08\n2024-11-15\n2024-11-22\n2024-11-29\n2024-12-06\n2024-12-13\n\n\n\n\nif we knew the future\n11401.9\n11173.0\n11540.2\n11753.3\n11967.9\n11659.2\n11720.0\n11925.2\n11812.5\n11843.0\n11551.6\n11635.9\n11656.6\n11641.3\n12072.0\n11752.1\n\n\nhypothetical present\n11401.9\n11173.0\n11540.2\n11753.3\n11967.9\n11659.2\n11720.0\n11925.2\n?\n?\n?\n?\n?\n?\n?\n?",
     "crumbs": [
       "Home",
       "Neural Network",
@@ -251,7 +251,7 @@
     "href": "docs/nn_model_predictive_notebook.html#latest-stock-values-for-analysis",
     "title": "Neural Network Predictions",
     "section": "Latest stock values for analysis",
-    "text": "Latest stock values for analysis\n\nWe are using values from IBEX ticker values (Spanish stock values) every Friday - Closing\nThese are the lates values we used for our analysis.\n\n\n\nCode\nplot_sample_data(path='modelled_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-11-08\n11551.6\n\n\n2024-11-15\n11635.9\n\n\n2024-11-22\n11656.6\n\n\n2024-11-29\n11641.3\n\n\n2024-12-06\n12072.0",
+    "text": "Latest stock values for analysis\n\nWe are using values from IBEX ticker values (Spanish stock values) every Friday - Closing\nThese are the lates values we used for our analysis.\n\n\n\nCode\nplot_sample_data(path='modelled_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-11-15\n11635.9\n\n\n2024-11-22\n11656.6\n\n\n2024-11-29\n11641.3\n\n\n2024-12-06\n12072.0\n\n\n2024-12-13\n11752.1",
     "crumbs": [
       "Home",
       "Neural Network",
@@ -308,7 +308,7 @@
     "href": "docs/crnn_model.html#latest-stock-values-for-analysis",
     "title": "LSTM Neural Network Model",
     "section": "Latest stock values for analysis",
-    "text": "Latest stock values for analysis\n\nWe are using values from IBEX ticker values (Spanish stock values) every Friday - Closing\nThese are the lates values we used for our analysis.\n\n\n\nCode\nplot_sample_data(path='modelled_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-11-08\n11551.6\n\n\n2024-11-15\n11635.9\n\n\n2024-11-22\n11656.6\n\n\n2024-11-29\n11641.3\n\n\n2024-12-06\n12072.0",
+    "text": "Latest stock values for analysis\n\nWe are using values from IBEX ticker values (Spanish stock values) every Friday - Closing\nThese are the lates values we used for our analysis.\n\n\n\nCode\nplot_sample_data(path='modelled_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-11-15\n11635.9\n\n\n2024-11-22\n11656.6\n\n\n2024-11-29\n11641.3\n\n\n2024-12-06\n12072.0\n\n\n2024-12-13\n11752.1",
     "crumbs": [
       "Home",
       "LSTM Neural Network",
@@ -320,7 +320,7 @@
     "href": "docs/crnn_model.html#test-over-last-8-weeks",
     "title": "LSTM Neural Network Model",
     "section": "Test over last 8 weeks",
-    "text": "Test over last 8 weeks\n\nWe keep data from last 8 weeks ‘unseen’ by our arima model. \nThis means that the model doesn’t know the last 8 values. The hypothetical present of our model is 8 weeks in the past. \nIn that hypothetical present, if we could see the future we would see the last 8 weeks.\n\n\n\nCode\ntable_horizontal(path='modelled_fitted_data.csv', column='Close', display_weeks=16)\n\n\n\n\n\n\n\n\n\nDate\n2024-08-23\n2024-08-30\n2024-09-06\n2024-09-13\n2024-09-20\n2024-09-27\n2024-10-04\n2024-10-11\n2024-10-18\n2024-10-25\n2024-11-01\n2024-11-08\n2024-11-15\n2024-11-22\n2024-11-29\n2024-12-06\n\n\n\n\nif we knew the future\n11278.1\n11401.9\n11173.0\n11540.2\n11753.3\n11967.9\n11659.2\n11720.0\n11925.2\n11812.5\n11843.0\n11551.6\n11635.9\n11656.6\n11641.3\n12072.0\n\n\nhypothetical present\n11278.1\n11401.9\n11173.0\n11540.2\n11753.3\n11967.9\n11659.2\n11720.0\n?\n?\n?\n?\n?\n?\n?\n?",
+    "text": "Test over last 8 weeks\n\nWe keep data from last 8 weeks ‘unseen’ by our arima model. \nThis means that the model doesn’t know the last 8 values. The hypothetical present of our model is 8 weeks in the past. \nIn that hypothetical present, if we could see the future we would see the last 8 weeks.\n\n\n\nCode\ntable_horizontal(path='modelled_fitted_data.csv', column='Close', display_weeks=16)\n\n\n\n\n\n\n\n\n\nDate\n2024-08-30\n2024-09-06\n2024-09-13\n2024-09-20\n2024-09-27\n2024-10-04\n2024-10-11\n2024-10-18\n2024-10-25\n2024-11-01\n2024-11-08\n2024-11-15\n2024-11-22\n2024-11-29\n2024-12-06\n2024-12-13\n\n\n\n\nif we knew the future\n11401.9\n11173.0\n11540.2\n11753.3\n11967.9\n11659.2\n11720.0\n11925.2\n11812.5\n11843.0\n11551.6\n11635.9\n11656.6\n11641.3\n12072.0\n11752.1\n\n\nhypothetical present\n11401.9\n11173.0\n11540.2\n11753.3\n11967.9\n11659.2\n11720.0\n11925.2\n?\n?\n?\n?\n?\n?\n?\n?",
     "crumbs": [
       "Home",
       "LSTM Neural Network",
@@ -368,7 +368,7 @@
     "href": "docs/crnn_model_predictive_notebook.html#latest-stock-values-for-analysis",
     "title": "LSTM Neural Network Predictions",
     "section": "Latest stock values for analysis",
-    "text": "Latest stock values for analysis\n\nWe are using values from IBEX ticker values (Spanish stock values) every Friday - Closing\nThese are the lates values we used for our analysis.\n\n\n\nCode\nplot_sample_data(path='modelled_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-11-08\n11551.6\n\n\n2024-11-15\n11635.9\n\n\n2024-11-22\n11656.6\n\n\n2024-11-29\n11641.3\n\n\n2024-12-06\n12072.0",
+    "text": "Latest stock values for analysis\n\nWe are using values from IBEX ticker values (Spanish stock values) every Friday - Closing\nThese are the lates values we used for our analysis.\n\n\n\nCode\nplot_sample_data(path='modelled_fitted_data.csv', column='Close')\n\n\n\n\n\n\n\n\n\n\nClose\n\n\nDate\n\n\n\n\n\n2024-11-15\n11635.9\n\n\n2024-11-22\n11656.6\n\n\n2024-11-29\n11641.3\n\n\n2024-12-06\n12072.0\n\n\n2024-12-13\n11752.1",
     "crumbs": [
       "Home",
       "LSTM Neural Network",
