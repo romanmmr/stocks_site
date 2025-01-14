@@ -1,6 +1,7 @@
 import os
 import shutil
 import papermill as pm
+from datetime import date
 
 # Local application imports
 from models.arima import *
@@ -79,14 +80,76 @@ def render_files() -> None:
 
     os.system('''
         quarto render projects.qmd
-        quarto render docs/arima_model.ipynb
-        quarto render docs/arima_model_predictive_notebook.ipynb
-        quarto render docs/nn_model.ipynb
-        quarto render docs/nn_model_predictive_notebook.ipynb
-        quarto render docs/crnn_model.ipynb
-        quarto render docs/crnn_model_predictive_notebook.ipynb
     ''')
+    os.system('''
+        quarto render docs/arima_model.ipynb
+    ''')
+    os.system('''
+        quarto render docs/arima_predictive_notebook.ipynb
+    ''')
+    os.system('''
+        quarto render docs/nn_model.ipynb
+    ''')
+    os.system('''
+        quarto render docs/nn_model_predictive_notebook.ipynb
+    ''')
+    os.system('''
+        quarto render docs/crnn_model.ipynb
+    ''')
+    os.system('''
+            quarto render docs/crnn_model_predictive_notebook.ipynb
+        ''')
     return
+
+
+def commit_and_push(
+        file_list: list = [
+            'docs/arima_model.ipynb',
+            'docs/arima_predictive_notebook.ipynb',
+            'docs/nn_model.ipynb',
+            'docs/nn_model_predictive_notebook.ipynb',
+            'docs/crnn_model.ipynb',
+            'docs/crnn_model_predictive_notebook.ipynb',
+            'docs/index.html',
+            'docs/projects.html',
+            'docs/docs/arima_model.html',
+            'docs/docs/arima_predictive_notebook.html',
+            'docs/docs/nn_model.html',
+            'docs/docs/nn_model_predictive_notebook.html',
+            'docs/docs/crnn_model.html',
+            'docs/docs/crnn_model_predictive_notebook.html',
+            'docs/docs/arima_model_files/figure-html/cell-5-output-1.png',
+            'docs/docs/arima_predictive_notebook_files/figure-html/cell-4-output-1.png',
+            'docs/docs/nn_model_files/figure-html/cell-5-output-1.png',
+            'docs/docs/nn_model_files/figure-html/cell-6-output-1.png',
+            'docs/docs/nn_model_predictive_notebook_files/figure-html/cell-4-output-1.png',
+            'docs/docs/crnn_model_files/figure-html/cell-5-output-1.png',
+            'docs/docs/crnn_model_files/figure-html/cell-6-output-1.png',
+            'docs/docs/crnn_model_predictive_notebook_files/figure-html/cell-4-output-1.png',
+        ],
+        message: str = ''
+    ) -> None:
+
+    today = date.today()
+
+    commit_message = f'{today.strftime("%Y-%m-%d")} Update'
+
+    if message:
+        commit_message = [f'{today.strftime("%Y-%m-%d")} Update', message]
+        commit_message = ' + '.join(commit_message)
+
+    os.system(f'''
+        git add {' '.join(file_list)}
+    ''')
+
+    os.system(f'''
+        git commit -m {commit_message}
+    ''')
+
+    os.system(f'''
+        git push origin main
+    ''')
+
 
 def run_notebooks_and_render():
     run_notebooks()
@@ -143,3 +206,4 @@ if __name__ == "__main__":
 
     run_notebooks_and_render()
 
+    commit_and_push()
