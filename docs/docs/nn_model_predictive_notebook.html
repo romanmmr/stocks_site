@@ -327,7 +327,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div id="39755b11-7ee6-4be1-afe7-c7ce5658148f" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-13T10:07:54.023833Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-13T10:07:54.023833Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-13T10:07:54.774452Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-13T10:07:54.773017Z&quot;}" data-papermill="{&quot;duration&quot;:0.757107,&quot;end_time&quot;:&quot;2025-01-13T10:07:54.778729&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2025-01-13T10:07:54.021622&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="1">
+<div id="39755b11-7ee6-4be1-afe7-c7ce5658148f" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-17T21:56:15.959616Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-17T21:56:15.958590Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-17T21:56:17.741997Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-17T21:56:17.740893Z&quot;}" data-papermill="{&quot;duration&quot;:1.797237,&quot;end_time&quot;:&quot;2025-01-17T21:56:17.746907&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2025-01-17T21:56:15.949670&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -341,7 +341,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>We are using values from IBEX ticker values (Spanish stock values) every Friday - Closing</li>
 <li>These are the lates values we used for our analysis.</li>
 </ul>
-<div id="395bae17-6c10-4fee-b6bd-aaad9ffe317c" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-13T10:07:54.786786Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-13T10:07:54.786786Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-13T10:07:54.994075Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-13T10:07:54.994075Z&quot;}" data-papermill="{&quot;duration&quot;:0.21088,&quot;end_time&quot;:&quot;2025-01-13T10:07:54.995293&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2025-01-13T10:07:54.784413&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="2">
+<div id="395bae17-6c10-4fee-b6bd-aaad9ffe317c" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-17T21:56:17.766820Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-17T21:56:17.765823Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-17T21:56:18.226369Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-17T21:56:18.226369Z&quot;}" data-papermill="{&quot;duration&quot;:0.469092,&quot;end_time&quot;:&quot;2025-01-17T21:56:18.228662&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2025-01-17T21:56:17.759570&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>plot_sample_data(path<span class="op">=</span><span class="st">'docs/modelled_fitted_data.csv'</span>, column<span class="op">=</span><span class="st">'Close'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -364,24 +364,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2024-12-13</td>
-<td>11752.1</td>
-</tr>
-<tr class="even">
 <td data-quarto-table-cell-role="th">2024-12-20</td>
 <td>11467.3</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td data-quarto-table-cell-role="th">2024-12-27</td>
 <td>11531.6</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td data-quarto-table-cell-role="th">2025-01-03</td>
 <td>11651.6</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td data-quarto-table-cell-role="th">2025-01-10</td>
 <td>11720.9</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2025-01-17</td>
+<td>11916.3</td>
 </tr>
 </tbody>
 </table>
@@ -396,7 +396,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>We will use our model to make <strong>ACTUAL PREDICTIONS</strong> for 8 weeks in the future.</li>
 </ul>
-<div id="fec44d4b-380e-47ac-b18e-712a14497ad7" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-13T10:07:55.003840Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-13T10:07:55.003840Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-13T10:07:55.430635Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-13T10:07:55.430635Z&quot;}" data-papermill="{&quot;duration&quot;:0.432428,&quot;end_time&quot;:&quot;2025-01-13T10:07:55.433176&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2025-01-13T10:07:55.000748&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="3">
+<div id="fec44d4b-380e-47ac-b18e-712a14497ad7" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-17T21:56:18.240237Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-17T21:56:18.240237Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-17T21:56:19.209965Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-17T21:56:19.208741Z&quot;}" data-papermill="{&quot;duration&quot;:0.978089,&quot;end_time&quot;:&quot;2025-01-17T21:56:19.214227&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2025-01-17T21:56:18.236138&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>plot_predictions(path<span class="op">=</span><span class="st">'docs/predictive_data.csv'</span>, column<span class="op">=</span><span class="st">'Close'</span>, model<span class="op">=</span><span class="st">'nn_model'</span>, display_weeks<span class="op">=</span><span class="dv">16</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
