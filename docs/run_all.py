@@ -112,6 +112,9 @@ def commit_and_push(
             'docs/crnn_model_predictive_notebook.ipynb',
             'docs/index.html',
             'docs/projects.html',
+            'docs/modelled_fitted_data.csv',
+            'docs/predictive_data.csv',
+            'docs/search.json',
             'docs/docs/arima_model.html',
             'docs/docs/arima_predictive_notebook.html',
             'docs/docs/nn_model.html',
@@ -132,20 +135,22 @@ def commit_and_push(
 
     today = date.today()
 
-    commit_message = f'{today.strftime("%Y-%m-%d")} Update'
+    commit_message = f'"{today.strftime("%Y-%m-%d")} Update"'
 
     if message:
-        commit_message = [f'{today.strftime("%Y-%m-%d")} Update', message]
-        commit_message = ' + '.join(commit_message)
+        commit_message = commit_message[:-1] + ' + ' + message + commit_message[-1]
 
+    # print(f"Starting git add process for files {' '.join(file_list)}")
     os.system(f'''
         git add {' '.join(file_list)}
     ''')
 
+    # print(f"Starting git commit process with message: {commit_message}")
     os.system(f'''
         git commit -m {commit_message}
     ''')
 
+    # print(f"Starting git push process")
     os.system(f'''
         git push origin main
     ''')
