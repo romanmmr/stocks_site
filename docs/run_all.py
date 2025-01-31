@@ -160,6 +160,11 @@ def run_notebooks_and_render():
     run_notebooks()
     render_files()
 
+def run_all():
+    arima.run_pipeline()
+    run_notebooks_and_render()
+    commit_and_push()
+
 
 if __name__ == "__main__":
 
@@ -207,8 +212,4 @@ if __name__ == "__main__":
         train_val_partition=train_val_partition,
     )
 
-    arima.run_pipeline()
-
-    run_notebooks_and_render()
-
-    commit_and_push()
+    run_all()
