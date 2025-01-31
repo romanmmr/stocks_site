@@ -328,7 +328,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div id="931c85e1-bd18-45aa-b81c-a432a0a680d1" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-24T17:37:57.903749Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-24T17:37:57.903749Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-24T17:37:58.949003Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-24T17:37:58.949003Z&quot;}" data-papermill="{&quot;duration&quot;:1.049936,&quot;end_time&quot;:&quot;2025-01-24T17:37:58.951151&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2025-01-24T17:37:57.901215&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="1">
+<div id="931c85e1-bd18-45aa-b81c-a432a0a680d1" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-31T18:10:37.473930Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-31T18:10:37.473930Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-31T18:10:38.409519Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-31T18:10:38.407238Z&quot;}" data-papermill="{&quot;duration&quot;:0.943249,&quot;end_time&quot;:&quot;2025-01-31T18:10:38.414007&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2025-01-31T18:10:37.470758&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -342,7 +342,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>We are using values from IBEX ticker values (Spanish stock values) every Friday - Closing</li>
 <li>These are the lates values we used for our analysis.</li>
 </ul>
-<div id="8d7faf28-a70b-4369-af26-7418593fc163" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-24T17:37:58.959501Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-24T17:37:58.959501Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-24T17:37:59.187081Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-24T17:37:59.187081Z&quot;}" data-papermill="{&quot;duration&quot;:0.233223,&quot;end_time&quot;:&quot;2025-01-24T17:37:59.189565&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2025-01-24T17:37:58.956342&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="2">
+<div id="8d7faf28-a70b-4369-af26-7418593fc163" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-31T18:10:38.430895Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-31T18:10:38.429897Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-31T18:10:38.661511Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-31T18:10:38.661511Z&quot;}" data-papermill="{&quot;duration&quot;:0.237991,&quot;end_time&quot;:&quot;2025-01-31T18:10:38.663750&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2025-01-31T18:10:38.425759&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>plot_sample_data(path<span class="op">=</span><span class="st">'docs/modelled_fitted_data.csv'</span>, column<span class="op">=</span><span class="st">'Close'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -365,24 +365,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2024-12-27</td>
-<td>11531.6</td>
-</tr>
-<tr class="even">
 <td data-quarto-table-cell-role="th">2025-01-03</td>
 <td>11651.6</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td data-quarto-table-cell-role="th">2025-01-10</td>
 <td>11720.9</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td data-quarto-table-cell-role="th">2025-01-17</td>
 <td>11916.3</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td data-quarto-table-cell-role="th">2025-01-24</td>
 <td>11982.6</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2025-01-31</td>
+<td>12368.9</td>
 </tr>
 </tbody>
 </table>
@@ -399,7 +399,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>This means that the model doesn’t know the last 8 values. The hypothetical present of our model is 8 weeks in the past. <br><br></li>
 <li>In that hypothetical present, if we could see the future we would see the last 8 weeks.</li>
 </ol>
-<div id="866fce07-59b4-4a44-a614-48acdafd8b76" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-24T17:37:59.198055Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-24T17:37:59.196991Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-24T17:37:59.422307Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-24T17:37:59.421125Z&quot;}" data-papermill="{&quot;duration&quot;:0.229487,&quot;end_time&quot;:&quot;2025-01-24T17:37:59.424347&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2025-01-24T17:37:59.194860&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="3">
+<div id="866fce07-59b4-4a44-a614-48acdafd8b76" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-31T18:10:38.671051Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-31T18:10:38.671051Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-31T18:10:38.899181Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-31T18:10:38.898448Z&quot;}" data-papermill="{&quot;duration&quot;:0.231423,&quot;end_time&quot;:&quot;2025-01-31T18:10:38.900389&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2025-01-31T18:10:38.668966&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>table_horizontal(path<span class="op">=</span><span class="st">'docs/modelled_fitted_data.csv'</span>, column<span class="op">=</span><span class="st">'Close'</span>, display_weeks<span class="op">=</span><span class="dv">16</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -413,7 +413,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">Date</th>
-<th data-quarto-table-cell-role="th">2024-10-11</th>
 <th data-quarto-table-cell-role="th">2024-10-18</th>
 <th data-quarto-table-cell-role="th">2024-10-25</th>
 <th data-quarto-table-cell-role="th">2024-11-01</th>
@@ -429,12 +428,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <th data-quarto-table-cell-role="th">2025-01-10</th>
 <th data-quarto-table-cell-role="th">2025-01-17</th>
 <th data-quarto-table-cell-role="th">2025-01-24</th>
+<th data-quarto-table-cell-role="th">2025-01-31</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">if we knew the future</td>
-<td>11720.0</td>
 <td>11925.2</td>
 <td>11812.5</td>
 <td>11843.0</td>
@@ -450,10 +449,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>11720.9</td>
 <td>11916.3</td>
 <td>11982.6</td>
+<td>12368.9</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">hypothetical present</td>
-<td>11720.0</td>
 <td>11925.2</td>
 <td>11812.5</td>
 <td>11843.0</td>
@@ -461,6 +460,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>11635.9</td>
 <td>11656.6</td>
 <td>11641.3</td>
+<td>12072.0</td>
 <td>?</td>
 <td>?</td>
 <td>?</td>
@@ -481,7 +481,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="plot-real-vales-vs-model-output-and-confidence-intervals" class="level2">
 <h2 class="anchored" data-anchor-id="plot-real-vales-vs-model-output-and-confidence-intervals">Plot real vales vs model output and confidence intervals</h2>
 <p>This is a plot of the real values (in blue) and the model output (in green) and the confident intervals (in red)</p>
-<div id="c63609df-8e27-41af-a034-5db0f623537e" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-24T17:37:59.434494Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-24T17:37:59.433323Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-24T17:37:59.896285Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-24T17:37:59.896285Z&quot;}" data-papermill="{&quot;duration&quot;:0.468105,&quot;end_time&quot;:&quot;2025-01-24T17:37:59.898436&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2025-01-24T17:37:59.430331&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="4">
+<div id="c63609df-8e27-41af-a034-5db0f623537e" class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2025-01-31T18:10:38.909662Z&quot;,&quot;iopub.status.busy&quot;:&quot;2025-01-31T18:10:38.908656Z&quot;,&quot;iopub.status.idle&quot;:&quot;2025-01-31T18:10:39.385280Z&quot;,&quot;shell.execute_reply&quot;:&quot;2025-01-31T18:10:39.385280Z&quot;}" data-papermill="{&quot;duration&quot;:0.479776,&quot;end_time&quot;:&quot;2025-01-31T18:10:39.386389&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2025-01-31T18:10:38.906613&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>plot_fit_and_forecast(path<span class="op">=</span><span class="st">'docs/modelled_fitted_data.csv'</span>, column<span class="op">=</span><span class="st">'Close'</span>, model<span class="op">=</span><span class="st">'arima'</span>,  display_weeks<span class="op">=</span><span class="dv">16</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
